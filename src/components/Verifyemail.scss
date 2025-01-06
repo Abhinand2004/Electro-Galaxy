@@ -1,0 +1,88 @@
+.verify-email-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f7f7f7;
+}
+
+.verify-email-form {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+
+        label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-top: 5px;
+        }
+    }
+
+    .message {
+        font-size: 14px;
+        color: green;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: center;
+
+        .verify-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .verify-btn:hover {
+            opacity: 0.9;
+        }
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 20px;
+
+        p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        span {
+            color: #007BFF;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        span:hover {
+            opacity: 0.8;
+        }
+    }
+}

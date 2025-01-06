@@ -1,0 +1,95 @@
+/* EditProductPage.scss */
+.edit-product-page {
+    padding: 30px;
+    background-color: #f9f9f9;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.product-details {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.product-images {
+    width: 40%;
+    text-align: center;
+}
+
+.images-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.product-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.edit-btn, .delete-btn, .save-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    font-size: 1rem;
+}
+
+.edit-btn:hover, .delete-btn:hover, .save-btn:hover {
+    background-color: #0056b3;
+}
+
+.delete-btn {
+    background-color: #ff4d4d;
+}
+
+.product-info {
+    width: 55%;
+}
+
+.product-info-display p {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.edit-fields input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.edit-fields label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .product-details {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-images, .product-info {
+        width: 100%;
+    }
+}
