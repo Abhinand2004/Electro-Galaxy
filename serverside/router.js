@@ -15,7 +15,9 @@ router.route("/companydetails").get(Auth,rh.displaycompany)
 router.route("/categories").get(Auth,rh.categories)
 router.route("/buyer").get(Auth,rh.buyerdetails)
 router.route("/editbuyer").put(Auth,rh.editbuyer)
-
+router.route("/address").post(Auth,rh.addAddress)
+router.route("/displayaddress").get(Auth,rh.displayaddress)
+router.route("/deleteaddress/:id").delete(rh.deleteAddress)
 
 
 

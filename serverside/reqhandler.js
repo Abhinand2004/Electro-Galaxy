@@ -4,6 +4,7 @@ import nodemailer from 'nodemailer'
 import pkg from 'jsonwebtoken'
 import productSchema from "./models/product.js";
 import sellerData from "./models/sellerdata.js";
+import addressSchema from "./models/address.js"
 import { data } from "react-router-dom";
 import user from "./models/user.js";
 const { sign } = pkg
@@ -253,3 +254,48 @@ export async function editbuyer(req, res) {
     }
 }
 
+
+
+export async function addAddress(req, res) {
+  const { ...data } = req.body;
+  try {
+    data.user_id=req.user.UserID
+    const newAddress = await addressSchema.create(data);
+    
+    res.status(200).send({ msg: 'Address added successfully' });
+  } catch (error) {
+    res.status(500).send({ msg: 'Error adding address'});
+  }
+}
+
+
+
+export async function displayaddress(req, res) {
+    try {
+        const addresses = await addressSchema.find({ user_id: req.user.UserID });
+        if (!addresses.length) {
+            return res.status(200).json({ msg: 'No addresses found', addresses: [] });
+        }
+        return res.status(200).json(addresses);
+    } catch (error) {
+        console.error("Error fetching addresses:", error);
+        return res.status(500).json({ msg: 'Error fetching addresses' });
+    }
+}
+
+
+
+
+export async function deleteAddress(req, res) {
+    const { id } = req.params;
+    try {
+        const deletedData = await addressSchema.deleteOne({ _id: id });
+        if (deletedData.deletedCount === 0) {
+            return res.status(404).send({ msg: "Address not found" });
+        }
+        res.status(200).send({ msg: "Address deleted successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ msg: "Server error" });
+    }
+}
