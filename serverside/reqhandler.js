@@ -195,6 +195,18 @@ export async function sellerdata(req, res) {
         return res.status(500).send({ msg: "Error processing request"});
     }
 }
+export async function displaycompany(req,res) {
+    try {
+        const company = await sellerData.findOne({ seller_id: req.user.UserID });
+        if (company) {
+            return res.status(200).send({ company });
+        }
+        res.status(404).send({ msg: "Company data not found" });
+    } catch (error) {
+        res.status(500).send({ msg: "Error retrieving company data" });
+    }
+}
+
 
 export async function categories(req, res) {
     try {

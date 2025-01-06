@@ -20,7 +20,6 @@ const BuyerProfile = () => {
     const handleEditClick = () => {
         setIsEditing(!isEditing);
     };
-
     const handleSaveClick = async () => {
         setIsEditing(false);
         try {
@@ -32,18 +31,7 @@ const BuyerProfile = () => {
             console.error("Error updating buyer data:", error);
         }
     };
-
-    const handleAddLocation = () => {
-        if (newLocation) {
-            setFormData({ ...formData, location: [...formData.location, newLocation] });
-            setNewLocation('');
-            handleSaveClick()
-            
-        } else {
-            alert('Please enter a valid location');
-        }
-    };
-
+  
     const fetchData = async () => {
         try {
             const res = await axios.get("http://localhost:3000/api/buyer", {
@@ -59,10 +47,10 @@ const BuyerProfile = () => {
             console.error("Error fetching data:", error);
         }
     };
-
     useEffect(() => {
         fetchData();
-    }, []);
+
+    }, [newLocation]);
 
     return (
         <div className="profile-container">
@@ -94,7 +82,6 @@ const BuyerProfile = () => {
                         )}
                     </div>
                 </div>
-
                 <button onClick={handleEditClick} className="edit-btn">
                     {isEditing ? 'Cancel Edit' : 'Edit Profile'}
                 </button>
@@ -104,16 +91,13 @@ const BuyerProfile = () => {
                     </button>
                 )}
             </div>
-
             <div className="right-side">
                 <div className="profile-actions">
                     <button onClick={() => console.log('Go to Wishlist')} className="profile-btn">Wishlist</button>
                     <button onClick={() => console.log('Go to My Orders')} className="profile-btn">My Orders</button>
                     <button onClick={() => console.log('Go to Cart')} className="profile-btn">Cart</button>
                 </div>
-
                 <hr />
-
                 <div className="location-section">
                     <h3>Locations</h3>
                     <div className="location-input">
@@ -123,7 +107,7 @@ const BuyerProfile = () => {
                             value={newLocation}
                             onChange={(e) => setNewLocation(e.target.value)}
                         />
-                        <button onClick={handleAddLocation} className="add-location-btn">
+                        <button className="add-location-btn">
                             Add Location
                         </button>
                     </div>

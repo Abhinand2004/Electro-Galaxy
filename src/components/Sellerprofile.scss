@@ -1,163 +1,69 @@
-/* SellerProfile.scss */
-.seller-profile-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.left-side {
-    width: 35%; /* Left side with company details */
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.right-side {
-    width: 60%; /* Right side with categories and add product section */
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.profile-info {
-    margin-bottom: 30px;
-}
-
-.profile-item {
-    margin-bottom: 15px;
-}
-
-.profile-item label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.profile-item input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.profile-item span {
-    font-size: 1.1rem;
-}
-
-.profile-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.profile-btn,
-.edit-btn,
-.save-btn,
-.add-company-btn {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.profile-btn:hover,
-.edit-btn:hover,
-.save-btn:hover,
-.add-company-btn:hover {
-    background-color: #0056b3;
-}
-
-.category-box {
-    margin-top: 30px;
-}
-
-.category-box h3 {
-    margin-bottom: 15px;
-}
-
-.category-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.category-item {
+.seller-profile {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    padding: 15px;
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    width: 120px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.category-item span {
-    margin-bottom: 10px;
-}
-
-.product-count {
-    font-weight: bold;
-}
-
-.add-product-btn {
-    padding: 5px 10px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.add-product-btn:hover {
-    background-color: #218838;
-}
-
-.add-product {
-    margin-top: 30px;
-}
-
-.add-product h3 {
-    margin-bottom: 10px;
-}
-
-.add-product-btn {
-    padding: 8px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.add-product-btn:hover {
-    background-color: #0056b3;
-}
-
-@media (max-width: 768px) {
-    .seller-profile-container {
-        flex-direction: column;
-        align-items: center;
+    margin: 20px;
+    font-family: Arial, sans-serif;
+  
+    h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
     }
-
-    .left-side,
-    .right-side {
+  
+    .left-section {
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+      button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+  
+        &:hover {
+          background-color: #0056b3;
+        }
+  
+        &:disabled {
+          background-color: #ddd;
+          cursor: not-allowed;
+        }
+      }
+  
+      input {
         width: 100%;
-        margin-bottom: 20px;
+        padding: 8px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        outline: none;
+  
+        &:focus {
+          border-color: #007bff;
+        }
+      }
+  
+      p {
+        font-size: 16px;
+        margin: 5px 0;
+        color: #333;
+      }
+  
+      .form-buttons {
+        display: flex;
+        gap: 10px;
+      }
     }
-}
+  }
+  
