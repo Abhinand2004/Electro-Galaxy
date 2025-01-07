@@ -1,119 +1,178 @@
-/* AddProduct.scss */
+
+
 .add-product-container {
     width: 100%;
     padding: 30px;
-    background-color: #f9f9f9;
+    background-color: #f2f2f2;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin-top: 30px;
-}
-
-h2 {
+  }
+  
+  h2 {
     text-align: center;
     margin-bottom: 30px;
-}
-
-.product-form {
+    color: #34495e;
+    font-size: 2rem;
+  }
+  
+  .product-form {
     width: 100%;
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-label {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-group {
+    margin-bottom: 25px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  label {
     display: block;
     font-weight: bold;
     margin-bottom: 8px;
-}
-
-input,
-select,
-textarea {
-    width: 100%;
-    padding: 10px;
+    width: 20%;
+    flex: 0 0 20%;
+  }
+  
+  input,
+  select,
+  textarea {
+    width: 75%;
+    flex: 0 0 75%;
+    padding: 12px;
     border-radius: 4px;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
     font-size: 16px;
-}
-
-textarea {
+    transition: border-color 0.3s ease;
+  }
+  
+  textarea {
     resize: vertical;
     height: 100px;
-}
-
-.add-category {
+  }
+  
+  .add-category {
     margin-top: 10px;
-}
-
-.add-category input {
+  }
+  
+  .add-category input {
     width: 100%;
     padding: 8px;
     border-radius: 4px;
     border: 1px solid #ddd;
-}
-
-.form-actions {
+  }
+  
+  .form-actions {
     display: flex;
     justify-content: center;
     margin-top: 30px;
-}
-
-.add-product-btn {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
+  }
+  
+  .add-product-btn {
+    padding: 12px 30px;
+    background-color: #428bca;
+    color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-}
-
-.add-product-btn:hover {
-    background-color: #0056b3;
-}
-
-input[type='file'] {
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-product-btn:hover {
+    background-color: #357ebd;
+  }
+  
+  input[type="file"] {
     padding: 10px;
     border-radius: 4px;
-    border: 1px solid #ddd;
-}
-
-input[type='file']:focus {
-    outline: none;
-}
-
-textarea:focus,
-input:focus,
-select:focus {
-    border-color: #007bff;
-}
-
-/* Image Previews */
-.image-previews {
+    border: 1px solid #ccc;
+    transition: border-color 0.3s ease;
+  }
+  
+  input[type="file"]:focus,
+  textarea:focus,
+  input:focus,
+  select:focus {
+    border-color: #428bca;
+  }
+  
+  /* Image Previews */
+  .image-previews {
     margin-bottom: 20px;
-}
-
-.image-preview {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .image-preview {
     display: inline-block;
     margin-right: 10px;
     margin-bottom: 10px;
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     overflow: hidden;
     border-radius: 5px;
-}
-
-.image-preview img {
+    background-color: #f2f2f2;
+    position: relative;
+  }
+  
+  .image-preview img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-
-@media (max-width: 768px) {
+  }
+  
+  .image-preview .delete-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #fff;
+    background-color: #000;
+    opacity: 0.5;
+    padding: 2px 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  }
+  
+  .image-preview:hover .delete-image {
+    opacity: 1;
+  }
+  
+  @media (max-width: 768px) {
     .product-form {
-        width: 100%;
-        padding: 10px;
+      width: 100%;
+      padding: 10px;
     }
-}
+  
+    .form-group {
+      flex-direction: column;
+    }
+  
+    label {
+      width: 100%;
+      text-align: left;
+    }
+  
+    input,
+    select,
+    textarea {
+      width: 100%;
+    }
+  
+   
+    .company-details { 
+      display: flex;
+      flex-direction: column; 
+      margin-bottom: 20px; 
+    }
+
+    .category-container { 
+      margin-top: 20px; 
+    }
+  }

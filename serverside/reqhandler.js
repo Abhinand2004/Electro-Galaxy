@@ -84,7 +84,7 @@ export async function verifyEmail(req, res) {
                             <h1 style="color: #333;">Email Verification</h1>
                             <p style="font-size: 16px; color: #555;">Hello ${user.username},</p>
                             <p style="font-size: 16px; color: #555;">Please verify your email address by clicking the button below:</p>
-                            <a href="http://your-app-domain.com/verify?email=${email}" 
+                            <a href="http://localhost:5173/changepass" 
                                style="display: inline-block; padding: 12px 25px; color: #fff; background-color: #4CAF50; text-decoration: none; font-size: 16px; border-radius: 5px; margin-top: 20px;">
                                Verify Email
                             </a>

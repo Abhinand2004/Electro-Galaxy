@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Nav.scss';
-import profileImage from "../assets/profile.jpg"; // Renamed to avoid conflict
+import profileImage from "../assets/profile.jpg"; 
 import { useNavigate } from 'react-router-dom';
 
 const Nav = () => {
-    const navigate = useNavigate(); // Fixed capitalization
+    const navigate = useNavigate(); 
     const [showDropdown, setShowDropdown] = useState(false);
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [user, setUser] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
-    const fetchData = async () => { // Renamed to camelCase
+    const fetchData = async () => { 
         try {
             const res = await axios.get("http://localhost:3000/api/navdata", {
                 headers: { Authorization: `Bearer ${token}` }
@@ -36,12 +36,13 @@ const Nav = () => {
         window.location.href = '/login';
     };
 
-    const handleProfileNavigation = () => { // Renamed function
+    const handleProfileNavigation = () => { 
         if (user.acctype === "buyer") {
             navigate("/bprofile");
         } else {
             navigate("/sprofile");
         }
+        setShowDropdown(false); // Close dropdown after navigating
     };
 
     const handleProfileClick = () => {
@@ -55,11 +56,17 @@ const Nav = () => {
     return (
         <nav className="navbar">
             <div className="logo">
-                <img src="path_to_your_logo.png" alt="Logo" />
+                <span className="logo-text">Electro-Galaxy</span>
             </div>
 
             <div className="search-bar">
-                <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search..." />
+                <input 
+                    type="text" 
+                    value={searchQuery} 
+                    onChange={handleSearchChange} 
+                    placeholder="Search..." 
+                    className="search-input"
+                />
             </div>
 
             <div className="right-section">
@@ -70,15 +77,15 @@ const Nav = () => {
                         <span className="username">{user.username}</span>
                         <div className="profile-wrapper" onClick={handleProfileClick}>
                             <img
-                                src={profileImage} // Use the renamed variable here
-                                alt="Profile"
+                                src={profileImage} 
                                 className="profile-img"
+                                alt="Profile"
                             />
                         </div>
                         {showDropdown && (
                             <div className="dropdown">
                                 <ul>
-                                    <li onClick={handleProfileNavigation}>Profile</li> {/* Updated function call */}
+                                    <li onClick={handleProfileNavigation}>Profile</li> 
                                     <li onClick={handleLogout}>Logout</li>
                                 </ul>
                             </div>

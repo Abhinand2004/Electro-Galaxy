@@ -13,7 +13,7 @@ const BuyerProfile = () => {
         city: '',
         state: '',
         landmark: '',
-        place: 'home',  // Default value
+        place: 'home',
     });
     const [addresses, setAddresses] = useState([]);
 
@@ -88,11 +88,10 @@ const BuyerProfile = () => {
     }, []);
 
     return (
-        <div className="profile-container">
-            <div className="left-side">
+        <div className="buyer-profile-container">
+            <div className="buyer-profile-left">
                 <h2>Buyer Profile</h2>
-                {/* Directly writing the fields without using map */}
-                <div className="profile-item">
+                <div className="buyer-profile-item">
                     <label>Username:</label>
                     {isEditing ? (
                         <input
@@ -105,7 +104,7 @@ const BuyerProfile = () => {
                         <span>{formData.username}</span>
                     )}
                 </div>
-                <div className="profile-item">
+                <div className="buyer-profile-item">
                     <label>Email:</label>
                     {isEditing ? (
                         <input
@@ -118,7 +117,7 @@ const BuyerProfile = () => {
                         <span>{formData.email}</span>
                     )}
                 </div>
-                <div className="profile-item">
+                <div className="buyer-profile-item">
                     <label>Phone:</label>
                     {isEditing ? (
                         <input
@@ -131,24 +130,24 @@ const BuyerProfile = () => {
                         <span>{formData.phone}</span>
                     )}
                 </div>
-                <button onClick={toggleEdit} className="edit-btn">
+                <button onClick={toggleEdit} className="buyer-edit-btn">
                     {isEditing ? 'Cancel Edit' : 'Edit Profile'}
                 </button>
-                {isEditing && <button onClick={saveProfile} className="save-btn">Save Changes</button>}
+                {isEditing && <button onClick={saveProfile} className="buyer-save-btn">Save Changes</button>}
             </div>
-            <div className="right-side">
-                <div className="profile-actions">
-                    <button onClick={() => console.log('Go to Wishlist')} className="profile-btn">Wishlist</button>
-                    <button onClick={() => console.log('Go to My Orders')} className="profile-btn">My Orders</button>
-                    <button onClick={() => console.log('Go to Cart')} className="profile-btn">Cart</button>
-                    <button onClick={toggleAddLocation} className="add-location-btn">+</button>
+            <div className="buyer-profile-right">
+                <div className="buyer-profile-actions">
+                    <button onClick={() => console.log('Go to Wishlist')} className="buyer-profile-btn">Wishlist</button>
+                    <button onClick={() => console.log('Go to My Orders')} className="buyer-profile-btn">My Orders</button>
+                    <button onClick={() => console.log('Go to Cart')} className="buyer-profile-btn">Cart</button>
+                    <button onClick={toggleAddLocation} className="buyer-add-location-btn">+</button>
                 </div>
                 <hr />
                 {showAddLocation && (
-                    <div className="add-location-form">
-                        <div className="form-row">
+                    <div className="buyer-add-location-form">
+                        <div className="buyer-form-row">
                             {['pincode', 'locality', 'address', 'city', 'state', 'landmark'].map(field => (
-                                <div className="profile-item" key={field}>
+                                <div className="buyer-profile-item" key={field}>
                                     <label>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
                                     <input
                                         type="text"
@@ -160,8 +159,7 @@ const BuyerProfile = () => {
                                 </div>
                             ))}
                         </div>
-                        <div className="form-row">
-                            {/* Static radio buttons for 'home' and 'work' */}
+                        <div className="buyer-form-row">
                             <label>
                                 <input
                                     type="radio"
@@ -183,16 +181,16 @@ const BuyerProfile = () => {
                                 Work
                             </label>
                         </div>
-                        <button onClick={saveLocation} className="save-location-btn">Save</button>
+                        <button onClick={saveLocation} className="buyer-save-location-btn">Save</button>
                     </div>
                 )}
-                <div className="address-list">
+                <div className="buyer-address-list">
                     {addresses.map(address => (
-                        <div key={address._id} className="address-item">
+                        <div key={address._id} className="buyer-address-item">
                             <label htmlFor="">Address</label>
                             <p>{`${address.address}, ${address.locality}, ${address.city}, ${address.state} - ${address.pincode}. Landmark: ${address.landmark}. Place: ${address.place}`}</p>
-                            <button className='edit-button'>Edit</button>
-                            <button onClick={() => deleteAddress(address._id)}>Delete</button>
+                            <button className='buyer-edit-button'>Edit</button>
+                            <button onClick={() => deleteAddress(address._id)} className="buyer-delete-button">Delete</button>
                         </div>
                     ))}
                 </div>

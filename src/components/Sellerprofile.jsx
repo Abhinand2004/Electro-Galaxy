@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './SellerProfile.scss';
+import { Link } from 'react-router-dom';
 
 const SellerProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -29,8 +30,6 @@ const SellerProfile = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       setCategories(res.data.categories);
-      // console.log(res.data.categories);
-      
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -42,10 +41,7 @@ const SellerProfile = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       setCompanyDetails(res.data.company);
-      // console.log(res.data);
-      
     } catch (error) {
-
       console.error("Error fetching company details:", error);
     }
   };
@@ -54,33 +50,46 @@ const SellerProfile = () => {
     fetchCategories();
     fetchCompanyDetails();
   }, []);
-console.log(categories);
 
   return (
-    <div className="seller-profile">
-      <div className="left-side">
-        <h2>Company Details</h2>
+    <div className="seller-profile-container">
+      <div className="seller-profile-left-side">
+        <h2 className="company-details-title">Company Details</h2>
         {!companyDetails.companyname && !isEditing ? (
-          <button onClick={() => setIsEditing(true)}>Add Company</button>
+          <button className="add-company-btn" onClick={() => setIsEditing(true)}>Add Company</button>
         ) : isEditing ? (
-          <div>
-            <input type="text" name="companyname" value={companyDetails.companyname} onChange={handleInputChange} />
-            <input type="text" name="location" value={companyDetails.location} onChange={handleInputChange} />
-            <button onClick={handleSaveClick}>Save</button>
-            <button onClick={() => setIsEditing(false)}>Cancel</button>
+          <div className="company-details-edit">
+            <input 
+              type="text" 
+              name="companyname" 
+              value={companyDetails.companyname} 
+              onChange={handleInputChange} 
+              className="companyname-input"
+            />
+            <input 
+              type="text" 
+              name="location" 
+              value={companyDetails.location} 
+              onChange={handleInputChange} 
+              className="location-input"
+            />
+            <button className="save-company-btn" onClick={handleSaveClick}>Save</button>
+            <button className="cancel-company-btn" onClick={() => setIsEditing(false)}>Cancel</button>
           </div>
         ) : (
-          <div>
-            <p>Company Name: {companyDetails.companyname}</p>
-            <p>Location: {companyDetails.location}</p>
-            <button onClick={() => setIsEditing(true)}>Edit</button>
+          <div className="company-details-view">
+            <p className="company-name">Company Name: {companyDetails.companyname}</p>
+            <p className="company-location">Location: {companyDetails.location}</p>
+            <button className="edit-company-btn" onClick={() => setIsEditing(true)}>Edit</button>
           </div>
         )}
       </div>
 
-      <div className="right-side">
-        <button className="add-product-btn">Add Product</button>
-        <div className="categories">
+      <div className="seller-profile-right-side">
+        <Link to={"/addproduct"}>
+          <button className="add-product-btn">Add Product</button>
+        </Link>
+        <div className="category-list">
           {categories.map((category, index) => (
             <div key={index} className="category-box">
               {category}

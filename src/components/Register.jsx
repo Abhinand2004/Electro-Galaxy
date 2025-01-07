@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Register.scss'; 
+import { Link, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 const Register = () => {
+const Navigate=useNavigate()
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -26,6 +29,7 @@ const Register = () => {
     
             if (res.status === 200) {
                 alert('Registration successful');
+                Navigate("/login")
             } else {
                 alert('Registration failed');
             }
@@ -69,7 +73,9 @@ const Register = () => {
                 </div>
                 <div className="form-actions">
                     <button type="submit" className="register-btn">Register</button>
+                    <Link to={"/login"}>
                     <button type="button" className="login-btn">Login</button>
+                    </Link>
                 </div>
             </form>
         </div>

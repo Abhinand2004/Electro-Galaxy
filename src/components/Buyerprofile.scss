@@ -1,221 +1,168 @@
-.profile-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+.buyer-profile-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  .buyer-profile-left,
+  .buyer-profile-right {
+    width: 100%;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  
-    .left-side,
-    .right-side {
-      width: 100%; 
-      padding: 20px;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      margin-bottom: 20px;
-  
-      @media (min-width: 768px) {
-        width: 45%; 
-        margin-bottom: 0; 
-      }
+    margin-bottom: 20px;
+
+    @media (min-width: 768px) {
+      width: 45%;
+      margin-bottom: 0;
     }
-  
-    h2 {
-      margin-bottom: 20px;
+  }
+
+  .buyer-profile-item {
+    margin-bottom: 15px;
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
     }
-  
-    .profile-info {
-      .profile-item {
-        margin-bottom: 15px;
-  
-        label {
-          display: block;
-          font-weight: bold;
-          margin-bottom: 5px;
-        }
-  
-        input {
-          width: 48%; 
-          padding: 8px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          display: inline-block;
-          margin-right: 4%;
-  
-          &:nth-child(2n) {
-            margin-right: 0;
-          }
-        }
-  
-        span {
-          display: block;
-          padding: 8px;
-          background-color: #f1f1f1;
-          border-radius: 4px;
-        }
-      }
-    }
-  
-    .edit-btn,
-    .save-btn,
-    .address-item button {
-      padding: 8px 12px;
-      background-color: #007bff;
-      color: white;
-      border: none;
+
+    input {
+      width: 48%;
+      padding: 8px;
+      border: 1px solid #ccc;
       border-radius: 4px;
-      font-size: 12px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-  
-      &:hover {
-        background-color: #0056b3;
+      display: inline-block;
+      margin-right: 4%;
+
+      &:nth-child(2n) {
+        margin-right: 0;
       }
     }
-  
-    .edit-btn,
-    .save-btn {
-      margin-right: 10px;
+
+    span {
+      display: block;
+      padding: 8px;
+      background-color: #f1f1f1;
+      border-radius: 4px;
     }
-  
-    .profile-actions {
+  }
+
+  .buyer-edit-btn,
+  .buyer-save-btn,
+  .buyer-profile-btn,
+  .buyer-add-location-btn,
+  .buyer-save-location-btn,
+  .buyer-edit-button,
+  .buyer-delete-button {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  .buyer-add-location-btn {
+    margin-left: 10px;
+    width: 40px;
+    height: 40px;
+    background-color: #28a745;
+    border-radius: 50%;
+    font-size: 24px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #218838;
+    }
+  }
+
+  .buyer-add-location-form {
+    margin-top: 20px;
+
+    .buyer-form-row {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
+
+      input {
+        width: 48%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        display: inline-block;
+        margin-right: 4%;
+
+        &:nth-child(2n) {
+          margin-right: 0;
+        }
+      }
+    }
+
+    label {
+      margin-right: 20px;
+      display: flex;
       align-items: center;
-  
-      .profile-btn {
-        padding: 8px 12px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        font-size: 12px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-  
-        &:hover {
-          background-color: #0056b3;
-        }
-      }
-  
-      
-      .add-location-btn {
-        margin-left: 10px; 
-        width: 40px;
-        height: 40px;
-        background-color: #28a745;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        font-size: 24px;
-        line-height: 40px;
-        text-align: center;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-  
-        &:hover {
-          background-color: #218838;
-        }
+
+      input[type="radio"] {
+        margin-right: 5px;
       }
     }
-  
-    .add-location-form {
-      margin-top: 20px;
-  
-      .form-row {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin-bottom: 15px;
-  
-        input {
-          width: 48%;
-          padding: 8px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          display: inline-block;
-          margin-right: 4%;
-  
-          &:nth-child(2n) {
-            margin-right: 0;
-          }
-        }
-      }
-  
+  }
+
+  .buyer-address-list {
+    margin-top: 20px;
+
+    .buyer-address-item {
+      margin-bottom: 15px;
+
       label {
-        margin-right: 20px;
-        display: flex;
-        align-items: center;
-  
-        input[type="radio"] {
-          margin-right: 5px;
-        }
-      }
-  
-      .save-location-btn {
+        font-weight: bold;
         display: block;
-        width: 100%;
-        padding: 10px 0;
-        background-color: #28a745;
-        color: white;
-        border: none;
+      }
+
+      p {
+        background-color: #f1f1f1;
+        padding: 8px;
         border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-  
-        &:hover {
-          background-color: #218838;
-        }
+        margin: 0;
       }
-    }
-  
-    .address-list {
-        margin-top: 20px;
-      
-        .address-item {
-          margin-bottom: 15px;
-      
-          label {
-            font-weight: bold;
-            display: block;
+
+      .buyer-address-item-buttons {
+        display: flex;
+        margin-top: 10px;
+
+        button {
+          padding: 8px 12px;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          font-size: 12px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+
+          &:hover {
+            background-color: #0056b3;
           }
-      
-          .address-text {
-            line-height: 1.5;
-            background-color: #f1f1f1;
-            padding: 8px;
-            border-radius: 4px;
-      
-            p {
-              margin: 0;
-            }
-      
-            button {
-              margin-top: 10px;
-              padding: 8px 12px;
-              background-color: #007bff;
-              color: white;
-              border: none;
-              border-radius: 4px;
-              font-size: 12px;
-              cursor: pointer;
-              transition: background-color 0.3s ease;
-      
-              &:hover {
-                background-color: #0056b3;
-              }
-      
-              &:not(:last-child) {
-                margin-right: 10px; /* Add gap between the buttons */
-              }
-            }
+
+          &:not(:last-child) {
+            margin-right: 10px;
           }
         }
       }
-      
     }
-  
-  
+  }
+}

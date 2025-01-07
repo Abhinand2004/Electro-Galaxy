@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Login.scss';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 const Login = () => {
+    const Navigate=useNavigate()
     const [formData, setFormData] = useState({
         email: '',
         pass: ''
@@ -26,6 +28,7 @@ const Login = () => {
                 alert("Login successful");
                 console.log(res.data.token);
                 localStorage.setItem("token",res.data.token);
+                Navigate("/")
             }
             else{
                 alert("Login failed");
@@ -36,11 +39,7 @@ const Login = () => {
         
     };
 
-    const handleRegisterRedirect = () => {
-    };
-
-    const handleForgotPassRedirect = () => {
-    };
+   
 
     return (
         <div className="login-container">
@@ -58,8 +57,8 @@ const Login = () => {
                     <button type="submit" className="login-btn">Login</button>
                 </div>
                 <div className="links">
-                    <p>Don't have an account? <span onClick={handleRegisterRedirect}>Register</span></p>
-                    <p>Forgot your password? <span onClick={handleForgotPassRedirect}>Click here</span></p>
+                    <p>Don't have an account? <Link to={"/register"}><span>Register</span></Link></p>
+                    <p>Forgot your password?<Link to={"/changepass"}> <span >Click here</span></Link></p>
                 </div>
             </form>
         </div>

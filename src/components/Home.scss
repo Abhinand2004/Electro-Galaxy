@@ -1,76 +1,77 @@
-/* HomePage.scss */
 .home-page {
     width: 100%;
     padding: 30px;
     background-color: #f9f9f9;
     text-align: center;
-}
 
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 40px;
-    color: #333;
-}
+    &__title {
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+        color: #333;
+    }
 
-.product-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    justify-items: center;
-}
+    &__product-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        justify-items: center;
+    }
 
-.product-card {
-    width: 100%;
-    max-width: 300px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    transition: transform 0.2s ease-in-out;
-}
+    &__product-card {
+        width: 100%;
+        max-width: 300px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        transition: transform 0.2s ease-in-out;
 
-.product-card:hover {
-    transform: translateY(-5px);
-}
+        &:hover {
+            transform: translateY(-5px);
+        }
+    }
 
-.product-thumbnail {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
+    &__product-thumbnail {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
 
-.product-info {
-    padding: 15px;
-    text-align: left;
-}
+    &__product-info {
+        padding: 15px;
+        text-align: left;
+    }
 
-.product-name {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #333;
-}
+    &__product-name {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333;
+    }
 
-.product-category {
-    font-size: 1rem;
-    color: #777;
-    margin-bottom: 10px;
-}
+    &__product-category {
+        font-size: 1rem;
+        color: #777;
+        margin-bottom: 10px;
+    }
 
-.product-price {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #007bff;
+    &__product-price {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #007bff;
+    }
 }
 
 /* Responsive Styling */
 @media (max-width: 768px) {
-    h1 {
-        font-size: 2rem;
-    }
+    .home-page {
+        &__title {
+            font-size: 2rem;
+        }
 
-    .product-cards {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        &__product-cards {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
     }
 }

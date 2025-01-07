@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Addproducts.scss';
+import { useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
+    const navigate = useNavigate();
     const [productData, setProductData] = useState({
         productName: '',
-        category: '',
+        category: 'Electronics', 
         price: '',
         thumbnail: null,
         description: '',
         images: [],
-        categories: ['Electronics', 'Fashion', 'Home Appliances'],
+        categories: ['Electronics', 'mobile','Tv','AC','Fan','wahing-meshine','fridge'],
     });
 
     const handleInputChange = (e) => {
@@ -41,25 +43,25 @@ const AddProduct = () => {
     };
 
     const handleAddProduct = async () => {
+        const { productName, category, price, thumbnail, description, images } = productData;
+
+        // Validate fields
+        if (!productName || !category || !price || !thumbnail || !description || images.length === 0) {
+            alert('All fields are required. Please fill in all fields.');
+            return;
+        }
+
         try {
             const res = await axios.post("http://localhost:3000/api/addproduct", productData, {
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                    'Content-Type': 'application/json'
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
                 }
             });
             console.log('Product added successfully:', res.data);
+            navigate("/sprofile");
         } catch (error) {
             console.error('Error adding product:', error);
         }
-    };
-
-    const renderImagePreviews = () => {
-        return productData.images.map((image, index) => (
-            <div key={index} className="image-preview">
-                <img src={image} alt={`Product Image ${index + 1}`} />
-            </div>
-        ));
     };
 
     const fileToBase64 = (file) => {
@@ -75,12 +77,18 @@ const AddProduct = () => {
         <div className="add-product-container">
             <h2>Add Product</h2>
             <div className="product-form">
-                {/* Image Preview Section */}
                 <div className="image-previews">
-                    {productData.images.length > 0 ? renderImagePreviews() : <p>No images selected</p>}
+                    {productData.images.length > 0 ? (
+                        productData.images.map((image, index) => (
+                            <div key={index} className="image-preview">
+                                <img src={image} alt={`Product Image ${index + 1}`} />
+                            </div>
+                        ))
+                    ) : (
+                        <p>No images selected</p>
+                    )}
                 </div>
 
-                {/* Product Name */}
                 <div className="form-group">
                     <label>Product Name</label>
                     <input
@@ -92,10 +100,13 @@ const AddProduct = () => {
                     />
                 </div>
 
-                {/* Category Dropdown */}
                 <div className="form-group">
                     <label>Category</label>
-                    <select name="category" value={productData.category} onChange={handleCategoryChange}>
+                    <select
+                        name="category"
+                        value={productData.category}
+                        onChange={handleCategoryChange}
+                    >
                         {productData.categories.map((cat, index) => (
                             <option key={index} value={cat}>
                                 {cat}
@@ -104,7 +115,6 @@ const AddProduct = () => {
                     </select>
                 </div>
 
-                {/* Price */}
                 <div className="form-group">
                     <label>Price</label>
                     <input
@@ -116,7 +126,6 @@ const AddProduct = () => {
                     />
                 </div>
 
-                {/* Thumbnail */}
                 <div className="form-group">
                     <label>Thumbnail</label>
                     <input
@@ -128,7 +137,6 @@ const AddProduct = () => {
                     />
                 </div>
 
-                {/* Product Images */}
                 <div className="form-group">
                     <label>Product Images (Max 5)</label>
                     <input
@@ -137,12 +145,12 @@ const AddProduct = () => {
                         accept="image/*"
                         multiple
                         onChange={handleImageChange}
+                        required
                     />
                 </div>
 
-                {/* Contact Details */}
                 <div className="form-group">
-                    <label>Contact Details</label>
+                    <label>Description</label>
                     <textarea
                         name="description"
                         value={productData.description}
@@ -151,7 +159,6 @@ const AddProduct = () => {
                     ></textarea>
                 </div>
 
-                {/* Submit Button */}
                 <div className="form-actions">
                     <button type="button" onClick={handleAddProduct} className="add-product-btn">
                         Add Product

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Verifyemail.scss';
+import { Link } from 'react-router-dom';
 
 const VerifyEmail = () => {
     const [email, setEmail] = useState('');
@@ -32,9 +33,6 @@ const VerifyEmail = () => {
         
     };
 
-    const handleLoginRedirect = () => {
-
-    };
 
     return (
         <div className="verify-email-container">
@@ -49,7 +47,7 @@ const VerifyEmail = () => {
                     <button type="submit" className="verify-btn">Verify Email</button>
                 </div>
                 <div className="login-link">
-                    <p>Already have an account? <span onClick={handleLoginRedirect}>Login</span></p>
+                    <p>Already have an account? <Link to={"/login"}><span>Login</span></Link></p>
                 </div>
             </form>
         </div>

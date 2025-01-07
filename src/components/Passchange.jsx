@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Passchange.scss';
+import { Navigate } from 'react-router-dom';
 
 const ChangePassword = () => {
-
+const Navigate=useNavigate()
     const [formData, setFormData] = useState({
         pwd: "",
         cpwd: "",
@@ -36,6 +37,7 @@ formData.email=localStorage.getItem("email");
             if (res.status === 200) {
                 setSuccess('Password changed successfully');
                 localStorage.removeItem("email");
+                Navigate("/login")
             } else {
                 setError('Password change failed');
             }

@@ -7,8 +7,8 @@ const HomePage = () => {
 
     const fetchData = async () => {
         try {
-            const res = await axios.get('http://localhost:3000/api/home',{
-                headers:{Authorization:`Berear ${localStorage.getItem('token')}`},
+            const res = await axios.get('http://localhost:3000/api/home', {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
             });
             if (res.status === 200) {
                 setProducts(res.data); 
@@ -22,25 +22,26 @@ const HomePage = () => {
         fetchData();
     }, []);
 
-    // console.log(products); 
-
     return (
         <div className="home-page">
-            <h1>Featured Products</h1>
-            <div className="product-cards">
+            <h1 className="home-page__title">Featured Products</h1>
+            <div className="home-page__product-cards">
                 {products.map((product) => (
-                    <div key={product._id} className="product-card">
-                        <img src={product.thumbnail} alt={product.productname} className="product-thumbnail" />
-                        <div className="product-info">
-                            <h3 className="product-name">{product.productname}</h3>
-                            <p className="product-category">{product.category}</p>
-                            <p className="product-price">${product.price}</p>
+                    <div key={product._id} className="home-page__product-card">
+                        <img
+                            src={product.thumbnail}
+                            alt={product.productname}
+                            className="home-page__product-thumbnail"
+                        />
+                        <div className="home-page__product-info">
+                            <h3 className="home-page__product-name">{product.productname}</h3>
+                            <p className="home-page__product-category">{product.category}</p>
+                            <p className="home-page__product-price">${product.price}</p>
                         </div>
                     </div>
                 ))}
             </div>
         </div>
-        
     );
 };
 
