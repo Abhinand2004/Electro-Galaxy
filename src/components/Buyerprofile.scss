@@ -66,7 +66,7 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-right: 10px; // Adds space between buttons
+    margin-right: 10px;
 
     &:hover {
       background-color: #0056b3;
@@ -75,17 +75,38 @@
 
   .buyer-add-location-btn {
     margin-left: 10px;
-    width: 40px;
-    height: 40px;
-    background-color: #28a745;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
     border-radius: 50%;
-    font-size: 24px;
-    line-height: 40px;
-    text-align: center;
+    font-size: 36px;
+    color: #007bff;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-    &:hover {
-      background-color: #218838;
+  .buyer-actions {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+
+    .buyer-cart-btn,
+    .buyer-wishlist-btn,
+    .buyer-orders-btn {
+      padding: 0px 20px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      cursor: pointer;
+      color:white;
+      background-color:#007bff;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #e0e0e0;
+      }
     }
   }
 
@@ -129,47 +150,31 @@
     .buyer-address-item {
       margin-bottom: 15px;
 
-      label {
-        font-weight: bold;
-        display: block;
-      }
-
-      p {
+      .buyer-address-item-box {
+        padding: 20px;
         background-color: #f1f1f1;
-        padding: 8px;
-        border-radius: 4px;
-        margin: 0;
-      }
+        border-radius: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
 
-      .buyer-address-item-buttons {
-        display: flex;
-        margin-top: 10px;
+        label {
+          font-weight: bold;
+          display: block;
+        }
 
-        .buyer-edit-button,
-        .buyer-delete-button {
-          padding: 8px 12px;
-          background-color: #007bff;
-          color: white;
-          border: none;
+        p {
+          background-color: #fff;
+          padding: 10px;
           border-radius: 4px;
-          font-size: 12px;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-          margin-right: 10px; 
+          margin: 10px 0;
+          border: 1px solid #ddd;
+        }
 
-          &:hover {
-            background-color: #0056b3;
-          }
-
-          &:last-child {
-            margin-right: 0; 
-          }
+        .buyer-address-item-buttons {
+          display: flex;
+          gap: 10px;
         }
       }
     }
-  }
-
-  .buyer-profile-actions button {
-    margin-right: 10px; 
   }
 }

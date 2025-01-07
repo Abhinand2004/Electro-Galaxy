@@ -262,14 +262,14 @@ export async function editbuyer(req, res) {
     try {
         const update = await userSchema.updateOne(  { _id: req.user.UserID }, { $set: data } );
 
-        if (update.nModified > 0) {
-            res.status(200).json({ message: 'Buyer information updated successfully.' });
+        if (update) {
+            res.status(200).send({ msg: 'Buyer information updated successfully.' });
         } else {
-            res.status(400).json({ message: 'No changes were made.' });
+            res.status(200).send({ msg: 'No changes were made.' });
         }
     } catch (error) {
         console.error("Error updating buyer information:");
-        res.status(500).json({ message: 'Internal server error. Please try again later.' });
+        res.status(500).send({ msg: 'Internal server error. Please try again later.' });
     }
 }
 
@@ -309,13 +309,31 @@ export async function deleteAddress(req, res) {
     const { id } = req.params;
     try {
         const deletedData = await addressSchema.deleteOne({ _id: id });
-        if (deletedData.deletedCount === 0) {
-            return res.status(404).send({ msg: "Address not found" });
+        if (deletedData) {
+         return   res.status(200).send({ msg: "Address deleted successfully" });
+        }else{
+            return res.status(200).send({msg:"no data for delete"})
         }
-        res.status(200).send({ msg: "Address deleted successfully" });
     } catch (error) {
         console.error(error);
         res.status(500).send({ msg: "Server error" });
+    }
+}
+
+export async function editaddress(req, res) {
+    const { id } = req.params;
+    const data = req.body;
+    try {
+        const edit = await addressSchema.updateOne({ _id: id }, { $set: data });
+
+        if (edit) {
+            return res.status(200).send({ msg: "Address updated successfully" });
+        } else {
+            return res.status(404).send({ msg: "Address not found " });
+        }
+    } catch (error) {
+        console.error("Error editing address:", error);
+        return res.status(500).send({ msg: "Server error" });
     }
 }
 

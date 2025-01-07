@@ -5,7 +5,6 @@ import './BuyerProfile.scss';
 const BuyerProfile = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({ username: '', email: '', phone: '' });
-    const [showAddLocation, setShowAddLocation] = useState(false);
     const [newLocation, setNewLocation] = useState({
         pincode: '',
         locality: '',
@@ -16,11 +15,12 @@ const BuyerProfile = () => {
         place: 'home',
     });
     const [addresses, setAddresses] = useState([]);
+    const [editLocation, setEditLocation] = useState(null); // Track address being edited
+    const [showLocationForm, setShowLocationForm] = useState(false); // Toggle form visibility
 
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
     const handleLocationChange = (e) => setNewLocation({ ...newLocation, [e.target.name]: e.target.value });
     const toggleEdit = () => setIsEditing(!isEditing);
-    const toggleAddLocation = () => setShowAddLocation(!showAddLocation);
 
     const fetchData = async () => {
         try {
@@ -62,24 +62,44 @@ const BuyerProfile = () => {
 
     const saveLocation = async () => {
         try {
-            await axios.post("http://localhost:3000/api/address", newLocation, {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-            });
+            if (editLocation) {
+                // Update existing address
+                await axios.put(`http://localhost:3000/api/editaddress/${editLocation._id}`, newLocation, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                });
+                setEditLocation(null); // Reset after update
+            } else {
+                // Add new address
+                await axios.post("http://localhost:3000/api/address", newLocation, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                });
+            }
             setNewLocation({ pincode: '', locality: '', address: '', city: '', state: '', landmark: '', place: 'home' });
-            setShowAddLocation(false);
+            setShowLocationForm(false); // Hide form after save
             fetchAddresses();
         } catch (error) {
-            console.error("Error adding location:", error);
+            console.error("Error saving location:", error);
         }
     };
 
     const deleteAddress = async (addressId) => {
         try {
             await axios.delete(`http://localhost:3000/api/deleteaddress/${addressId}`);
-            fetchAddresses();
+            setAddresses((prevAddresses) => prevAddresses.filter(address => address._id !== addressId));
         } catch (error) {
             console.error("Error deleting address:", error);
         }
+    };
+
+    const handleEditAddress = (address) => {
+        setEditLocation(address); // Set the address data to be edited
+        setNewLocation({ ...address }); // Pre-fill the edit form with address data
+        setShowLocationForm(true); // Show form for editing
+    };
+
+    const handleAddLocation = () => {
+        setEditLocation(null); // Reset edit state to add new address
+        setShowLocationForm(true); // Show form for adding
     };
 
     useEffect(() => {
@@ -90,6 +110,7 @@ const BuyerProfile = () => {
     return (
         <div className="buyer-profile-container">
             <div className="buyer-profile-left">
+                {/* Profile Section */}
                 <h2>Buyer Profile</h2>
                 <div className="buyer-profile-item">
                     <label>Username:</label>
@@ -135,15 +156,17 @@ const BuyerProfile = () => {
                 </button>
                 {isEditing && <button onClick={saveProfile} className="buyer-save-btn">Save Changes</button>}
             </div>
+
             <div className="buyer-profile-right">
-                <div className="buyer-profile-actions">
-                    <button onClick={() => console.log('Go to Wishlist')} className="buyer-profile-btn">Wishlist</button>
-                    <button onClick={() => console.log('Go to My Orders')} className="buyer-profile-btn">My Orders</button>
-                    <button onClick={() => console.log('Go to Cart')} className="buyer-profile-btn">Cart</button>
-                    <button onClick={toggleAddLocation} className="buyer-add-location-btn">+</button>
+                {/* Add or Edit Address Section */}
+                <div className="buyer-actions">
+                    <button onClick={handleAddLocation} className="buyer-add-location-btn">+</button>
+                    <button className="buyer-cart-btn">Cart</button>
+                    <button className="buyer-wishlist-btn">Wishlist</button>
+                    <button className="buyer-orders-btn">My Orders</button>
                 </div>
                 <hr />
-                {showAddLocation && (
+                {showLocationForm && (
                     <div className="buyer-add-location-form">
                         <div className="buyer-form-row">
                             {['pincode', 'locality', 'address', 'city', 'state', 'landmark'].map(field => (
@@ -152,7 +175,6 @@ const BuyerProfile = () => {
                                     <input
                                         type="text"
                                         name={field}
-                                        placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
                                         value={newLocation[field]}
                                         onChange={handleLocationChange}
                                     />
@@ -181,16 +203,24 @@ const BuyerProfile = () => {
                                 Work
                             </label>
                         </div>
-                        <button onClick={saveLocation} className="buyer-save-location-btn">Save</button>
+                        <button onClick={saveLocation} className="buyer-save-location-btn">
+                            {editLocation ? 'Save Changes' : 'Save'}
+                        </button>
                     </div>
                 )}
+
+                {/* Address List Section */}
                 <div className="buyer-address-list">
                     {addresses.map(address => (
                         <div key={address._id} className="buyer-address-item">
-                            <label htmlFor="">Address</label>
-                            <p>{`${address.address}, ${address.locality}, ${address.city}, ${address.state} - ${address.pincode}. Landmark: ${address.landmark}. Place: ${address.place}`}</p>
-                            <button className='buyer-edit-button'>Edit</button>
-                            <button onClick={() => deleteAddress(address._id)} className="buyer-delete-button">Delete</button>
+                            <div className="buyer-address-item-box">
+                                <label>Address</label>
+                                <p>{`${address.address}, ${address.locality}, ${address.city}, ${address.state} - ${address.pincode}. Landmark: ${address.landmark}. Place: ${address.place}`}</p>
+                                <div className="buyer-address-item-buttons">
+                                    <button onClick={() => handleEditAddress(address)} className="buyer-edit-button">Edit</button>
+                                    <button onClick={() => deleteAddress(address._id)} className="buyer-delete-button">Delete</button>
+                                </div>
+                            </div>
                         </div>
                     ))}
                 </div>

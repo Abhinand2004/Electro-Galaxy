@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 const SellerProfile = () => {
   const [companyDetails, setCompanyDetails] = useState({ companyname: "", location: "" });
+  const [editedCompanyDetails, setEditedCompanyDetails] = useState({ companyname: "", location: "" }); // New state for edited data
   const [categories, setCategories] = useState([]);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -23,12 +24,12 @@ const SellerProfile = () => {
 
   const handleSaveEdit = async () => {
     try {
-      await axios.put("http://localhost:3000/api/editcompany", companyDetails, {
+      await axios.put("http://localhost:3000/api/editcompany", editedCompanyDetails, { // Use editedCompanyDetails here
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       console.log("Successfully saved");
+      setCompanyDetails(editedCompanyDetails); // Update companyDetails after save
       setIsEditing(false);
-      fetchCompanyDetails();
     } catch (error) {
       console.error("Error editing company:", error);
     }
@@ -36,7 +37,11 @@ const SellerProfile = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setCompanyDetails({ ...companyDetails, [name]: value });
+    if (isEditing) {
+      setEditedCompanyDetails({ ...editedCompanyDetails, [name]: value }); // Update edited data
+    } else {
+      setCompanyDetails({ ...companyDetails, [name]: value });
+    }
   };
 
   const fetchCategories = async () => {
@@ -56,6 +61,7 @@ const SellerProfile = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       setCompanyDetails(res.data.company || { companyname: "", location: "" });
+      setEditedCompanyDetails(res.data.company || { companyname: "", location: "" }); // Also initialize the edited data
     } catch (error) {
       console.error("Error fetching company details:", error);
     }
@@ -102,12 +108,17 @@ const SellerProfile = () => {
           </div>
         )}
 
+        {/* Show Edit Company button only if company details exist */}
+        {companyDetails.companyname && companyDetails.location && (
+          <button className="edit-company-btn" onClick={() => setIsEditing(!isEditing)}>Edit Company</button>
+        )}
+
         {isEditing && (
           <div className="edit-company-form">
             <input
               type="text"
               name="companyname"
-              value={companyDetails.companyname}
+              value={editedCompanyDetails.companyname} // Use editedCompanyDetails here
               onChange={handleInputChange}
               placeholder="Edit company name"
               className="companyname-input"
@@ -115,7 +126,7 @@ const SellerProfile = () => {
             <input
               type="text"
               name="location"
-              value={companyDetails.location}
+              value={editedCompanyDetails.location} // Use editedCompanyDetails here
               onChange={handleInputChange}
               placeholder="Edit location"
               className="location-input"
@@ -123,8 +134,6 @@ const SellerProfile = () => {
             <button className="save-edit-btn" onClick={handleSaveEdit}>Save</button>
           </div>
         )}
-
-        <button className="edit-company-btn" onClick={() => setIsEditing(!isEditing)}>Edit Company</button>
       </div>
 
       <div className="seller-profile-right-side">
@@ -133,11 +142,11 @@ const SellerProfile = () => {
         </Link>
         <div className="category-list">
           {categories.map((category, index) => (
-              <Link to={`/forsale/${category}`}>
-            <div key={index} className="category-box">
+            <Link to={`/forsale/${category}`} key={index}>
+              <div className="category-box">
                 {category}
-            </div>
-              </Link>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
