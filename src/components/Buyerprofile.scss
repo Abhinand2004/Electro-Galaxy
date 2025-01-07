@@ -66,6 +66,7 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-right: 10px; // Adds space between buttons
 
     &:hover {
       background-color: #0056b3;
@@ -144,7 +145,8 @@
         display: flex;
         margin-top: 10px;
 
-        button {
+        .buyer-edit-button,
+        .buyer-delete-button {
           padding: 8px 12px;
           background-color: #007bff;
           color: white;
@@ -153,16 +155,21 @@
           font-size: 12px;
           cursor: pointer;
           transition: background-color 0.3s ease;
+          margin-right: 10px; 
 
           &:hover {
             background-color: #0056b3;
           }
 
-          &:not(:last-child) {
-            margin-right: 10px;
+          &:last-child {
+            margin-right: 0; 
           }
         }
       }
     }
+  }
+
+  .buyer-profile-actions button {
+    margin-right: 10px; 
   }
 }

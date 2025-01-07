@@ -92,7 +92,10 @@ const SellerProfile = () => {
         <div className="category-list">
           {categories.map((category, index) => (
             <div key={index} className="category-box">
+              <Link to={`/forsale/${category}`}>
               {category}
+              
+              </Link>
             </div>
           ))}
         </div>

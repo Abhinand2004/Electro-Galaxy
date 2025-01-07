@@ -1,49 +1,73 @@
 import React, { useState, useEffect } from 'react';
 import './Editproduct.scss';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
-const EditProductPage = ({ productId }) => {
-    // Mock data - Replace with actual product data fetched from an API
-    const [product, setProduct] = useState({
-        id: productId,
-        name: 'Smartphone',
-        category: 'Electronics',
-        price: 299.99,
-        contactDetails: '123-456-7890',
-        images: ['https://via.placeholder.com/150', 'https://via.placeholder.com/150'],
-    });
-
+const EditProductPage = () => {
+    const { id } = useParams();
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
-        name: '',
+        productName: '',
         category: '',
         price: '',
-        contactDetails: '',
+        quantity: '',
+        description: '',
+        images: [],
     });
 
     useEffect(() => {
-        // Set form data to current product details
-        setFormData({
-            name: product.name,
-            category: product.category,
-            price: product.price,
-            contactDetails: product.contactDetails,
-        });
-    }, [product]);
+        fetchData();
+    }, [id]);
+
+    const fetchData = async () => {
+        try {
+            const res = await axios.get(`http://localhost:3000/api/findproduct/${id}`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+            });
+            if (res.status === 200) {
+                setFormData(res.data.product);
+            } else {
+                console.error("Failed to fetch product. Status:", res.status);
+            }
+        } catch (error) {
+            console.error("Error fetching product data:", error);
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSave = () => {
-        // Here, save the updated product data (e.g., make an API call to save)
-        setIsEditing(false);
-        console.log('Product updated:', formData);
+    const handleSave = async () => {
+        try {
+            const res = await axios.put(`http://localhost:3000/api/editproduct/${id}`, formData, {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+            });
+            if (res.status === 200) {
+                console.log('Product updated successfully:', res.data);
+                setIsEditing(false);
+            } else {
+                console.error("Failed to update product. Status:", res.status);
+            }
+        } catch (error) {
+            console.error("Error updating product:", error);
+        }
     };
 
-    const handleDelete = () => {
-        // Here, delete the product (e.g., make an API call to delete)
-        console.log('Product deleted');
+    const handleDelete = async () => {
+        try {
+            const res = await axios.delete(`http://localhost:3000/api/deleteproduct/${id}`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+            });
+            if (res.status === 200) {
+                console.log('Product deleted successfully');
+            } else {
+                console.error("Failed to delete product. Status:", res.status);
+            }
+        } catch (error) {
+            console.error("Error deleting product:", error);
+        }
     };
 
     return (
@@ -53,31 +77,21 @@ const EditProductPage = ({ productId }) => {
                 <div className="product-images">
                     <h3>Images</h3>
                     <div className="images-container">
-                        {product.images.map((image, index) => (
+                        {formData.images.map((image, index) => (
                             <img key={index} src={image} alt={`Product image ${index + 1}`} className="product-image" />
                         ))}
                     </div>
-                    {!isEditing && (
-                        <div className="buttons">
-                            <button onClick={() => setIsEditing(true)} className="edit-btn">
-                                Edit
-                            </button>
-                            <button onClick={handleDelete} className="delete-btn">
-                                Delete
-                            </button>
-                        </div>
-                    )}
                 </div>
 
                 <div className="product-info">
                     <h3>Product Info</h3>
                     {isEditing ? (
                         <div className="edit-fields">
-                            <label htmlFor="name">Product Name</label>
+                            <label htmlFor="productName">Product Name</label>
                             <input
                                 type="text"
-                                name="name"
-                                value={formData.name}
+                                name="productName"
+                                value={formData.productName}
                                 onChange={handleChange}
                                 required
                             />
@@ -97,11 +111,17 @@ const EditProductPage = ({ productId }) => {
                                 onChange={handleChange}
                                 required
                             />
-                            <label htmlFor="contactDetails">Contact Details</label>
+                            <label htmlFor="quantity">Quantity</label>
                             <input
-                                type="text"
-                                name="contactDetails"
-                                value={formData.contactDetails}
+                                type="number"
+                                name="quantity"
+                                value={formData.quantity}
+                                onChange={handleChange}
+                            />
+                            <label htmlFor="description">Description</label>
+                            <textarea
+                                name="description"
+                                value={formData.description}
                                 onChange={handleChange}
                                 required
                             />
@@ -111,10 +131,17 @@ const EditProductPage = ({ productId }) => {
                         </div>
                     ) : (
                         <div className="product-info-display">
-                            <p><strong>Name:</strong> {product.name}</p>
-                            <p><strong>Category:</strong> {product.category}</p>
-                            <p><strong>Price:</strong> ${product.price}</p>
-                            <p><strong>Contact:</strong> {product.contactDetails}</p>
+                            <p><strong>Name:</strong> {formData.productName}</p>
+                            <p><strong>Category:</strong> {formData.category}</p>
+                            <p><strong>Price:</strong> ${formData.price}</p>
+                            <p><strong>Quantity:</strong> {formData.quantity}</p>
+                            <p><strong>Description:</strong> {formData.description}</p>
+                            <button onClick={() => setIsEditing(true)} className="edit-btn">
+                                Edit
+                            </button>
+                            <button onClick={handleDelete} className="delete-btn">
+                                Delete
+                            </button>
                         </div>
                     )}
                 </div>

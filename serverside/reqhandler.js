@@ -301,3 +301,76 @@ export async function deleteAddress(req, res) {
 }
 
 
+export async function forsale(req, res) {
+    const { id } = req.params;
+    // console.log(id);
+    
+    try {
+        const products = await productSchema.find({ user_id: req.user.UserID, category: id  });
+        res.status(200).send(products);
+    } catch (error) {
+        console.error("Error fetching products:", error);
+        res.status(500).send({ error: "An error occurred while fetching products." });
+    }
+}
+
+
+export async function editproduct(req, res) {
+    const data = req.body;
+    const { id } = req.params;
+
+    try {
+        const update = await productSchema.updateOne({ user_id: req.user.UserID, _id: id },{ $set: data } );
+
+        if (update) {
+            res.status(200).send({ msg: "Product updated successfully" });
+        } else {
+            res.status(404).send({ msg: "Product not found or no changes made" });
+        }
+    } catch (error) {
+        console.error("Error updating product:");
+        res.status(500).send({ msg: "Internal server error" });
+    }
+}
+
+export async function findsingleproduct(req, res) {
+    const { id } = req.params;
+
+    try {
+        
+        const productData = await productSchema.findOne({ user_id: req.user.UserID, _id: id });
+
+        if (productData) {
+            
+            res.status(200).send({ msg: "Product fetched successfully", product: productData });
+        } else {
+            
+            res.status(404).send({ msg: "No product found" });
+        }
+    } catch (error) {
+        
+        console.error("Error fetching product:", error);
+        res.status(500).send({ msg: "Internal server error" });
+    }
+}
+
+
+export async function deleteproduct(req, res) {
+    const { id } = req.params;
+
+    try {
+        
+        const productData = await productSchema.deleteOne({ user_id: req.user.UserID, _id: id });
+
+        if (productData) {
+            
+            res.status(200).send({ msg: "Product deleted successfully", product: productData });
+        } else {
+            
+            res.status(404).send({ msg: "error deleting data" });
+        }
+    } catch (error) {
+        
+        res.status(500).send({ msg: "Internal server error" });
+    }
+}

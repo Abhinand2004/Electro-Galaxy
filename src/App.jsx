@@ -20,7 +20,6 @@ function App() {
     <Nav></Nav>
     <Routes>
     <Route path="/" element={<HomePage/>} />
-      {/* <Route path="/nav" element={<Nav />} /> */}
       <Route path="/login" element={<Login />} />
       <Route path="/verify" element={<VerifyEmail />} />
       <Route path="/changepass" element={<ChangePassword />} />
@@ -28,8 +27,8 @@ function App() {
       <Route path="/bprofile" element={<BuyerProfile />} />
       <Route path="/sprofile" element={<SellerProfile/>} />
       <Route path="/addproduct" element={<AddProduct/>} />
-      <Route path="/forsale" element={<ForSalePage/>} />
-      <Route path="/editproduct" element={<EditProductPage/>} />
+      <Route path="/forsale/:id" element={<ForSalePage/>} />
+      <Route path="/editproduct/:id" element={<EditProductPage/>} />
 
 
 

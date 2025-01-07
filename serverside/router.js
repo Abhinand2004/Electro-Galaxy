@@ -18,7 +18,10 @@ router.route("/editbuyer").put(Auth,rh.editbuyer)
 router.route("/address").post(Auth,rh.addAddress)
 router.route("/displayaddress").get(Auth,rh.displayaddress)
 router.route("/deleteaddress/:id").delete(rh.deleteAddress)
-
+router.route("/category/:id").get(Auth,rh.forsale)
+router.route("/editproduct/:id").put(Auth,rh.editproduct)
+router.route("/findproduct/:id").get(Auth,rh.findsingleproduct)
+router.route("/deletproduct/:id").delete(Auth,rh.deleteproduct)
 
 
 export default router; 
