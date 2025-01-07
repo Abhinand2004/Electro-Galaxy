@@ -5,16 +5,16 @@ import './SellerProfile.scss';
 const SellerProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [companyDetails, setCompanyDetails] = useState({ companyname: "", location: "" });
+  const [categories, setCategories] = useState([]);
 
   const handleSaveClick = async () => {
-//    if (companyDetails.company.companyname) return
     try {
       await axios.post("http://localhost:3000/api/companyadd", companyDetails, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       setIsEditing(false);
     } catch (error) {
-      console.error("Error adding company:");
+      console.error("Error adding company:", error);
     }
   };
 
@@ -23,42 +23,71 @@ const SellerProfile = () => {
     setCompanyDetails({ ...companyDetails, [name]: value });
   };
 
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/api/categories", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
+      setCategories(res.data.categories);
+      // console.log(res.data.categories);
+      
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  const fetchCompanyDetails = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/api/companydetails", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
+      setCompanyDetails(res.data.company);
+      // console.log(res.data);
+      
+    } catch (error) {
+
+      console.error("Error fetching company details:", error);
+    }
+  };
+
   useEffect(() => {
-    // const fetchCompanyData = async () => {
-    //   try {
-    //     const res = await axios.get("http://localhost:3000/api/companydetails", {
-    //       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-    //     });
-    //     setCompanyDetails(res.data);
-       
-    //   } catch (error) {
-    //     console.error("Error fetching company data:", error);
-    //   }
-    // };
-    // fetchCompanyData();
+    fetchCategories();
+    fetchCompanyDetails();
   }, []);
-//   console.log(companyDetails.company.companyname);
-  
+console.log(categories);
 
   return (
     <div className="seller-profile">
-      <h2>Company Details</h2>
-      {!companyDetails.companyname && !isEditing ? (
-        <button onClick={() => setIsEditing(true)}>Add Company</button>
-      ) : isEditing ? (
-        <div>
-          <input type="text" name="companyname" value={companyDetails.companyname} onChange={handleInputChange} />
-          <input type="text" name="location" value={companyDetails.location} onChange={handleInputChange} />
-          <button onClick={handleSaveClick}>Save</button>
-          <button onClick={() => setIsEditing(false)}>Cancel</button>
+      <div className="left-side">
+        <h2>Company Details</h2>
+        {!companyDetails.companyname && !isEditing ? (
+          <button onClick={() => setIsEditing(true)}>Add Company</button>
+        ) : isEditing ? (
+          <div>
+            <input type="text" name="companyname" value={companyDetails.companyname} onChange={handleInputChange} />
+            <input type="text" name="location" value={companyDetails.location} onChange={handleInputChange} />
+            <button onClick={handleSaveClick}>Save</button>
+            <button onClick={() => setIsEditing(false)}>Cancel</button>
+          </div>
+        ) : (
+          <div>
+            <p>Company Name: {companyDetails.companyname}</p>
+            <p>Location: {companyDetails.location}</p>
+            <button onClick={() => setIsEditing(true)}>Edit</button>
+          </div>
+        )}
+      </div>
+
+      <div className="right-side">
+        <button className="add-product-btn">Add Product</button>
+        <div className="categories">
+          {categories.map((category, index) => (
+            <div key={index} className="category-box">
+              {category}
+            </div>
+          ))}
         </div>
-      ) : (
-        <div>
-          <p>Company Name: {companyDetails.companyname}</p>
-          <p>Location: {companyDetails.location}</p>
-          <button onClick={() => setIsEditing(true)}>Edit</button>
-        </div>
-      )}
+      </div>
     </div>
   );
 };

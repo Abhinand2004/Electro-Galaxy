@@ -1,69 +1,56 @@
 .seller-profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px;
-    font-family: Arial, sans-serif;
-  
+  display: flex;
+  padding: 20px;
+
+  .left-side {
+    flex: 1;
+    padding: 20px;
+    border-right: 1px solid #ccc;
+
     h2 {
-      font-size: 24px;
-      color: #333;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
-  
-    .left-section {
-      width: 100%;
-      max-width: 400px;
-      padding: 20px;
-      background-color: #f9f9f9;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  
-      button {
-        background-color: #007bff;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        margin-top: 10px;
-        transition: background-color 0.3s ease;
-  
-        &:hover {
-          background-color: #0056b3;
-        }
-  
-        &:disabled {
-          background-color: #ddd;
-          cursor: not-allowed;
-        }
+
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    button {
+      margin-top: 10px;
+    }
+  }
+
+  .right-side {
+    flex: 1;
+    padding: 20px;
+
+    .add-product-btn {
+      display: block;
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: #0056b3;
       }
-  
-      input {
-        width: 100%;
-        padding: 8px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-        outline: none;
-  
-        &:focus {
-          border-color: #007bff;
-        }
-      }
-  
-      p {
-        font-size: 16px;
-        margin: 5px 0;
-        color: #333;
-      }
-  
-      .form-buttons {
-        display: flex;
-        gap: 10px;
+    }
+
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      .category-box {
+        padding: 10px;
+        background-color: #f1f1f1;
+        border-radius: 4px;
+        text-align: center;
+        min-width: 100px;
       }
     }
   }
-  
+}

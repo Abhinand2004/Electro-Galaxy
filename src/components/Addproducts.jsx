@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './Addproducts.scss';
 
 const AddProduct = () => {
@@ -20,31 +21,54 @@ const AddProduct = () => {
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
         if (files.length <= 5) {
-            setProductData({ ...productData, images: files });
+            Promise.all(files.map(fileToBase64)).then(base64Images => {
+                setProductData({ ...productData, images: base64Images });
+            });
         } else {
             alert('You can select a maximum of 5 images.');
         }
+    };
+
+    const handleThumbnailChange = (e) => {
+        const file = e.target.files[0];
+        fileToBase64(file).then(base64Thumbnail => {
+            setProductData({ ...productData, thumbnail: base64Thumbnail });
+        });
     };
 
     const handleCategoryChange = (e) => {
         setProductData({ ...productData, category: e.target.value });
     };
 
-    const handleThumbnailChange = (e) => {
-        setProductData({ ...productData, thumbnail: e.target.files[0] });
-    };
-
-    const handleAddProduct = () => {
-        console.log('Product Data:', productData);
-        // Handle product addition logic here (e.g., API call)
+    const handleAddProduct = async () => {
+        try {
+            const res = await axios.post("http://localhost:3000/api/addproduct", productData, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log('Product added successfully:', res.data);
+        } catch (error) {
+            console.error('Error adding product:', error);
+        }
     };
 
     const renderImagePreviews = () => {
         return productData.images.map((image, index) => (
             <div key={index} className="image-preview">
-                <img src={URL.createObjectURL(image)} alt={`Product Image ${index + 1}`} />
+                <img src={image} alt={`Product Image ${index + 1}`} />
             </div>
         ));
+    };
+
+    const fileToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
     };
 
     return (
@@ -77,18 +101,7 @@ const AddProduct = () => {
                                 {cat}
                             </option>
                         ))}
-                        <option value="Add New">Add New Category</option>
                     </select>
-                    {productData.category === 'Add New' && (
-                        <div className="add-category">
-                            <input
-                                type="text"
-                                name="newCategory"
-                                placeholder="Enter new category"
-                                onChange={handleInputChange}
-                            />
-                        </div>
-                    )}
                 </div>
 
                 {/* Price */}
@@ -131,7 +144,7 @@ const AddProduct = () => {
                 <div className="form-group">
                     <label>Contact Details</label>
                     <textarea
-                        name="contactDetails"
+                        name="description"
                         value={productData.description}
                         onChange={handleInputChange}
                         required
