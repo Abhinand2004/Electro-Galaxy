@@ -208,6 +208,25 @@ export async function displaycompany(req,res) {
     }
 }
 
+export async function editcompany(req, res) {
+    const data = req.body;
+    try {
+        const company = await sellerData.updateOne(
+            { seller_id: req.user.UserID },
+            { $set: data }
+        );
+
+        if (company.modifiedCount > 0) {
+            res.status(200).send({ msg: "Company details updated successfully." });
+        } else {
+            res.status(404).send({ msg: "No company found with the provided seller ID." });
+        }
+    } catch (error) {
+        console.error("Error updating company details:", error);
+        res.status(500).send({ msg: "Internal server error." });
+    }
+}
+
 
 export async function categories(req, res) {
     try {

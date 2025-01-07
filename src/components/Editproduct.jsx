@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './Editproduct.scss';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const EditProductPage = () => {
+    const navigate=useNavigate()
     const { id } = useParams();
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
@@ -57,11 +59,12 @@ const EditProductPage = () => {
 
     const handleDelete = async () => {
         try {
-            const res = await axios.delete(`http://localhost:3000/api/deleteproduct/${id}`, {
+            const res = await axios.delete(`http://localhost:3000/api/deletproduct/${id}`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
             });
             if (res.status === 200) {
                 console.log('Product deleted successfully');
+                navigate("/sprofile")
             } else {
                 console.error("Failed to delete product. Status:", res.status);
             }
