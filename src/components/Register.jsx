@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './Register.scss'; 
 import { Link, useNavigate } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+import { TextField, Button, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+
 const Register = () => {
-const Navigate=useNavigate()
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -18,6 +19,7 @@ const Navigate=useNavigate()
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!formData.username || !formData.email || !formData.pwd || !formData.cpwd) {
@@ -26,10 +28,9 @@ const Navigate=useNavigate()
         }
         try {
             const res = await axios.post('http://localhost:3000/api/register', formData);
-    
             if (res.status === 200) {
                 alert('Registration successful');
-                Navigate("/login")
+                navigate("/login");
             } else {
                 alert('Registration failed');
             }
@@ -38,43 +39,81 @@ const Navigate=useNavigate()
             alert('An error occurred during registration. Please try again later.');
         }
     };
-    
 
     return (
         <div className="register-container">
             <form className="register-form" onSubmit={handleSubmit}>
-                <h2>Register</h2>
-                <div className="form-group">
-                    <label htmlFor="username">Username</label>
-                    <input  type="text"  id="username" name="username" value={formData.username}   onChange={handleChange}   required/>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="phone">Phone</label>
-                    <input type="tel"  id="phone" name="phone" value={formData.phone} onChange={handleChange} required/>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="userType">User Type</label>
-                    <select id="userType" name="acctype" value={formData.acctype} onChange={handleChange} required>
-                        <option value="buyer">Buyer</option>
-                        <option value="seller">Seller</option>
-                    </select>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input type="password" id="password" name="pwd" value={formData.pwd} onChange={handleChange} required    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="confirmPassword">Confirm Password</label>
-                    <input   type="password" id="confirmPassword" name="cpwd" value={formData.cpwd} onChange={handleChange} required/>
-                </div>
+                <h2 className="register-title">Register</h2>
+                <TextField
+                    className="register-username"
+                    label="Username"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                    margin="normal"
+                />
+                <TextField
+                    className="register-email"
+                    label="Email"
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                    margin="normal"
+                />
+                <TextField
+                    className="register-phone"
+                    label="Phone"
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                    margin="normal"
+                />
+                <FormControl fullWidth margin="normal" className="register-acctype">
+                    <InputLabel>User Type</InputLabel>
+                    <Select
+                        name="acctype"
+                        value={formData.acctype}
+                        onChange={handleChange}
+                        required
+                    >
+                        <MenuItem value="buyer">Buyer</MenuItem>
+                        <MenuItem value="seller">Seller</MenuItem>
+                    </Select>
+                </FormControl>
+                <TextField
+                    className="register-password"
+                    label="Password"
+                    type="password"
+                    name="pwd"
+                    value={formData.pwd}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                    margin="normal"
+                />
+                <TextField
+                    className="register-confirm-password"
+                    label="Confirm Password"
+                    type="password"
+                    name="cpwd"
+                    value={formData.cpwd}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                    margin="normal"
+                />
                 <div className="form-actions">
-                    <button type="submit" className="register-btn">Register</button>
-                    <Link to={"/login"}>
-                    <button type="button" className="login-btn">Login</button>
+                    <Button type="submit" variant="contained" className="register-btn">Register</Button>
+                    <Link to="/login">
+                        <Button type="button" variant="outlined" className="login-btn">Login</Button>
                     </Link>
                 </div>
             </form>

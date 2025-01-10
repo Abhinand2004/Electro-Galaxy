@@ -15,8 +15,8 @@ const BuyerProfile = () => {
         place: 'home',
     });
     const [addresses, setAddresses] = useState([]);
-    const [editLocation, setEditLocation] = useState(null); // Track address being edited
-    const [showLocationForm, setShowLocationForm] = useState(false); // Toggle form visibility
+    const [editLocation, setEditLocation] = useState(null);
+    const [showLocationForm, setShowLocationForm] = useState(false);
 
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
     const handleLocationChange = (e) => setNewLocation({ ...newLocation, [e.target.name]: e.target.value });
@@ -63,19 +63,23 @@ const BuyerProfile = () => {
     const saveLocation = async () => {
         try {
             if (editLocation) {
-                // Update existing address
                 await axios.put(`http://localhost:3000/api/editaddress/${editLocation._id}`, newLocation, {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 });
-                setEditLocation(null); // Reset after update
+                setEditLocation(null);
             } else {
-                // Add new address
-                await axios.post("http://localhost:3000/api/address", newLocation, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-                });
+                if (newLocation.pincode && newLocation.locality && newLocation.address &&
+                    newLocation.city && newLocation.state && newLocation.landmark) {
+                    
+                        await axios.post("http://localhost:3000/api/address", newLocation, {
+                            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                        });
+                }else{
+                    alert("give a proper input datas")
+                }
             }
             setNewLocation({ pincode: '', locality: '', address: '', city: '', state: '', landmark: '', place: 'home' });
-            setShowLocationForm(false); // Hide form after save
+            setShowLocationForm(false);
             fetchAddresses();
         } catch (error) {
             console.error("Error saving location:", error);
@@ -92,14 +96,14 @@ const BuyerProfile = () => {
     };
 
     const handleEditAddress = (address) => {
-        setEditLocation(address); // Set the address data to be edited
-        setNewLocation({ ...address }); // Pre-fill the edit form with address data
-        setShowLocationForm(true); // Show form for editing
+        setEditLocation(address);
+        setNewLocation({ ...address });
+        setShowLocationForm(true);
     };
 
     const handleAddLocation = () => {
-        setEditLocation(null); // Reset edit state to add new address
-        setShowLocationForm(true); // Show form for adding
+        setEditLocation(null);
+        setShowLocationForm(true);
     };
 
     useEffect(() => {
@@ -110,7 +114,6 @@ const BuyerProfile = () => {
     return (
         <div className="buyer-profile-container">
             <div className="buyer-profile-left">
-                {/* Profile Section */}
                 <h2>Buyer Profile</h2>
                 <div className="buyer-profile-item">
                     <label>Username:</label>
@@ -158,7 +161,6 @@ const BuyerProfile = () => {
             </div>
 
             <div className="buyer-profile-right">
-                {/* Add or Edit Address Section */}
                 <div className="buyer-actions">
                     <button onClick={handleAddLocation} className="buyer-add-location-btn">+</button>
                     <button className="buyer-cart-btn">Cart</button>
@@ -169,27 +171,63 @@ const BuyerProfile = () => {
                 {showLocationForm && (
                     <div className="buyer-add-location-form">
                         <div className="buyer-form-row">
-                            {['pincode', 'locality', 'address', 'city', 'state', 'landmark'].map(field => (
-                                <div className="buyer-profile-item" key={field}>
-                                    <label>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
-                                    <input
-                                        type="text"
-                                        name={field}
-                                        value={newLocation[field]}
-                                        onChange={handleLocationChange}
-                                    />
-                                </div>
-                            ))}
+                            <div className="buyer-profile-item">
+                                <label>Pincode</label>
+                                <input type="text" name="pincode"  value={newLocation.pincode}  onChange={handleLocationChange} />
+                            </div>
+                            <div className="buyer-profile-item">
+                                <label>Locality</label>
+                                <input
+                                    type="text"
+                                    name="locality"
+                                    value={newLocation.locality}
+                                    onChange={handleLocationChange}
+                                
+                                />
+                            </div>
+                            <div className="buyer-profile-item">
+                                <label>Address</label>
+                                <input
+                                    type="text"
+                                    name="address"
+                                    value={newLocation.address}
+                                    onChange={handleLocationChange}
+                                />
+                            </div>
+                            <div className="buyer-profile-item">
+                                <label>City</label>
+                                <input
+                                    type="text"
+                                    name="city"
+                                    value={newLocation.city}
+                                    onChange={handleLocationChange}
+                                
+                                />
+                            </div>
+                            <div className="buyer-profile-item">
+                                <label>State</label>
+                                <input
+                                    type="text"
+                                    name="state"
+                                    value={newLocation.state}
+                                    onChange={handleLocationChange}
+                            
+                                />
+                            </div>
+                            <div className="buyer-profile-item">
+                                <label>Landmark</label>
+                                <input
+                                    type="text"
+                                    name="landmark"
+                                    value={newLocation.landmark}
+                                    onChange={handleLocationChange}
+                                
+                                />
+                            </div>
                         </div>
                         <div className="buyer-form-row">
                             <label>
-                                <input
-                                    type="radio"
-                                    name="place"
-                                    value="home"
-                                    checked={newLocation.place === 'home'}
-                                    onChange={handleLocationChange}
-                                />
+                                <input  type="radio" name="place" value="home"   checked={newLocation.place === 'home'} onChange={handleLocationChange}/>
                                 Home
                             </label>
                             <label>
@@ -209,7 +247,6 @@ const BuyerProfile = () => {
                     </div>
                 )}
 
-                {/* Address List Section */}
                 <div className="buyer-address-list">
                     {addresses.map(address => (
                         <div key={address._id} className="buyer-address-item">

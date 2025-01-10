@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './SellerProfile.scss';
 import { Link } from 'react-router-dom';
+import { Button, TextField } from '@mui/material';
+import './SellerProfile.scss';
 
 const SellerProfile = () => {
   const [companyDetails, setCompanyDetails] = useState({ companyname: "", location: "" });
-  const [editedCompanyDetails, setEditedCompanyDetails] = useState({ companyname: "", location: "" }); // New state for edited data
+  const [editedCompanyDetails, setEditedCompanyDetails] = useState({ companyname: "", location: "" });
   const [categories, setCategories] = useState([]);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -16,7 +17,7 @@ const SellerProfile = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       setIsAdding(false);
-      fetchCompanyDetails(); 
+      fetchCompanyDetails();
     } catch (error) {
       console.error("Error adding company:", error);
     }
@@ -24,11 +25,10 @@ const SellerProfile = () => {
 
   const handleSaveEdit = async () => {
     try {
-      await axios.put("http://localhost:3000/api/editcompany", editedCompanyDetails, { // Use editedCompanyDetails here
+      await axios.put("http://localhost:3000/api/editcompany", editedCompanyDetails, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
-      console.log("Successfully saved");
-      setCompanyDetails(editedCompanyDetails); // Update companyDetails after save
+      setCompanyDetails(editedCompanyDetails);
       setIsEditing(false);
     } catch (error) {
       console.error("Error editing company:", error);
@@ -38,7 +38,7 @@ const SellerProfile = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (isEditing) {
-      setEditedCompanyDetails({ ...editedCompanyDetails, [name]: value }); // Update edited data
+      setEditedCompanyDetails({ ...editedCompanyDetails, [name]: value });
     } else {
       setCompanyDetails({ ...companyDetails, [name]: value });
     }
@@ -61,7 +61,7 @@ const SellerProfile = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       setCompanyDetails(res.data.company || { companyname: "", location: "" });
-      setEditedCompanyDetails(res.data.company || { companyname: "", location: "" }); // Also initialize the edited data
+      setEditedCompanyDetails(res.data.company || { companyname: "", location: "" });
     } catch (error) {
       console.error("Error fetching company details:", error);
     }
@@ -74,78 +74,73 @@ const SellerProfile = () => {
 
   return (
     <div className="seller-profile-container">
-      <div className="seller-profile-left-side">
-        <h2 className="company-details-title">Company Details</h2>
+      <div className="company-details">
+        <h2>Company Details</h2>
         {(!companyDetails.companyname && !companyDetails.location) && !isAdding ? (
-          <button className="add-company-btn" onClick={() => setIsAdding(true)}>Add Company</button>
+          <Button variant="contained" color="primary" onClick={() => setIsAdding(true)}>Add Company</Button>
         ) : isAdding ? (
-          <div className="company-details-form">
-            <input
-              type="text"
+          <div className="form-group">
+            <TextField
+              label="Company Name"
               name="companyname"
               value={companyDetails.companyname}
               onChange={handleInputChange}
-              placeholder="Enter company name"
-              className="companyname-input"
+              variant="outlined"
+              fullWidth
             />
-            <input
-              type="text"
+            <TextField
+              label="Location"
               name="location"
               value={companyDetails.location}
               onChange={handleInputChange}
-              placeholder="Enter location"
-              className="location-input"
+              variant="outlined"
+              fullWidth
             />
             <div className="form-buttons">
-              <button className="save-add-btn" onClick={handleSaveAdd}>Save</button>
-              <button className="cancel-add-btn" onClick={() => setIsAdding(false)}>Cancel</button>
+              <Button variant="contained" color="success" onClick={handleSaveAdd}>Save</Button>
+              <Button variant="outlined" color="error" onClick={() => setIsAdding(false)}>Cancel</Button>
             </div>
           </div>
         ) : (
-          <div className="company-details-view">
-            <p><strong>Company Name:</strong> {companyDetails.companyname}</p>
+          <div>
+            <p><strong>Company Name:</strong> <div>{companyDetails.companyname}</div></p>
             <p><strong>Location:</strong> {companyDetails.location}</p>
           </div>
         )}
-
-        {/* Show Edit Company button only if company details exist */}
         {companyDetails.companyname && companyDetails.location && (
-          <button className="edit-company-btn" onClick={() => setIsEditing(!isEditing)}>Edit Company</button>
+          <Button variant="outlined" color="secondary" onClick={() => setIsEditing(!isEditing)}>Edit Company</Button>
         )}
-
         {isEditing && (
-          <div className="edit-company-form">
-            <input
-              type="text"
+          <div className="form-group">
+            <TextField
+              label="Edit Company Name"
               name="companyname"
-              value={editedCompanyDetails.companyname} // Use editedCompanyDetails here
+              value={editedCompanyDetails.companyname}
               onChange={handleInputChange}
-              placeholder="Edit company name"
-              className="companyname-input"
+              variant="outlined"
+              fullWidth
             />
-            <input
-              type="text"
+            <TextField
+              label="Edit Location"
               name="location"
-              value={editedCompanyDetails.location} // Use editedCompanyDetails here
+              value={editedCompanyDetails.location}
               onChange={handleInputChange}
-              placeholder="Edit location"
-              className="location-input"
+              variant="outlined"
+              fullWidth
             />
-            <button className="save-edit-btn" onClick={handleSaveEdit}>Save</button>
+            <Button variant="contained" color="primary" onClick={handleSaveEdit}>Save</Button>
           </div>
         )}
       </div>
-
-      <div className="seller-profile-right-side">
+      <div className="categories-section">
         <Link to={"/addproduct"}>
-          <button className="add-product-btn">Add Product</button>
+          <Button variant="contained" color="success" className='add-product'>Add Product</Button>
         </Link>
-        <div className="category-list">
+        <h3>Categories</h3>
+        <div className="categories-container">
           {categories.map((category, index) => (
-            <Link to={`/forsale/${category}`} key={index}>
-              <div className="category-box">
-                {category}
-              </div>
+            <Link to={`/forsale/${category}`} key={index} style={{ textDecoration: 'none' }}>
+              <Button variant="outlined" color="primary">{category}</Button>
             </Link>
           ))}
         </div>

@@ -1,69 +1,75 @@
 .register-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f7f7f7;
+  background-image: url('/path/to/your/background-image.jpg'); // Replace with your background image URL
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 0 20px;
 }
 
 .register-form {
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
+  background-color: rgba(255, 255, 255, 0.9); // Slightly transparent white background
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 450px; // Maximum width for the form
+  width: 100%; // Full width for smaller screens
+}
 
-    h2 {
-        text-align: center;
-        margin-bottom: 20px;
-        color: #333;
-    }
+.register-title {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 26px; // Font size for the title
+  color: #333; // Dark color for the title
+}
 
-    .form-group {
-        margin-bottom: 20px;
+.register-username,
+.register-email,
+.register-phone,
+.register-password,
+.register-confirm-password {
+  margin-bottom: 15px; // Space between input fields
+}
 
-        label {
-            font-size: 16px;
-            font-weight: 500;
-            color: #555;
-        }
+.register-acctype {
+  margin-bottom: 15px; // Space below the select field
+}
 
-        input, select {
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            margin-top: 5px;
-        }
-    }
+.form-actions {
+  text-align: center; // Center the buttons
+  margin-top: 20px; // Space above buttons
+}
 
-    .form-actions {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+.register-btn {
+  background-color: #28a745; // Green color for the register button
+  color: #fff; // White text color
+  border: none;
+  padding: 10px 20px; // Padding for buttons
+  border-radius: 4px; // Rounded corners
+  cursor: pointer;
+  width: 48%; // Width for buttons
+  margin: 5px; // Margin between buttons
+  transition: background-color 0.3s; // Transition for hover effect
+}
 
-        .register-btn, .login-btn {
-            width: 48%;
-            padding: 12px;
-            font-size: 16px;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+.register-btn:hover {
+  background-color: #218838; // Darker green on hover
+}
 
-        .register-btn {
-            background-color: #4CAF50;
-        }
+.login-btn {
+  background-color: #17a2b8; // Blue color for the login button
+  color: #fff; // White text color
+}
 
-        .login-btn {
-            background-color: #007BFF;
-        }
+.login-btn:hover {
+  background-color: #138496; // Darker blue on hover
+}
 
-        .register-btn:hover, .login-btn:hover {
-            opacity: 0.9;
-        }
-    }
+@media (max-width: 600px) {
+  .register-btn, .login-btn {
+      width: 100%; // Full width for buttons on small screens
+      margin: 5px 0; // Margin for buttons on small screens
+  }
 }

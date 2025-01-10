@@ -3,73 +3,100 @@
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f4f7fc;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
   .buyer-profile-left,
   .buyer-profile-right {
     width: 100%;
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
 
     @media (min-width: 768px) {
-      width: 45%;
+      width: 48%;
       margin-bottom: 0;
     }
   }
 
+  /* Responsive for smaller screens */
+  @media (max-width: 768px) {
+    .buyer-profile-left,
+    .buyer-profile-right {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    padding: 10px; /* Reduce padding on smaller screens */
+  }
+
   .buyer-profile-item {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 
     label {
       display: block;
       font-weight: bold;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #333;
     }
 
     input {
-      width: 48%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      display: inline-block;
-      margin-right: 4%;
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+      color: #555;
+      transition: border-color 0.3s ease;
 
-      &:nth-child(2n) {
-        margin-right: 0;
+      &:focus {
+        border-color: #007bff;
+        outline: none;
       }
     }
 
     span {
       display: block;
-      padding: 8px;
-      background-color: #f1f1f1;
-      border-radius: 4px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 6px;
+      font-size: 16px;
+      color: #555;
     }
   }
 
   .buyer-edit-btn,
   .buyer-save-btn,
-  .buyer-profile-btn,
   .buyer-add-location-btn,
   .buyer-save-location-btn,
   .buyer-edit-button,
   .buyer-delete-button {
-    padding: 8px 12px;
+    padding: 10px 15px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-size: 14px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-right: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     &:hover {
       background-color: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(0);
     }
   }
 
@@ -85,31 +112,64 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 2px solid #007bff;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #007bff;
+      color: white;
+    }
   }
 
-  .buyer-actions {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
+  /* Adjust buttons for mobile view */
+  @media (max-width: 768px) {
+    .buyer-edit-btn,
+    .buyer-save-btn,
+    .buyer-add-location-btn,
+    .buyer-save-location-btn,
+    .buyer-edit-button,
+    .buyer-delete-button {
+      width: 100%;
+      font-size: 16px;
+      padding: 15px 20px;
+    }
 
-    .buyer-cart-btn,
-    .buyer-wishlist-btn,
-    .buyer-orders-btn {
-      padding: 0px 20px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      cursor: pointer;
-      color:white;
-      background-color:#007bff;
-      transition: background-color 0.3s;
+    .buyer-add-location-btn {
+      width: 55px;
+      height: 55px;
+      font-size: 40px;
+    }
 
-      &:hover {
-        background-color: #e0e0e0;
+    .buyer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+
+      .buyer-cart-btn,
+      .buyer-wishlist-btn,
+      .buyer-orders-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        width: 100%;
+        text-align: center;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        color: #007bff;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      .buyer-cart-btn:hover,
+      .buyer-wishlist-btn:hover,
+      .buyer-orders-btn:hover {
+        background-color: #007bff;
+        color: white;
       }
     }
   }
 
+  /* Adjust form for mobile view */
   .buyer-add-location-form {
     margin-top: 20px;
 
@@ -117,18 +177,18 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
 
       input {
         width: 48%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        display: inline-block;
-        margin-right: 4%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
 
-        &:nth-child(2n) {
-          margin-right: 0;
+        @media (max-width: 768px) {
+          width: 100%;
+          margin-bottom: 10px;
         }
       }
     }
@@ -139,7 +199,7 @@
       align-items: center;
 
       input[type="radio"] {
-        margin-right: 5px;
+        margin-right: 8px;
       }
     }
   }
@@ -148,26 +208,29 @@
     margin-top: 20px;
 
     .buyer-address-item {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
 
       .buyer-address-item-box {
         padding: 20px;
-        background-color: #f1f1f1;
-        border-radius: 8px;
+        background-color: #f9f9f9;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         margin-bottom: 15px;
-        border: 1px solid #ddd;
 
         label {
           font-weight: bold;
-          display: block;
+          font-size: 14px;
+          color: #333;
         }
 
         p {
-          background-color: #fff;
-          padding: 10px;
-          border-radius: 4px;
+          background-color: #ffffff;
+          padding: 12px;
+          border-radius: 6px;
           margin: 10px 0;
           border: 1px solid #ddd;
+          font-size: 15px;
+          color: #555;
         }
 
         .buyer-address-item-buttons {
@@ -175,6 +238,36 @@
           gap: 10px;
         }
       }
+    }
+  }
+}
+.buyer-actions {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+
+  .buyer-cart-btn,
+  .buyer-wishlist-btn,
+  .buyer-orders-btn {
+    padding: 12px 30px;
+    font-size: 16px; /* Increased font size */
+    width: auto;
+    text-align: center;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    color: #007bff;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #007bff;
+      color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    &:active {
+      transform: translateY(0);
     }
   }
 }

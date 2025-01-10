@@ -3,7 +3,7 @@ import './Editproduct.scss';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import TextField from '@mui/material/TextField';
 const EditProductPage = () => {
     const navigate=useNavigate()
     const { id } = useParams();
@@ -79,6 +79,7 @@ const EditProductPage = () => {
             <div className="product-details">
                 <div className="product-images">
                     <h3>Images</h3>
+                    <br />
                     <div className="images-container">
                         {formData.images.map((image, index) => (
                             <img key={index} src={image} alt={`Product image ${index + 1}`} className="product-image" />
@@ -88,6 +89,7 @@ const EditProductPage = () => {
 
                 <div className="product-info">
                     <h3>Product Info</h3>
+                    <br />
                     {isEditing ? (
                         <div className="edit-fields">
                             <label htmlFor="productName">Product Name</label>

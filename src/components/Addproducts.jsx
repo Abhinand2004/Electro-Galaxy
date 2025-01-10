@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Addproducts.scss';
+import { Button, TextField, MenuItem, Select, InputLabel, FormControl, FormHelperText, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
     const navigate = useNavigate();
     const [productData, setProductData] = useState({
         productName: '',
-        category: 'Electronics', 
+        category: 'Electronics',
         price: '',
         thumbnail: null,
         description: '',
+        quantity: '',
         images: [],
-        categories: ['Electronics', 'mobile','Tv','AC','Fan','wahing-meshine','fridge'],
+        categories: ['Electronics', 'Mobile', 'TV', 'AC', 'Fan', 'Washing Machine', 'Fridge'],
     });
 
     const handleInputChange = (e) => {
@@ -38,15 +40,11 @@ const AddProduct = () => {
         });
     };
 
-    const handleCategoryChange = (e) => {
-        setProductData({ ...productData, category: e.target.value });
-    };
-
     const handleAddProduct = async () => {
-        const { productName, category, price, thumbnail, description, images } = productData;
+        const { productName, category, price, thumbnail, description, quantity, images } = productData;
 
         // Validate fields
-        if (!productName || !category || !price || !thumbnail || !description || images.length === 0) {
+        if (!productName || !category || !price || !thumbnail || !description || !quantity || images.length === 0) {
             alert('All fields are required. Please fill in all fields.');
             return;
         }
@@ -74,60 +72,74 @@ const AddProduct = () => {
     };
 
     return (
-        <div className="add-product-container">
+        <Box className="add-product-container">
             <h2>Add Product</h2>
-            <div className="product-form">
-                <div className="image-previews">
+            <Box className="product-form">
+                <Box className="image-previews">
                     {productData.images.length > 0 ? (
                         productData.images.map((image, index) => (
-                            <div key={index} className="image-preview">
+                            <Box key={index} className="image-preview">
                                 <img src={image} alt={`Product Image ${index + 1}`} />
-                            </div>
+                            </Box>
                         ))
                     ) : (
                         <p>No images selected</p>
                     )}
-                </div>
+                </Box>
 
-                <div className="form-group">
-                    <label>Product Name</label>
-                    <input
-                        type="text"
+                <Box className="form-group">
+                    <TextField
+                        label="Product Name"
                         name="productName"
                         value={productData.productName}
                         onChange={handleInputChange}
+                        fullWidth
                         required
                     />
-                </div>
+                </Box>
 
-                <div className="form-group">
-                    <label>Category</label>
-                    <select
-                        name="category"
-                        value={productData.category}
-                        onChange={handleCategoryChange}
-                    >
-                        {productData.categories.map((cat, index) => (
-                            <option key={index} value={cat}>
-                                {cat}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                <Box className="form-group">
+                    <FormControl fullWidth required>
+                        <InputLabel>Category</InputLabel>
+                        <Select
+                            name="category"
+                            value={productData.category}
+                            onChange={handleInputChange}
+                        >
+                            {productData.categories.map((cat, index) => (
+                                <MenuItem key={index} value={cat}>
+                                    {cat}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Box>
 
-                <div className="form-group">
-                    <label>Price</label>
-                    <input
-                        type="number"
+                <Box className="form-group">
+                    <TextField
+                        label="Price"
                         name="price"
+                        type="number"
                         value={productData.price}
                         onChange={handleInputChange}
+                        fullWidth
                         required
                     />
-                </div>
+                </Box>
 
-                <div className="form-group">
-                    <label>Thumbnail</label>
+                <Box className="form-group">
+                    <TextField
+                        label="Quantity"
+                        name="quantity"
+                        type="number"
+                        value={productData.quantity}
+                        onChange={handleInputChange}
+                        fullWidth
+                        required
+                    />
+                </Box>
+
+                <Box className="form-group">
                     <input
                         type="file"
                         name="thumbnail"
@@ -135,10 +147,9 @@ const AddProduct = () => {
                         onChange={handleThumbnailChange}
                         required
                     />
-                </div>
+                </Box>
 
-                <div className="form-group">
-                    <label>Product Images (Max 5)</label>
+                <Box className="form-group">
                     <input
                         type="file"
                         name="images"
@@ -147,25 +158,32 @@ const AddProduct = () => {
                         onChange={handleImageChange}
                         required
                     />
-                </div>
+                </Box>
 
-                <div className="form-group">
-                    <label>Description</label>
-                    <textarea
+                <Box className="form-group">
+                    <TextField
+                        label="Description"
                         name="description"
                         value={productData.description}
                         onChange={handleInputChange}
+                        fullWidth
                         required
-                    ></textarea>
-                </div>
+                        multiline
+                        rows={4}
+                    />
+                </Box>
 
-                <div className="form-actions">
-                    <button type="button" onClick={handleAddProduct} className="add-product-btn">
+                <Box className="form-actions">
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleAddProduct}
+                    >
                         Add Product
-                    </button>
-                </div>
-            </div>
-        </div>
+                    </Button>
+                </Box>
+            </Box>
+        </Box>
     );
 };
 

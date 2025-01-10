@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Nav.scss';
-import profileImage from "../assets/profile.jpg"; 
+import profileImage from "../assets/profile.jpg";
+import logoImage from "../assets/logo.png"; // Import your logo here
 import { useNavigate } from 'react-router-dom';
+import { AppBar, Toolbar, IconButton, InputBase, Menu, MenuItem, Typography } from '@mui/material';
+import { Search as SearchIcon, AccountCircle } from '@mui/icons-material';
 
 const Nav = () => {
     const navigate = useNavigate(); 
-    const [showDropdown, setShowDropdown] = useState(false);
+    const [showDropdown, setShowDropdown] = useState(null);
     const [token, setToken] = useState(localStorage.getItem('token'));
-    const [user, setUser] = useState('');
+    const [user, setUser ] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
     const fetchData = async () => { 
@@ -42,11 +45,11 @@ const Nav = () => {
         } else {
             navigate("/sprofile");
         }
-        setShowDropdown(false); // Close dropdown after navigating
+        setShowDropdown(null); // Close dropdown after navigating
     };
 
-    const handleProfileClick = () => {
-        setShowDropdown(!showDropdown);
+    const handleProfileClick = (event) => {
+        setShowDropdown(event.currentTarget);
     };
 
     const handleSearchChange = (e) => {
@@ -54,46 +57,50 @@ const Nav = () => {
     };
 
     return (
-        <nav className="navbar">
-            <div className="logo">
-                <span className="logo-text">Electro-Galaxy</span>
-            </div>
+        <AppBar position="static">
+            <Toolbar className="navbar">
+                <div className="logo">
+                    <img src={logoImage} alt="Electro-Galaxy Logo" className="logo-img" />
+                </div>
 
-            <div className="search-bar">
-                <input 
-                    type="text" 
-                    value={searchQuery} 
-                    onChange={handleSearchChange} 
-                    placeholder="Search..." 
-                    className="search-input"
-                />
-            </div>
-
-            <div className="right-section">
-                {!token ? (
-                    <button className="login-btn" onClick={() => window.location.href = '/login'}>Login</button>
-                ) : (
-                    <div className="profile-container">
-                        <span className="username">{user.username}</span>
-                        <div className="profile-wrapper" onClick={handleProfileClick}>
-                            <img
-                                src={profileImage} 
-                                className="profile-img"
-                                alt="Profile"
-                            />
-                        </div>
-                        {showDropdown && (
-                            <div className="dropdown">
-                                <ul>
-                                    <li onClick={handleProfileNavigation}>Profile</li> 
-                                    <li onClick={handleLogout}>Logout</li>
-                                </ul>
-                            </div>
-                        )}
+                <div className="search-bar">
+                    <div className="search-icon">
+                        <SearchIcon />
                     </div>
-                )}
-            </div>
-        </nav>
+                    <InputBase 
+                        value={searchQuery} 
+                        onChange={handleSearchChange} 
+                        placeholder="Search..." 
+                        className="search-input"
+                    />
+                </div>
+
+                <div className="right-section">
+                    {!token ? (
+                        <button className="login-btn" onClick={() => window.location.href = '/login'}>Login</button>
+                    ) : (
+                        <div className="profile-container">
+                            <span className="username">{user.username}</span>
+                            <IconButton onClick={handleProfileClick}>
+                                <img
+                                    src={profileImage} 
+                                    className="profile-img"
+                                    alt="Profile"
+                                />
+                            </IconButton>
+                            <Menu
+                                anchorEl={showDropdown}
+                                open={Boolean(showDropdown)}
+                                onClose={() => setShowDropdown(null)}
+                            >
+                                <MenuItem onClick={handleProfileNavigation}>Profile</MenuItem> 
+                                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                            </Menu>
+                        </div>
+                    )}
+                </div>
+            </Toolbar>
+        </AppBar>
     );
 };
 
