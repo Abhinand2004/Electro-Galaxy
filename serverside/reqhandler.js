@@ -411,3 +411,15 @@ export async function deleteproduct(req, res) {
         res.status(500).send({ msg: "Internal server error" });
     }
 }
+
+export async function displayproductdata(req, res) {
+    const { id } = req.params;
+
+    const data=await productSchema.findOne({_id:id})
+    if (data) {
+        return res.status(200).send(data)
+    }
+    else{
+        return res.status(500).send({msg:"product didint find"})
+    }
+}

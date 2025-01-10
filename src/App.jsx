@@ -10,6 +10,7 @@ import HomePage from "./components/Home"
 import ForSalePage from "./components/Foresale"
 import EditProductPage from "./components/Editproduct"
 import ChangePassword from "./components/Passchange"
+import ProductPage from "./components/Product"
 
 function App() {
 
@@ -29,6 +30,8 @@ function App() {
       <Route path="/addproduct" element={<AddProduct/>} />
       <Route path="/forsale/:id" element={<ForSalePage/>} />
       <Route path="/editproduct/:id" element={<EditProductPage/>} />
+      <Route path="/product/:id" element={<ProductPage/>} />
+
 
 
 

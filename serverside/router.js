@@ -24,6 +24,6 @@ router.route("/category/:id").get(Auth,rh.forsale)
 router.route("/editproduct/:id").put(Auth,rh.editproduct)
 router.route("/findproduct/:id").get(Auth,rh.findsingleproduct)
 router.route("/deletproduct/:id").delete(Auth,rh.deleteproduct)
-
+router.route("/displayproduct/:id").get(rh.displayproductdata)
 
 export default router; 
