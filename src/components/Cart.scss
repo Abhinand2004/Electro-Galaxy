@@ -1,0 +1,116 @@
+.cart-page {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+  
+    .cart-left {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+  
+    .cart-right {
+      flex: 1;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      
+      h2 {
+        margin-bottom: 20px;
+      }
+  
+      .address-check {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+  
+        label {
+          margin-bottom: 10px;
+        }
+      }
+  
+      .buy-now {
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+  
+        &:hover {
+          background-color: #218838;
+        }
+      }
+    }
+  
+    .cart-card {
+      display: flex;
+      gap: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: white;
+  
+      img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+  
+      .cart-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+  
+        h2 {
+          margin: 0;
+        }
+  
+        p {
+          margin: 10px 0;
+        }
+  
+        .cart-controls {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+  
+          button {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+        }
+  
+        .remove-btn {
+          align-self: flex-start;
+          padding: 5px 10px;
+          background-color: #dc3545;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+  
+          &:hover {
+            background-color: #c82333;
+          }
+        }
+      }
+    }
+  
+    @media (max-width: 768px) {
+      flex-direction: column;
+  
+      .cart-left, .cart-right {
+        flex: none;
+        width: 100%;
+      }
+    }
+  }
+  

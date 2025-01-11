@@ -11,6 +11,8 @@ import ForSalePage from "./components/Foresale"
 import EditProductPage from "./components/Editproduct"
 import ChangePassword from "./components/Passchange"
 import ProductPage from "./components/Product"
+import Wishlistdisplay from "./components/Wishlist"
+import CartPage from "./components/Cart"
 
 function App() {
 
@@ -31,6 +33,10 @@ function App() {
       <Route path="/forsale/:id" element={<ForSalePage/>} />
       <Route path="/editproduct/:id" element={<EditProductPage/>} />
       <Route path="/product/:id" element={<ProductPage/>} />
+      <Route path="/wishlist" element={<Wishlistdisplay/>} />
+      <Route path="/cart" element={<CartPage/>} />
+
+
 
 
 

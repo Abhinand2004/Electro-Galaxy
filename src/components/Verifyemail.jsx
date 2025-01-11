@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './Verifyemail.scss';
 import { Link } from 'react-router-dom';
-
+import Url from '../assets/root';
 const VerifyEmail = () => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
@@ -19,7 +19,7 @@ const VerifyEmail = () => {
             setMessage('Please enter an email address.');
             return;
         }
-        const res=await axios.post ("http://localhost:3000/api/verifyemail",{email});
+        const res=await axios.post (`${Url}/verifyemail`  ,{email});
         if(res.status===200){
             localStorage.setItem("email",email)
             setMessage("Verification email sent successfully");

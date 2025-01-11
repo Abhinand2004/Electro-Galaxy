@@ -3,6 +3,7 @@ import axios from 'axios';
 import './Addproducts.scss';
 import { Button, TextField, MenuItem, Select, InputLabel, FormControl, FormHelperText, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import Url from '../assets/root';
 
 const AddProduct = () => {
     const navigate = useNavigate();
@@ -50,7 +51,7 @@ const AddProduct = () => {
         }
 
         try {
-            const res = await axios.post("http://localhost:3000/api/addproduct", productData, {
+            const res = await axios.post(`${Url}/addproduct`, productData, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem("token")}`
                 }

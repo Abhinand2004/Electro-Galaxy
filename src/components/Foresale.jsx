@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Foresale.scss';
 import { Link, useParams } from 'react-router-dom';
+import Url from '../assets/root';
 
 const ForSalePage = () => {
     const [productsForSale, setProductsForSale] = useState([]);
-    const { id } = useParams();  // Correctly extract `id`
+    const { id } = useParams();  
 
     const fetchdata = async () => {
         try {
-            const res = await axios.get(`http://localhost:3000/api/category/${id}`, {
+            const res = await axios.get(`${Url}/category/${id}`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
             });
 

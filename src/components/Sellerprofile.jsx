@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Button, TextField } from '@mui/material';
 import './SellerProfile.scss';
-
+import Url from '../assets/root';
 const SellerProfile = () => {
   const [companyDetails, setCompanyDetails] = useState({ companyname: "", location: "" });
   const [editedCompanyDetails, setEditedCompanyDetails] = useState({ companyname: "", location: "" });
@@ -13,7 +13,7 @@ const SellerProfile = () => {
 
   const handleSaveAdd = async () => {
     try {
-      await axios.post("http://localhost:3000/api/companyadd", companyDetails, {
+      await axios.post(`${Url}/companyadd `, companyDetails, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       setIsAdding(false);
@@ -25,7 +25,7 @@ const SellerProfile = () => {
 
   const handleSaveEdit = async () => {
     try {
-      await axios.put("http://localhost:3000/api/editcompany", editedCompanyDetails, {
+      await axios.put(`${Url}/editcompany`, editedCompanyDetails, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       setCompanyDetails(editedCompanyDetails);
@@ -46,7 +46,7 @@ const SellerProfile = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/categories", {
+      const res = await axios.get(`${Url}/categories`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       setCategories(res.data.categories);
@@ -57,7 +57,7 @@ const SellerProfile = () => {
 
   const fetchCompanyDetails = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/companydetails", {
+      const res = await axios.get(`${Url}/companydetails`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       setCompanyDetails(res.data.company || { companyname: "", location: "" });

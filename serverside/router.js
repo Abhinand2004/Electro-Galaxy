@@ -25,5 +25,12 @@ router.route("/editproduct/:id").put(Auth,rh.editproduct)
 router.route("/findproduct/:id").get(Auth,rh.findsingleproduct)
 router.route("/deletproduct/:id").delete(Auth,rh.deleteproduct)
 router.route("/displayproduct/:id").get(rh.displayproductdata)
+router.route("/displaywishlist").get(Auth,rh.displaywishlist)
+router.route("/addwishlist").post(Auth,rh.addtowishlist)
+router.route("/deletewishlist/:id").delete(rh.deletewishlist)
+router.route("/addtocart").post(Auth,rh.addtocart)
+router.route("/displaycart").get(Auth,rh.displaycart)
+router.route("/deletecart/:id").delete(rh.deletefromcart)
+router.route("/quantity/:id").post(Auth,rh.quantity)
 
 export default router; 

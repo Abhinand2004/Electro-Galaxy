@@ -3,6 +3,7 @@ import './Editproduct.scss';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Url from '../assets/root';
 import TextField from '@mui/material/TextField';
 const EditProductPage = () => {
     const navigate=useNavigate()
@@ -23,7 +24,7 @@ const EditProductPage = () => {
 
     const fetchData = async () => {
         try {
-            const res = await axios.get(`http://localhost:3000/api/findproduct/${id}`, {
+            const res = await axios.get(`${Url}/findproduct/${id}`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
             });
             if (res.status === 200) {
@@ -43,7 +44,7 @@ const EditProductPage = () => {
 
     const handleSave = async () => {
         try {
-            const res = await axios.put(`http://localhost:3000/api/editproduct/${id}`, formData, {
+            const res = await axios.put(`${Url}/editproduct/${id}`, formData, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
             });
             if (res.status === 200) {
@@ -59,7 +60,7 @@ const EditProductPage = () => {
 
     const handleDelete = async () => {
         try {
-            const res = await axios.delete(`http://localhost:3000/api/deletproduct/${id}`, {
+            const res = await axios.delete(`${Url}/deletproduct/${id}`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
             });
             if (res.status === 200) {

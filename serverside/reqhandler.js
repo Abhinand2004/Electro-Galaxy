@@ -5,8 +5,11 @@ import pkg from 'jsonwebtoken'
 import productSchema from "./models/product.js";
 import sellerData from "./models/sellerdata.js";
 import addressSchema from "./models/address.js"
+import wishlist from "./models/wishlist.js";
 import { data } from "react-router-dom";
 import user from "./models/user.js";
+import cartSchema from "./models/cart.js"
+import product from "./models/product.js";
 const { sign } = pkg
 
 
@@ -423,3 +426,157 @@ export async function displayproductdata(req, res) {
         return res.status(500).send({msg:"product didint find"})
     }
 }
+
+export async function addtowishlist(req, res) {
+    const { id } = req.body;
+    if (!id) {
+        return res.status(400).send({ msg: "Missing product_id" });
+    }  
+    try {
+        const existingWishlistItem = await wishlist.findOne({ buyer_id: req.user.UserID,  product_id: id  });
+        if (existingWishlistItem) {
+            return res.status(400).send({ msg: "Product is already in your wishlist" });
+        }
+        const data = await wishlist.create({ buyer_id: req.user.UserID, product_id: id });
+
+        if (data) {
+            return res.status(200).send({ msg: "Added to wishlist" });
+        } else {
+            return res.status(500).send({ msg: "Unable to add data" });
+        }
+    } catch (error) {
+        return res.status(500).send({ msg: "Something went wrong" });
+    }
+}
+
+export async function displaywishlist(req, res) {
+    try {
+        const wishlistItems = await wishlist.find({ buyer_id: req.user.UserID });
+
+        if (wishlistItems.length === 0) {
+            return res.status(404).send({ msg: "No items in wishlist" });
+        }
+
+        const productIds = wishlistItems.map(item => item.product_id);
+
+        const products = await productSchema.find({ _id: { $in: productIds } });
+
+        if (products.length === 0) {
+            return res.status(404).send({ msg: "No products found" });
+        }
+
+        return res.status(200).send({ products });
+    } catch (error) {
+        return res.status(500).send({ msg: "Something went wrong" });
+    }
+}
+
+
+export async function deletewishlist(req, res) {
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).send({ msg: "Product ID is required" });
+    }
+    try {
+        const deletedData = await wishlist.deleteOne({ product_id: id });
+
+        if (deletedData) {
+            return res.status(200).send({ msg: "Product deleted from wishlist" });
+        } else {
+            return res.status(404).send({ msg: "Product not found in wishlist" });
+        }
+    } catch (error) {
+        return res.status(500).send({ msg: "Something went wrong" });
+    }
+}
+
+
+
+
+
+export async function addtocart(req, res) {
+    const { id } = req.body;
+    if (!id) {
+        return res.status(400).send({ msg: "Missing product_id" });
+    }  
+    try {
+        const existingcart = await  cartSchema.findOne({ buyer_id: req.user.UserID,  product_id: id  });
+        if (existingcart) {
+            return res.status(400).send({ msg: "Product is already in your cart" });
+        }
+        const productdata=await productSchema.findOne({_id:id})
+        const data = await cartSchema.create({ buyer_id: req.user.UserID, quantity:1 ,product:productdata});
+
+        if (data) {
+            return res.status(200).send({ msg: "Added to cart" });
+        } else {
+            return res.status(500).send({ msg: "Unable to add data" });
+        }
+    } catch (error) {
+        return res.status(500).send({ msg: "Something went wrong" });
+    }
+}
+
+
+
+export async function displaycart(req, res) {
+    try {
+        const cartItems = await cartSchema.find({ buyer_id: req.user.UserID });
+        if (cartItems) {
+        return res.status(200).send({ cartItems });
+            
+        }else{
+            return res.status(200).send({msg:"error while creating"})
+        }
+    } catch (error) {
+        return res.status(500).send({ msg: "Something went wrong" });
+    }
+}
+
+
+export async function deletefromcart(req, res) {
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).send({ msg: "Product ID is required" });
+    }
+    try {
+        
+        const deletedData = await cartSchema.deleteOne({ _id: id });
+
+        if (deletedData) {
+            return res.status(200).send({ msg: "Product deleted from cart" });
+        } else {
+            return res.status(404).send({ msg: "Product not found in cart" });
+        }
+    } catch (error) {
+        return res.status(500).send({ msg: "Something went wrong" });
+    }
+}
+
+
+
+export async function quantity(req, res) {
+    const { id } = req.params;
+    const { input } = req.body; 
+    if (!id || input === undefined) {
+        return res.status(400).send({ msg: "Product ID and input value are required" });
+    }
+    try {
+        if (input) {
+            await cartSchema.updateOne({ _id: id }, { $inc: { quantity: 1 } });
+        } else {
+            const cartItem = await cartSchema.findOne({ _id: id });
+            if (cartItem.quantity <= 1) {
+                return res.status(400).send({ msg: "Minimum quantity is 1" });
+            }
+            await cartSchema.updateOne({ _id: id }, { $inc: { quantity: -1 } });
+        }
+        return res.status(200).send({ msg: "Quantity updated" });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({ msg: "Something went wrong" });
+    }
+}
+
+
+

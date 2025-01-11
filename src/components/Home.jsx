@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Home.scss';
+import Url from '../assets/root';
 import { Link } from 'react-router-dom';
 
 const HomePage = () => {
@@ -8,7 +9,7 @@ const HomePage = () => {
 
     const fetchData = async () => {
         try {
-            const res = await axios.get('http://localhost:3000/api/home', {
+            const res = await axios.get(`${Url}/home`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
             });
             if (res.status === 200) {

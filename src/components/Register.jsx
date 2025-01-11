@@ -3,7 +3,7 @@ import axios from 'axios';
 import './Register.scss'; 
 import { Link, useNavigate } from 'react-router-dom';
 import { TextField, Button, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
-
+import Url from '../assets/root';
 const Register = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -27,7 +27,7 @@ const Register = () => {
             return;
         }
         try {
-            const res = await axios.post('http://localhost:3000/api/register', formData);
+            const res = await axios.post(`${Url}/register`, formData);
             if (res.status === 200) {
                 alert('Registration successful');
                 navigate("/login");

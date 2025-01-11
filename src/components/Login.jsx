@@ -3,7 +3,7 @@ import axios from 'axios';
 import './Login.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Container } from '@mui/material';
-
+import Url from '../assets/root';
 const Login = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ email: '', pass: '' });
@@ -20,7 +20,7 @@ const Login = () => {
             return;
         }
         try {
-            const res = await axios.post("http://localhost:3000/api/login", formData);
+            const res = await axios.post(`${Url}/login`, formData);
             if (res.status === 200) {
                 alert("Login successful");
                 localStorage.setItem("token", res.data.token);

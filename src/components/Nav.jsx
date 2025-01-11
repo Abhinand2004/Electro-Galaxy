@@ -6,7 +6,7 @@ import logoImage from "../assets/logo.png"; // Import your logo here
 import { useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, IconButton, InputBase, Menu, MenuItem, Typography } from '@mui/material';
 import { Search as SearchIcon, AccountCircle } from '@mui/icons-material';
-
+import Url from '../assets/root';
 const Nav = () => {
     const navigate = useNavigate(); 
     const [showDropdown, setShowDropdown] = useState(null);
@@ -16,7 +16,7 @@ const Nav = () => {
 
     const fetchData = async () => { 
         try {
-            const res = await axios.get("http://localhost:3000/api/navdata", {
+            const res = await axios.get(`${Url}/navdata`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (res.status === 200) {

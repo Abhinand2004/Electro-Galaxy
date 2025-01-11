@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './BuyerProfile.scss';
-
+import Url from '../assets/root';
+import { Navigate, useNavigate } from 'react-router-dom';
 const BuyerProfile = () => {
+    const Navigate=useNavigate()
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({ username: '', email: '', phone: '' });
     const [newLocation, setNewLocation] = useState({
@@ -24,7 +26,7 @@ const BuyerProfile = () => {
 
     const fetchData = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/api/buyer", {
+            const res = await axios.get(`${Url}/buyer`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             setFormData(res.data.buyer);
@@ -35,7 +37,7 @@ const BuyerProfile = () => {
 
     const fetchAddresses = async () => {
         try {
-            const response = await axios.get("http://localhost:3000/api/displayaddress", {
+            const response = await axios.get(`${Url}/displayaddress`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
 
@@ -51,7 +53,7 @@ const BuyerProfile = () => {
 
     const saveProfile = async () => {
         try {
-            await axios.put("http://localhost:3000/api/editbuyer", formData, {
+            await axios.put(`${Url}/editbuyer`, formData, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             setIsEditing(false);
@@ -59,11 +61,14 @@ const BuyerProfile = () => {
             console.error("Error updating profile:", error);
         }
     };
+    const wishlist=()=>{
+        Navigate("/wishlist")
+    }
 
     const saveLocation = async () => {
         try {
             if (editLocation) {
-                await axios.put(`http://localhost:3000/api/editaddress/${editLocation._id}`, newLocation, {
+                await axios.put(`${Url}/editaddress/${editLocation._id}`, newLocation, {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 });
                 setEditLocation(null);
@@ -71,7 +76,7 @@ const BuyerProfile = () => {
                 if (newLocation.pincode && newLocation.locality && newLocation.address &&
                     newLocation.city && newLocation.state && newLocation.landmark) {
                     
-                        await axios.post("http://localhost:3000/api/address", newLocation, {
+                        await axios.post(`${Url}/address`, newLocation, {
                             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                         });
                 }else{
@@ -88,7 +93,7 @@ const BuyerProfile = () => {
 
     const deleteAddress = async (addressId) => {
         try {
-            await axios.delete(`http://localhost:3000/api/deleteaddress/${addressId}`);
+            await axios.delete(`${Url}/deleteaddress/${addressId}`);
             setAddresses((prevAddresses) => prevAddresses.filter(address => address._id !== addressId));
         } catch (error) {
             console.error("Error deleting address:", error);
@@ -105,7 +110,9 @@ const BuyerProfile = () => {
         setEditLocation(null);
         setShowLocationForm(true);
     };
-
+    const cart=()=>{
+        Navigate("/cart")
+    }
     useEffect(() => {
         fetchData();
         fetchAddresses();
@@ -163,8 +170,8 @@ const BuyerProfile = () => {
             <div className="buyer-profile-right">
                 <div className="buyer-actions">
                     <button onClick={handleAddLocation} className="buyer-add-location-btn">+</button>
-                    <button className="buyer-cart-btn">Cart</button>
-                    <button className="buyer-wishlist-btn">Wishlist</button>
+                    <button className="buyer-cart-btn" onClick={cart}>Cart</button>
+                    <button className="buyer-wishlist-btn" onClick={wishlist}>Wishlist</button>
                     <button className="buyer-orders-btn">My Orders</button>
                 </div>
                 <hr />

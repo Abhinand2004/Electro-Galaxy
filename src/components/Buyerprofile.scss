@@ -27,7 +27,6 @@
     }
   }
 
-  /* Responsive for smaller screens */
   @media (max-width: 768px) {
     .buyer-profile-left,
     .buyer-profile-right {
@@ -35,7 +34,7 @@
       margin-bottom: 20px;
     }
 
-    padding: 10px; /* Reduce padding on smaller screens */
+    padding: 10px; 
   }
 
   .buyer-profile-item {
@@ -121,7 +120,6 @@
     }
   }
 
-  /* Adjust buttons for mobile view */
   @media (max-width: 768px) {
     .buyer-edit-btn,
     .buyer-save-btn,
@@ -169,7 +167,6 @@
     }
   }
 
-  /* Adjust form for mobile view */
   .buyer-add-location-form {
     margin-top: 20px;
 
@@ -250,7 +247,7 @@
   .buyer-wishlist-btn,
   .buyer-orders-btn {
     padding: 12px 30px;
-    font-size: 16px; /* Increased font size */
+    font-size: 16px;
     width: auto;
     text-align: center;
     background-color: #ffffff;
