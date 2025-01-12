@@ -10,6 +10,8 @@ import { data } from "react-router-dom";
 import user from "./models/user.js";
 import cartSchema from "./models/cart.js"
 import product from "./models/product.js";
+import orderSchema from "./models/orders.js"
+import orderplaced from "./models/orderdData.js"
 const { sign } = pkg
 
 
@@ -553,6 +555,19 @@ export async function deletefromcart(req, res) {
     }
 }
 
+export async function deletecart(req,res) {
+    try {
+        const deletedata = await cartSchema.deleteMany({ buyer_id: req.user.UserID });
+        if (deletedata) {
+            console.log('Successfully deleted the cart items.');
+        } else {
+            console.log('No cart items found for this user.');
+        }
+    } catch (error) {
+        console.error('Error deleting cart items:');
+    }
+    }
+
 
 
 export async function quantity(req, res) {
@@ -580,3 +595,88 @@ export async function quantity(req, res) {
 
 
 
+export async function orderitems(req, res) {
+    try {
+        const cartItems = await cartSchema.find({ buyer_id: req.user.UserID });
+
+        if (!cartItems || cartItems.length === 0) {
+            return res.status(404).send({ message: 'No items found in the cart.' });
+        }
+
+        const order = await orderSchema.create({buyer_id: req.user.UserID, products: cartItems, });
+        return res.status(200).send({ msg:"successfully added"});
+    } catch (error) {
+        return res.status(500).send({message: 'An error occurred while creating the order.' });
+    }
+}
+
+export async function displayorders(req, res) {
+    try {
+        const orders = await orderSchema.find({ buyer_id: req.user.UserID });
+
+        if (!orders || orders.length === 0) {
+            return res.status(404).send({ message: 'No orders found for this user.' });
+        }
+        return res.status(200).send({ orders});
+    } catch (error) {
+        return res.status(500).send({ msg: 'An error occurred while fetching the orders.'});
+    }
+}
+
+// export async function cancelorder(req,res) {
+//     const{id}=req.params
+//     try{
+//         const cancelorder=orderSchema.deleteOne({})
+//     }catch(error){
+
+//     }
+// }
+
+
+
+export async function createsellerdata(req, res) {
+    const { id } = req.body;
+    if (!id) {
+        return res.status(400).send({ msg: 'Address ID is required.' });
+    }
+    try {
+        const orders = await cartSchema.find({ buyer_id: req.user.UserID });
+        const findaddress = await addressSchema.findOne({ _id: id });
+        if (!findaddress) {
+            return res.status(404).send({ msg: 'Address not found.' });
+        }
+        const sellerDataToCreate = orders.map(order => ({
+            buyer_id: req.user.UserID,
+            product: order,
+            seller_id: order.product.user_id,
+            address: findaddress 
+        }));
+
+        await orderplaced.insertMany(sellerDataToCreate);
+        return res.status(200).send({ msg: 'Seller data created successfully.' });
+    } catch (error) {
+        return res.status(500).send({ msg: `An error occurred while creating seller data: ` });
+    }
+}
+
+export async function decreesquantity(req, res) {
+    try {
+        const cart = await cartSchema.find({ buyer_id: req.user.UserID });
+
+        if (!cart ) {
+            return res.status(404).send('No orders found for this user.');
+        }
+        const data = cart.map((ct) => {
+            return productSchema.updateOne({ _id: ct.product._id }, { $inc: { quantity: -1 } } ); });
+
+        Promise.all(data)
+            .then(() => {
+                res.status(200).send('Product quantities decremented successfully');
+            })
+            .catch((error) => {
+                res.status(500).send('An error occurred while updating product quantities.');
+            });
+    } catch (error) {
+        res.status(500).send('An error occurred while updating product quantities.');
+    }
+}

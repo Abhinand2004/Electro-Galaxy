@@ -2,18 +2,20 @@ import React, { useEffect, useState } from 'react';
 import './Cart.scss';
 import axios from 'axios';
 import Url from '../assets/root';
-
+import { Navigate, useNavigate } from 'react-router-dom';
 const CartPage = () => {
+  const Navigate=useNavigate()
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  
-  // Fetch cart data from the backend
+  const [address, setAddress] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+
   const fetchcartdata = async () => {
     try {
       const res = await axios.get(`${Url}/displaycart`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
-      setCartItems(res.data.cartItems); // Adjust if needed based on the response
+      setCartItems(res.data.cartItems); 
     } catch (error) {
       console.error('Error fetching cart data:', error);
     } finally {
@@ -21,14 +23,13 @@ const CartPage = () => {
     }
   };
 
-  // Increment product quantity
   const increment = async (id) => {
     try {
       const res = await axios.post(`${Url}/quantity/${id}`, { input: true }, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       if (res.status === 200) {
-        fetchcartdata(); // Re-fetch the cart data to reflect updated quantity
+        fetchcartdata(); 
       }
     } catch (error) {
       console.error('Error incrementing quantity:', error);
@@ -36,14 +37,13 @@ const CartPage = () => {
     }
   };
 
-  // Decrement product quantity
   const decrement = async (id) => {
     try {
       const res = await axios.post(`${Url}/quantity/${id}`, { input: false }, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       if (res.status === 200) {
-        fetchcartdata(); // Re-fetch the cart data to reflect updated quantity
+        fetchcartdata();
       }
     } catch (error) {
       console.error('Error decrementing quantity:', error);
@@ -51,7 +51,6 @@ const CartPage = () => {
     }
   };
 
-  // Remove product from cart
   const onDelete = async (productId) => {
     try {
       const res = await axios.delete(`${Url}/deletecart/${productId}`, {
@@ -69,8 +68,82 @@ const CartPage = () => {
     }
   };
 
+  const buyeraddress = async () => {
+    try {
+      const res = await axios.get(`${Url}/displayaddress`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
+
+      if (res.status === 200) {
+        setAddress(res.data);
+      } else {
+        alert("Error fetching buyer address");
+      }
+    } catch (error) {
+      console.error("Error fetching buyer address:", error);
+      alert("An error occurred while fetching the address");
+    }
+  };
+
+  const createseller = async () => {
+    try {
+      const res = await axios.post(`${Url}/seller`, { id: selectedAddress } , {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
+    } catch (error) {
+      console.error("Error creating seller data:", error);
+      alert("An error occurred");
+    }
+  };
+  const decreesquantity = async () => {
+    try {
+      const res = await axios.put(`${Url}/decreesquantity`, {} , {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
+    } catch (error) {
+      console.error("Error decreesing product quantity:");
+      alert("Error decreesing product quantity");
+    }
+  };
+
+  const buynow = async () => {
+    try {
+      const res = await axios.post(`${Url}/order`, {}, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
+
+      if (res.status === 200) {
+        alert("Product added successfully");
+         createseller();
+         decreesquantity()
+         deletefullcart();
+        fetchcartdata()
+        Navigate("/success")
+      } else {
+        alert("Something went wrong");
+      }
+    } catch (error) {
+      alert("An error occurred");
+    }
+  };
+
+  const deletefullcart = async () => {
+    try {
+      const res = await axios.delete(`${Url}/wholedeletecart`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
+
+      if (res.status !== 200) {
+        alert("Unexpected response status");
+      }
+    } catch (error) {
+      alert("An error occurred while deleting the cart");
+    }
+  };
+
   useEffect(() => {
     fetchcartdata();
+    buyeraddress();
   }, []);
 
   if (loading) {
@@ -79,6 +152,14 @@ const CartPage = () => {
 
   // Total calculation
   const totalAmount = cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+  const shippingMessage = totalAmount > 1000 ? (
+    <p>You saved ₹50 on shipping!</p>
+  ) : (
+    <p>₹50 shipping charge applied</p>
+  );
+
+  console.log(selectedAddress);
+  
 
   return (
     <div className="cart-page">
@@ -90,7 +171,7 @@ const CartPage = () => {
               <div className="cart-info">
                 <h2>{cartItem.product.productName}</h2>
                 <p>{cartItem.product.category}</p>
-                <p>Price: ${cartItem.product.price}</p>
+                <p>Price: ${(cartItem.product.price) * (cartItem.quantity)}</p>
                 <div className="cart-controls">
                   <button onClick={() => decrement(cartItem._id)}>-</button>
                   <span>{cartItem.quantity}</span>
@@ -106,15 +187,21 @@ const CartPage = () => {
       <div className="cart-right">
         <h2>Your Orders</h2>
         <p>Total Amount: ${totalAmount}</p>
+        {shippingMessage}
         <div className="address-check">
-          <label>
-            <input type="checkbox" /> Address 1
-          </label>
-          <label>
-            <input type="checkbox" /> Address 2
-          </label>
+          {address.map((addr) => (
+            <label key={addr._id}>
+              <input
+                type="radio"
+                name="address"
+                value={addr._id}
+                onChange={() => setSelectedAddress(addr._id)}
+              />
+              {`${addr.address}, ${addr.locality}, ${addr.city}, ${addr.state} - ${addr.pincode}. Landmark: ${addr.landmark}. Place: ${addr.place}`}
+            </label>
+          ))}
         </div>
-        <button className="buy-now">Buy Now</button>
+        <button className="buy-now" onClick={buynow}>Buy Now</button>
       </div>
     </div>
   );

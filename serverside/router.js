@@ -32,5 +32,12 @@ router.route("/addtocart").post(Auth,rh.addtocart)
 router.route("/displaycart").get(Auth,rh.displaycart)
 router.route("/deletecart/:id").delete(rh.deletefromcart)
 router.route("/quantity/:id").post(Auth,rh.quantity)
+router.route("/order").post(Auth,rh.orderitems)
+router.route("/orderdisplay").get(Auth,rh.displayorders)
+router.route("/wholedeletecart").delete(Auth,rh.deletecart)
+router.route("/seller").post(Auth,rh.createsellerdata)
+router.route("/decreesquantity").put(Auth,rh.decreesquantity)
+
+
 
 export default router; 

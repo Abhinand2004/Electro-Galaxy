@@ -13,6 +13,9 @@ import ChangePassword from "./components/Passchange"
 import ProductPage from "./components/Product"
 import Wishlistdisplay from "./components/Wishlist"
 import CartPage from "./components/Cart"
+import Orderspage from "./components/Orders"
+import Success from "./components/Success"
+
 
 function App() {
 
@@ -35,6 +38,10 @@ function App() {
       <Route path="/product/:id" element={<ProductPage/>} />
       <Route path="/wishlist" element={<Wishlistdisplay/>} />
       <Route path="/cart" element={<CartPage/>} />
+      <Route path="/orders" element={<Orderspage/>} />
+      <Route path="/success" element={<Success/>} />
+
+
 
 
 

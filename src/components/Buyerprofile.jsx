@@ -113,6 +113,9 @@ const BuyerProfile = () => {
     const cart=()=>{
         Navigate("/cart")
     }
+    const order=()=>{
+        Navigate("/orders")
+    }
     useEffect(() => {
         fetchData();
         fetchAddresses();
@@ -172,7 +175,7 @@ const BuyerProfile = () => {
                     <button onClick={handleAddLocation} className="buyer-add-location-btn">+</button>
                     <button className="buyer-cart-btn" onClick={cart}>Cart</button>
                     <button className="buyer-wishlist-btn" onClick={wishlist}>Wishlist</button>
-                    <button className="buyer-orders-btn">My Orders</button>
+                    <button className="buyer-orders-btn" onClick={order}>My Orders</button>
                 </div>
                 <hr />
                 {showLocationForm && (
