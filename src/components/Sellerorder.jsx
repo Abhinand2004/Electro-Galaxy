@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './SellerOrders.css'; // External CSS for styling
+import './SellerOrders.css';
 import Url from '../assets/root';
 
 const SellerOrders = () => {
@@ -29,14 +29,27 @@ const SellerOrders = () => {
        const res=     await axios.put(`${Url}/confirmorder/${orderId}`, { confirm: true });
 
        if (res.status===200) {
+           sendemail(orderId)
         fetchOrders();
-        
        }else{
         console.log("error");
         
        }
         } catch (error) {
             console.error('Error confirming order:', error);
+        }
+    };
+    const sendemail = async (orderId) => {
+        try {
+       const res=  await axios.post(`${Url}/sendconfirm/${orderId}`, {  });
+       if (res.status===200) {
+        alert("email sented")
+       }else{
+        console.log("error sending email");
+        
+       }
+        } catch (error) {
+            console.error('Error sending email:', error);
         }
     };
 console.log(orders);

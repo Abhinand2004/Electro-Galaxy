@@ -732,3 +732,53 @@ export async function updateconfirm(req, res) {
         return res.status(500).send({ msg: 'An error occurred while updating order confirmation status.' });
     }
 }
+export async function sendmessagetobuyer(req, res) {
+    console.log(req.params);
+    
+    const { id } = req.params;
+    try {
+        const order = await orderplaced.findOne({ _id: id });
+        const buyer = await userSchema.findOne({ _id: order.buyer_id });
+        const email = buyer.email;
+        console.log(email);
+        
+        if (!email) {
+            return res.status(500).send({ msg: "Email field is empty" });
+        }
+
+        const info = await transporter.sendMail({
+            from: 'abhinandc293@gmail.com', 
+            to: email, 
+            subject: "Order Confirmation - ElectroGalaxy", 
+            text: "Order confirmed. Your product will be delivered within one week. Thank you for shopping at ElectroGalaxy.", 
+            html: `
+                <div style="font-family: 'Arial', sans-serif; text-align: center; background-color: #f4f4f4; padding: 20px;">
+                    <div style="background-color: #ffffff; border-radius: 10px; padding: 20px; max-width: 600px; margin: auto; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">
+                        <h1 style="color: #2c3e50; font-size: 24px; margin-bottom: 10px;">Order Confirmed!</h1>
+                        <p style="font-size: 18px; color: #34495e; margin-bottom: 20px;">Hello ${buyer.username},</p>
+                        <p style="font-size: 16px; color: #7f8c8d; line-height: 1.6;">
+                            We are excited to inform you that your order has been confirmed! Your product will be delivered within one week. 
+                        </p>
+                        <p style="font-size: 16px; color: #7f8c8d; line-height: 1.6;">
+                            Thank you for choosing ElectroGalaxy for your shopping needs. We hope you enjoy your purchase!
+                        </p>
+                        <div style="margin-top: 30px;">
+                            <a href="http://localhost:5173/order" 
+                               style="display: inline-block; padding: 12px 30px; font-size: 16px; color: #ffffff; background-color: #e74c3c; text-decoration: none; border-radius: 5px;">
+                               View Your Order
+                            </a>
+                        </div>
+                        <p style="font-size: 14px; color: #bdc3c7; margin-top: 20px;">Thank you for shopping with us!</p>
+                    </div>
+                </div>
+            `,
+        });
+
+        console.log("Message sent: %s", info.messageId);
+        res.status(200).send({ msg: "Confirmation email sent" });
+
+    } catch (error) {
+        console.error('Error sending confirmation email:', error);
+        res.status(500).send({ msg: 'An error occurred while sending confirmation email' });
+    }
+}
