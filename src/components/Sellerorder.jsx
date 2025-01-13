@@ -39,6 +39,23 @@ const SellerOrders = () => {
             console.error('Error confirming order:', error);
         }
     };
+    const handlereject = async (orderId) => {
+        sendrejuctmail(orderId)
+
+        try {
+       const res=     await axios.delete(`${Url}/rejectorder/${orderId}`);
+
+       if (res.status===200) {
+        fetchOrders();
+        alert("deleted")
+       }else{
+        console.log("error");
+        
+       }
+        } catch (error) {
+            console.error('Error confirming order:', error);
+        }
+    };
     const sendemail = async (orderId) => {
         try {
        const res=  await axios.post(`${Url}/sendconfirm/${orderId}`, {  });
@@ -50,6 +67,19 @@ const SellerOrders = () => {
        }
         } catch (error) {
             console.error('Error sending email:', error);
+        }
+    };
+    const sendrejuctmail = async (orderId) => {
+        try {
+       const res=  await axios.post(`${Url}/rejectmsg/${orderId}`, {  });
+       if (res.status===200) {
+        alert("email sented")
+       }else{
+        console.log("error sending reject email");
+        
+       }
+        } catch (error) {
+            console.error('Error sending reject email:', error);
         }
     };
 console.log(orders);
@@ -81,7 +111,7 @@ console.log(orders);
                                     ) : (
                                         <>
                                         <button className="confirm-btn" onClick={() => handleConfirm(order._id)}>Confirm</button>
-                                        <button className="reject-btn">Reject</button>
+                                        <button className="reject-btn"  onClick={() => handlereject(order._id)}>Reject</button>
                                         </>                                        
                                     )}
                                 </td>

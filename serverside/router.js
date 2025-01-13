@@ -39,7 +39,10 @@ router.route("/seller").post(Auth,rh.createsellerdata)
 router.route("/decreesquantity").put(Auth,rh.decreesquantity)
 router.route("/sellerorders").get(Auth,rh.sellerorders)
 router.route("/confirmorder/:id").put(rh.updateconfirm)
+router.route("/rejectorder/:id").delete(rh.rejectorder)
 router.route("/sendconfirm/:id").post(rh.sendmessagetobuyer)
+router.route("/rejectmsg/:id").post(rh.sendrejuctedmessage)
+
 
 
 

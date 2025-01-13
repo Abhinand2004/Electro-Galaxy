@@ -624,14 +624,17 @@ export async function displayorders(req, res) {
     }
 }
 
-// export async function cancelorder(req,res) {
-//     const{id}=req.params
-//     try{
-//         const cancelorder=orderSchema.deleteOne({})
-//     }catch(error){
 
-//     }
-// }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -646,19 +649,86 @@ export async function createsellerdata(req, res) {
         if (!findaddress) {
             return res.status(404).send({ msg: 'Address not found.' });
         }
+
         const sellerDataToCreate = orders.map(order => ({
             buyer_id: req.user.UserID,
             product: order,
             seller_id: order.product.user_id,
-            address: findaddress ,
-            confirmorder:false
+            address: findaddress,
+            confirmorder: false
         }));
+
         await orderplaced.insertMany(sellerDataToCreate);
-        return res.status(200).send({ msg: 'Seller data created successfully.' });
+
+        sellerDataToCreate.map(async (order) => {
+            const seller = await userSchema.findOne({ _id: order.seller_id });
+            const buyerdata=await userSchema.findOne({_id:req.user.UserID})
+            if (seller && seller.email) {
+                const email = seller.email;
+
+                // Email content
+                const emailContent = `
+                    <div style="font-family: 'Arial', sans-serif; text-align: center; background-color: #f4f4f4; padding: 20px;">
+                        <div style="background-color: #ffffff; border-radius: 10px; padding: 20px; max-width: 600px; margin: auto; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">
+                            <h1 style="color: #2c3e50; font-size: 24px; margin-bottom: 10px;">New Order from ${buyerdata.username}</h1>
+                            <p style="font-size: 18px; color: #34495e; margin-bottom: 20px;">Hello ${seller.username},</p>
+                            <p style="font-size: 16px; color: #7f8c8d; line-height: 1.6;">
+                                You have received a new order for your product: <strong>${order.product.product.productName}</strong> from ${buyerdata.username}.
+                            </p>
+                            <p style="font-size: 16px; color: #7f8c8d; line-height: 1.6;">
+                                The shipping address is: <br/> ${findaddress.address}, ${findaddress.city}, ${findaddress.locality}
+                            </p>
+                            <p style="font-size: 14px; color: #bdc3c7; margin-top: 20px;">Thank you for your continued partnership with ElectroGalaxy!</p>
+                        </div>
+                    </div>
+                `;
+
+             
+                const info = await transporter.sendMail({
+                    from: 'abhinandc293@gmail.com',
+                    to: email,
+                    subject: 'New Order Notification - ElectroGalaxy',
+                    html: emailContent,
+                });
+
+                console.log("Message sent to seller: %s", info.messageId);
+            }
+        });
+
+        return res.status(200).send({ msg: 'Seller data created and notification emails sent successfully.' });
     } catch (error) {
-        return res.status(500).send({ msg: `An error occurred while creating seller data: ` });
+        console.error('Error occurred:', error);
+        return res.status(500).send({ msg: 'An error occurred while creating seller data and sending email notifications.' });
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export async function decreesquantity(req, res) {
     try {
@@ -685,7 +755,7 @@ export async function decreesquantity(req, res) {
 
 export async function sellerorders(req, res) {
     try {
-        const orders = await orderplaced.find({ buyer_id: req.user.UserID });
+        const orders = await orderplaced.find({ seller_id: req.user.UserID });
         
         const dataPromises = orders.map(async (order) => {
             const asd = await userSchema.findOne({ _id: order.buyer_id });
@@ -711,6 +781,7 @@ export async function sellerorders(req, res) {
     }
 }
 
+
 export async function updateconfirm(req, res) {
     console.log(req.params);
     
@@ -732,9 +803,33 @@ export async function updateconfirm(req, res) {
         return res.status(500).send({ msg: 'An error occurred while updating order confirmation status.' });
     }
 }
-export async function sendmessagetobuyer(req, res) {
+
+
+export async function rejectorder(req, res) {
     console.log(req.params);
     
+    try {
+        const { id } = req.params; 
+        if (!id) {
+            return res.status(400).send({ msg: 'Product ID is required.' });
+        }
+
+        const updateResult = await orderplaced.deleteOne({ _id: id });
+
+        if (!updateResult) {
+            return res.status(404).send({ msg: 'error while deleting.' });
+        }
+
+        return res.status(200).send({ msg: 'Order deleted .' });
+    } catch (error) {
+        return res.status(500).send({ msg: 'An error occurred while deleting' });
+    }
+}
+
+
+
+export async function sendmessagetobuyer(req, res) {
+    console.log(req.params); 
     const { id } = req.params;
     try {
         const order = await orderplaced.findOne({ _id: id });
@@ -780,5 +875,56 @@ export async function sendmessagetobuyer(req, res) {
     } catch (error) {
         console.error('Error sending confirmation email:', error);
         res.status(500).send({ msg: 'An error occurred while sending confirmation email' });
+    }
+}
+
+
+export async function sendrejuctedmessage(req, res) {
+    console.log(req.params); 
+    const { id } = req.params;
+    try {
+        const order = await orderplaced.findOne({ _id: id });
+        const buyer = await userSchema.findOne({ _id: order.buyer_id });
+        const email = buyer.email;
+        console.log(email);
+        
+        if (!email) {
+            return res.status(500).send({ msg: "Email field is empty" });
+        }
+
+        const info = await transporter.sendMail({
+            from: 'abhinandc293@gmail.com', 
+            to: email, 
+            subject: "Order Rejected - ElectroGalaxy", 
+            text: "Unfortunately, your order has been rejected. Please check your account for more details.",
+            html: `
+                <div style="font-family: 'Arial', sans-serif; text-align: center; background-color: #f4f4f4; padding: 20px;">
+                    <div style="background-color: #ffffff; border-radius: 10px; padding: 20px; max-width: 600px; margin: auto; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">
+                        <h1 style="color: #c0392b; font-size: 24px; margin-bottom: 10px;">Order Rejected</h1>
+                        <p style="font-size: 18px; color: #34495e; margin-bottom: 20px;">Hello ${buyer.username},</p>
+                        <p style="font-size: 16px; color: #7f8c8d; line-height: 1.6;">
+                            We're sorry to inform you that your order has been rejected. Please review the details of your order or contact our support team for further assistance.
+                        </p>
+                        <p style="font-size: 16px; color: #7f8c8d; line-height: 1.6;">
+                            We apologize for the inconvenience. You can visit your account page for more information on your order status.
+                        </p>
+                        <div style="margin-top: 30px;">
+                            <a href="http://localhost:5173/order" 
+                               style="display: inline-block; padding: 12px 30px; font-size: 16px; color: #ffffff; background-color: #e74c3c; text-decoration: none; border-radius: 5px;">
+                               View Your Order Details
+                            </a>
+                        </div>
+                        <p style="font-size: 14px; color: #bdc3c7; margin-top: 20px;">Thank you for your understanding, and we hope to serve you again soon.</p>
+                    </div>
+                </div>
+            `,
+        });
+
+        console.log("Rejection message sent: %s", info.messageId);
+        res.status(200).send({ msg: "Rejection email sent" });
+
+    } catch (error) {
+        console.error('Error sending rejection email:', error);
+        res.status(500).send({ msg: 'An error occurred while sending rejection email' });
     }
 }
