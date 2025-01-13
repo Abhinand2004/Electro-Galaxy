@@ -3,7 +3,8 @@ const orderplaced = new mongoose.Schema({
     seller_id: { type: String },  
     buyer_id: { type: String },
     address:{type:Object},
-    product:{type:Object}
+    product:{type:Object},
+    confirmorder:{type:Boolean}
     
 });
 

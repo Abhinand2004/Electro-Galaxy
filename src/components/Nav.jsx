@@ -4,14 +4,13 @@ import './Nav.scss';
 import profileImage from "../assets/profile.jpg";
 import logoImage from "../assets/logo.png"; // Import your logo here
 import { useNavigate } from 'react-router-dom';
-import { AppBar, Toolbar, IconButton, InputBase, Menu, MenuItem, Typography } from '@mui/material';
-import { Search as SearchIcon, AccountCircle } from '@mui/icons-material';
 import Url from '../assets/root';
+
 const Nav = () => {
     const navigate = useNavigate(); 
-    const [showDropdown, setShowDropdown] = useState(null);
+    const [showDropdown, setShowDropdown] = useState(false);
     const [token, setToken] = useState(localStorage.getItem('token'));
-    const [user, setUser ] = useState('');
+    const [user, setUser] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
     const fetchData = async () => { 
@@ -40,67 +39,72 @@ const Nav = () => {
     };
 
     const handleProfileNavigation = () => { 
-        if (user.acctype === "buyer") {
+     
             navigate("/bprofile");
-        } else {
-            navigate("/sprofile");
-        }
-        setShowDropdown(null); // Close dropdown after navigating
-    };
-
-    const handleProfileClick = (event) => {
-        setShowDropdown(event.currentTarget);
+       
+        setShowDropdown(false); 
     };
 
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
     };
 
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        console.log("Search query:", searchQuery);
+    };
+
     return (
-        <AppBar position="static">
-            <Toolbar className="navbar">
+        <nav className="navbar">
+            <div className="left-section">
                 <div className="logo">
                     <img src={logoImage} alt="Electro-Galaxy Logo" className="logo-img" />
                 </div>
 
-                <div className="search-bar">
-                    <div className="search-icon">
-                        <SearchIcon />
-                    </div>
-                    <InputBase 
+                
+            </div>
+            <div className="search-bar">
+                    <input 
+                        type="text" 
+                        placeholder="Search..." 
+                        className="search-input" 
                         value={searchQuery} 
                         onChange={handleSearchChange} 
-                        placeholder="Search..." 
-                        className="search-input"
+                        onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit(e)} 
                     />
                 </div>
+            <div className="nav-links">
+                <a href="/" className="nav-item">Home</a>
+                <a href="/cart" className="nav-item">Cart</a>
+                <a href="/wishlist" className="nav-item">Wishlist</a>
+                {user.acctype === "seller" && (
+ <>
+ <a href="/sprofile" className="nav-item">Seller Profile</a>
+ <a href="/sellerorders" className="nav-item">Orders</a>
+</>                )}
+            </div>
 
-                <div className="right-section">
-                    {!token ? (
-                        <button className="login-btn" onClick={() => window.location.href = '/login'}>Login</button>
-                    ) : (
-                        <div className="profile-container">
-                            <span className="username">{user.username}</span>
-                            <IconButton onClick={handleProfileClick}>
-                                <img
-                                    src={profileImage} 
-                                    className="profile-img"
-                                    alt="Profile"
-                                />
-                            </IconButton>
-                            <Menu
-                                anchorEl={showDropdown}
-                                open={Boolean(showDropdown)}
-                                onClose={() => setShowDropdown(null)}
-                            >
-                                <MenuItem onClick={handleProfileNavigation}>Profile</MenuItem> 
-                                <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                            </Menu>
+            <div className="right-section">
+                {!token ? (
+                    <button className="login-btn" onClick={() => window.location.href = '/login'}>Login</button>
+                ) : (
+                    <div className="profile-container">
+                        <span className="username">{user.username}</span>
+                        <div className="profile-img-container" onClick={() => setShowDropdown(!showDropdown)}>
+                            <img src={profileImage} alt="Profile" className="profile-img" />
                         </div>
-                    )}
-                </div>
-            </Toolbar>
-        </AppBar>
+                        {showDropdown && (
+                            <div className="dropdown-menu">
+                                <button onClick={handleProfileNavigation}>
+                                   profile
+                                </button>
+                                <button onClick={handleLogout}>Logout</button>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
+        </nav>
     );
 };
 

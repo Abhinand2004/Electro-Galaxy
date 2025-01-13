@@ -37,6 +37,8 @@ router.route("/orderdisplay").get(Auth,rh.displayorders)
 router.route("/wholedeletecart").delete(Auth,rh.deletecart)
 router.route("/seller").post(Auth,rh.createsellerdata)
 router.route("/decreesquantity").put(Auth,rh.decreesquantity)
+router.route("/sellerorders").get(Auth,rh.sellerorders)
+router.route("/confirmorder/:id").put(rh.updateconfirm)
 
 
 

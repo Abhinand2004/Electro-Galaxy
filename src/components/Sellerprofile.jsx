@@ -80,21 +80,8 @@ const SellerProfile = () => {
           <Button variant="contained" color="primary" onClick={() => setIsAdding(true)}>Add Company</Button>
         ) : isAdding ? (
           <div className="form-group">
-            <TextField
-              label="Company Name"
-              name="companyname"
-              value={companyDetails.companyname}
-              onChange={handleInputChange}
-              variant="outlined"
-              fullWidth
-            />
-            <TextField
-              label="Location"
-              name="location"
-              value={companyDetails.location}
-              onChange={handleInputChange}
-              variant="outlined"
-              fullWidth
+            <TextField label="Company Name"name="companyname" value={companyDetails.companyname}onChange={handleInputChange}variant="outlined"fullWidth/>
+            <TextField label="Location"name="location"value={companyDetails.location}onChange={handleInputChange}variant="outlined"fullWidth
             />
             <div className="form-buttons">
               <Button variant="contained" color="success" onClick={handleSaveAdd}>Save</Button>

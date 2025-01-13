@@ -15,6 +15,7 @@ import Wishlistdisplay from "./components/Wishlist"
 import CartPage from "./components/Cart"
 import Orderspage from "./components/Orders"
 import Success from "./components/Success"
+import SellerOrders from "./components/Sellerorder"
 
 
 function App() {
@@ -40,6 +41,8 @@ function App() {
       <Route path="/cart" element={<CartPage/>} />
       <Route path="/orders" element={<Orderspage/>} />
       <Route path="/success" element={<Success/>} />
+      <Route path="/sellerorders" element={<SellerOrders/>} />
+
 
 
 

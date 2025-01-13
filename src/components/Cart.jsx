@@ -80,7 +80,6 @@ const CartPage = () => {
         alert("Error fetching buyer address");
       }
     } catch (error) {
-      console.error("Error fetching buyer address:", error);
       alert("An error occurred while fetching the address");
     }
   };
@@ -158,7 +157,7 @@ const CartPage = () => {
     <p>₹50 shipping charge applied</p>
   );
 
-  console.log(selectedAddress);
+  // console.log(selectedAddress);
   
 
   return (

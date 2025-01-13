@@ -12,6 +12,7 @@ import cartSchema from "./models/cart.js"
 import product from "./models/product.js";
 import orderSchema from "./models/orders.js"
 import orderplaced from "./models/orderdData.js"
+import address from "./models/address.js";
 const { sign } = pkg
 
 
@@ -252,7 +253,7 @@ export async function buyerdetails(req, res) {
     try {
         const buyer = await userSchema.findOne({ _id: req.user.UserID });
         
-        if (buyer && buyer.acctype === "buyer") {
+        if (buyer ) {
             return res.status(200).send({ buyer });
         } else {
             return res.status(500).send({ msg: "You are not a buyer" });
@@ -297,13 +298,13 @@ export async function addAddress(req, res) {
 export async function displayaddress(req, res) {
     try {
         const addresses = await addressSchema.find({ user_id: req.user.UserID });
-        if (!addresses.length) {
-            return res.status(200).json({ msg: 'No addresses found', addresses: [] });
+        if (!addresses) {
+            return res.status(500).send({ msg: 'No addresses found'});
         }
-        return res.status(200).json(addresses);
+        return res.status(200).send(addresses);
     } catch (error) {
         console.error("Error fetching addresses:", error);
-        return res.status(500).json({ msg: 'Error fetching addresses' });
+        return res.status(500).send({ msg: 'Error fetching addresses' });
     }
 }
 
@@ -649,9 +650,9 @@ export async function createsellerdata(req, res) {
             buyer_id: req.user.UserID,
             product: order,
             seller_id: order.product.user_id,
-            address: findaddress 
+            address: findaddress ,
+            confirmorder:false
         }));
-
         await orderplaced.insertMany(sellerDataToCreate);
         return res.status(200).send({ msg: 'Seller data created successfully.' });
     } catch (error) {
@@ -662,21 +663,72 @@ export async function createsellerdata(req, res) {
 export async function decreesquantity(req, res) {
     try {
         const cart = await cartSchema.find({ buyer_id: req.user.UserID });
-
-        if (!cart ) {
+        
+        if (!cart) {
             return res.status(404).send('No orders found for this user.');
         }
-        const data = cart.map((ct) => {
-            return productSchema.updateOne({ _id: ct.product._id }, { $inc: { quantity: -1 } } ); });
 
-        Promise.all(data)
-            .then(() => {
-                res.status(200).send('Product quantities decremented successfully');
-            })
-            .catch((error) => {
-                res.status(500).send('An error occurred while updating product quantities.');
-            });
+        const data = cart.map((ct) => {
+            const qty = ct.quantity; 
+            return productSchema.updateOne({ _id: ct.product._id }, { $inc: { quantity: -qty } });
+        });
+
+        await Promise.all(data);
+
+        res.status(200).send('Product quantities decremented successfully');
     } catch (error) {
         res.status(500).send('An error occurred while updating product quantities.');
+    }
+}
+
+
+
+export async function sellerorders(req, res) {
+    try {
+        const orders = await orderplaced.find({ buyer_id: req.user.UserID });
+        
+        const dataPromises = orders.map(async (order) => {
+            const asd = await userSchema.findOne({ _id: order.buyer_id });
+            return {
+                buyer_id: order.buyer_id,
+                address: order.address,
+                product: order.product,
+                confirmorder: order.confirmorder,
+                buyername: asd.username,
+                _id:order._id
+            };
+        });
+
+        const data = await Promise.all(dataPromises);
+        
+        if (data) {
+            return res.status(200).send({ data });
+        } else {
+            return res.status(500).send({ msg: "Can't get the data" });
+        }
+    } catch (error) {
+        return res.status(500).send({ msg: 'An error occurred while fetching seller data.' });
+    }
+}
+
+export async function updateconfirm(req, res) {
+    console.log(req.params);
+    
+    try {
+        const { id } = req.params; 
+        if (!id) {
+            return res.status(400).send({ msg: 'Product ID is required.' });
+        }
+
+        const updateResult = await orderplaced.updateOne({ _id: id },{ $set: { confirmorder: true} });
+
+        if (!updateResult) {
+            return res.status(404).send({ msg: 'Order not found or already updated.' });
+        }
+
+        return res.status(200).send({ msg: 'Order confirmation status updated successfully.' });
+    } catch (error) {
+        console.error('Error updating order confirmation status:', error);
+        return res.status(500).send({ msg: 'An error occurred while updating order confirmation status.' });
     }
 }
