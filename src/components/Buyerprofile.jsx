@@ -128,12 +128,7 @@ const BuyerProfile = () => {
                 <div className="buyer-profile-item">
                     <label>Username:</label>
                     {isEditing ? (
-                        <input
-                            type="text"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleChange}
-                        />
+                        <input  type="text" name="username" value={formData.username} onChange={handleChange} />
                     ) : (
                         <span>{formData.username}</span>
                     )}
@@ -141,12 +136,7 @@ const BuyerProfile = () => {
                 <div className="buyer-profile-item">
                     <label>Email:</label>
                     {isEditing ? (
-                        <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                        />
+                        <input type="email" name="email" value={formData.email} onChange={handleChange} />
                     ) : (
                         <span>{formData.email}</span>
                     )}
@@ -154,12 +144,7 @@ const BuyerProfile = () => {
                 <div className="buyer-profile-item">
                     <label>Phone:</label>
                     {isEditing ? (
-                        <input
-                            type="tel"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                        />
+                        <input type="tel" name="phone" value={formData.phone} onChange={handleChange} />
                     ) : (
                         <span>{formData.phone}</span>
                     )}
@@ -187,52 +172,23 @@ const BuyerProfile = () => {
                             </div>
                             <div className="buyer-profile-item">
                                 <label>Locality</label>
-                                <input
-                                    type="text"
-                                    name="locality"
-                                    value={newLocation.locality}
-                                    onChange={handleLocationChange}
-                                
-                                />
+                                <input type="text"  name="locality" value={newLocation.locality} onChange={handleLocationChange}/>
                             </div>
                             <div className="buyer-profile-item">
                                 <label>Address</label>
-                                <input
-                                    type="text"
-                                    name="address"
-                                    value={newLocation.address}
-                                    onChange={handleLocationChange}
-                                />
+                                <input type="text" name="address" value={newLocation.address}   onChange={handleLocationChange} />
                             </div>
                             <div className="buyer-profile-item">
                                 <label>City</label>
-                                <input
-                                    type="text"
-                                    name="city"
-                                    value={newLocation.city}
-                                    onChange={handleLocationChange}
-                                
-                                />
+                                <input   type="text" name="city" value={newLocation.city} onChange={handleLocationChange}  />
                             </div>
                             <div className="buyer-profile-item">
                                 <label>State</label>
-                                <input
-                                    type="text"
-                                    name="state"
-                                    value={newLocation.state}
-                                    onChange={handleLocationChange}
-                            
-                                />
+                                <input type="text" name="state" value={newLocation.state}  onChange={handleLocationChange} />
                             </div>
                             <div className="buyer-profile-item">
                                 <label>Landmark</label>
-                                <input
-                                    type="text"
-                                    name="landmark"
-                                    value={newLocation.landmark}
-                                    onChange={handleLocationChange}
-                                
-                                />
+                                <input type="text" name="landmark" value={newLocation.landmark} onChange={handleLocationChange} />
                             </div>
                         </div>
                         <div className="buyer-form-row">
@@ -241,13 +197,7 @@ const BuyerProfile = () => {
                                 Home
                             </label>
                             <label>
-                                <input
-                                    type="radio"
-                                    name="place"
-                                    value="work"
-                                    checked={newLocation.place === 'work'}
-                                    onChange={handleLocationChange}
-                                />
+                                <input  type="radio" name="place" value="work" checked={newLocation.place === 'work'} onChange={handleLocationChange} />
                                 Work
                             </label>
                         </div>

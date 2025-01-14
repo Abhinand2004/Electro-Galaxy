@@ -60,6 +60,16 @@ body {
       display: flex;
       flex-direction: column;
       margin-bottom: 20px;
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(67, 66, 66, 0.1);
+      transition: box-shadow 0.3s;
+
+      &:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
 
       label {
         margin-bottom: 10px;
@@ -67,18 +77,26 @@ body {
         color: $text-color-dark;
         display: flex;
         align-items: center;
+        padding: 5px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: $white-color;
+        }
 
         input[type="radio"] {
-          appearance: none;
-          -webkit-appearance: none;
-          width: 20px;
-          height: 20px;
-          border: 2px solid $primary-color;
-          border-radius: 50%;
-          outline: none;
-          cursor: pointer;
-          margin-right: 10px;
-          position: relative;
+        	appearance: none;
+	-webkit-appearance: none;
+	width: 20px;
+	height: 20px;
+	border: 1px solid #353232;
+	border-radius: 50%;
+	margin-right: 10px;
+	background-color: transparent;
+	position: relative;
+	top: 6px;
 
           &:checked::before {
             content: "";
@@ -108,7 +126,7 @@ body {
       transition: background-color 0.3s;
 
       &:hover {
-        background-color: darken($success-color, 10%);
+        background-color: ($success-color, 10%);
       }
     }
   }
@@ -173,7 +191,7 @@ body {
           color: $dark-color;
 
           &:hover {
-            background-color: lighten($light-color, 10%);
+            background-color: ($light-color, 10%);
           }
         }
 
@@ -196,7 +214,7 @@ body {
         font-family: 'Roboto', sans-serif;
 
         &:hover {
-          background-color: darken($error-color, 10%);
+          background-color: ($error-color, 10%);
         }
       }
     }
@@ -208,6 +226,30 @@ body {
     .cart-left, .cart-right {
       flex: none;
       width: 100%;
+    }
+
+    .cart-card {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      img {
+        width: 100%;
+        height: auto;
+        margin-bottom: 15px;
+      }
+
+      .cart-info {
+        align-items: center;
+
+        .cart-controls {
+          justify-content: center;
+        }
+
+        .remove-btn {
+          align-self: center;
+        }
+      }
     }
   }
 }

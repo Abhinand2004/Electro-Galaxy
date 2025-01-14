@@ -96,7 +96,11 @@ button {
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 992px) {
+    .seller-orders-page {
+        padding: 15px;
+    }
+
     .orders-table th, .orders-table td {
         padding: 8px;
     }
@@ -105,15 +109,15 @@ button {
         font-size: 14px;
         padding: 6px 12px;
     }
-
-    .seller-orders-page {
-        padding: 15px;
-    }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 768px) {
+    .seller-orders-page {
+        padding: 10px;
+    }
+
     .orders-table th, .orders-table td {
-        font-size: 12px;
+        padding: 6px;
     }
 
     button {
@@ -121,7 +125,58 @@ button {
         padding: 5px 10px;
     }
 
+    .seller-orders-page h1 {
+        font-size: 1.5rem;
+    }
+
+    .orders-table th, .orders-table td {
+        font-size: 0.9rem;
+    }
+}
+
+@media screen and (max-width: 576px) {
     .seller-orders-page {
-        padding: 10px;
+        padding: 5px;
+    }
+
+    .orders-table th, .orders-table td {
+        padding: 4px;
+    }
+
+    button {
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+
+    .seller-orders-page h1 {
+        font-size: 1.2rem;
+    }
+
+    .orders-table th, .orders-table td {
+        font-size: 0.75rem;
+    }
+
+    .orders-table {
+        overflow-x: auto;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .seller-orders-page {
+        padding: 5px;
+    }
+
+    .orders-table th, .orders-table td {
+        padding: 2px;
+        font-size: 0.6rem;
+    }
+
+    button {
+        font-size: 8px;
+        padding: 3px 6px;
+    }
+
+    .seller-orders-page h1 {
+        font-size: 1rem;
     }
 }

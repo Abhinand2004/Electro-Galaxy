@@ -94,43 +94,15 @@ const EditProductPage = () => {
                     {isEditing ? (
                         <div className="edit-fields">
                             <label htmlFor="productName">Product Name</label>
-                            <input
-                                type="text"
-                                name="productName"
-                                value={formData.productName}
-                                onChange={handleChange}
-                                required
-                            />
+                            <input type="text" name="productName" value={formData.productName} onChange={handleChange}  required />
                             <label htmlFor="category">Category</label>
-                            <input
-                                type="text"
-                                name="category"
-                                value={formData.category}
-                                onChange={handleChange}
-                                required
-                            />
+                            <input type="text" name="category" value={formData.category}  onChange={handleChange} required />
                             <label htmlFor="price">Price</label>
-                            <input
-                                type="number"
-                                name="price"
-                                value={formData.price}
-                                onChange={handleChange}
-                                required
-                            />
+                            <input type="number"  name="price" value={formData.price} onChange={handleChange} required />
                             <label htmlFor="quantity">Quantity</label>
-                            <input
-                                type="number"
-                                name="quantity"
-                                value={formData.quantity}
-                                onChange={handleChange}
-                            />
+                            <input  type="number" name="quantity" value={formData.quantity} onChange={handleChange} />
                             <label htmlFor="description">Description</label>
-                            <textarea
-                                name="description"
-                                value={formData.description}
-                                onChange={handleChange}
-                                required
-                            />
+                            <textarea name="description"  value={formData.description} onChange={handleChange} required />
                             <button onClick={handleSave} className="save-btn">
                                 Save Changes
                             </button>

@@ -40,7 +40,7 @@ const ForSalePage = () => {
                             <h3 className="product-name">{product.name}</h3>
                             <p className="product-category">{product.category}</p>
                             <p className="product-price">${product.price}</p>
-                            <p className="contact-details">Contact: {product.contactDetails}</p>
+                            <p className="contact-details">Description: {product.description}</p>
                         </div>
                     </div>
                   </Link>

@@ -48,7 +48,7 @@ const CartPage = () => {
       }
     } catch (error) {
       console.error('Error decrementing quantity:', error);
-      alert("Error while updating quantity");
+      alert("Your Quantity is too low");
     }
   };
 
@@ -109,26 +109,29 @@ const CartPage = () => {
   };
 
   const buynow = async () => {
-    if (!selectedAddress) {
-      alert("Please select an address");
-    } else {
-      try {
-        const res = await axios.post(`${Url}/order`, {}, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        });
-
-        if (res.status === 200) {
-          alert("Product added successfully");
-          createseller();
-          decreesquantity();
-          deletefullcart();
-          fetchcartdata();
-          navigate("/success");
-        } else {
-          alert("Something went wrong");
+    const confirmPurchase = window.confirm("Are you sure you want to proceed with the purchase?");
+    if (confirmPurchase) {
+      if (!selectedAddress) {
+        alert("Please select an address");
+      } else {
+        try {
+          const res = await axios.post(`${Url}/order`, {}, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+          });
+  
+          if (res.status === 200) {
+            alert("Product added successfully");
+            createseller();
+            decreesquantity();
+            deletefullcart();
+            fetchcartdata();
+            navigate("/success");
+          } else {
+            alert("Something went wrong");
+          }
+        } catch (error) {
+          alert("An error occurred");
         }
-      } catch (error) {
-        alert("An error occurred");
       }
     }
   };
@@ -198,12 +201,7 @@ const CartPage = () => {
           <div className="address-check">
             {address.map((addr) => (
               <label key={addr._id}>
-                <input
-                  type="radio"
-                  name="address"
-                  value={addr._id}
-                  onChange={() => setSelectedAddress(addr._id)}
-                />
+                <input type="radio" name="address" value={addr._id} onChange={() => setSelectedAddress(addr._id)} />
                 {`${addr.address}, ${addr.locality}, ${addr.city}, ${addr.state} - ${addr.pincode}. Landmark: ${addr.landmark}. Place: ${addr.place}`}
               </label>
             ))}

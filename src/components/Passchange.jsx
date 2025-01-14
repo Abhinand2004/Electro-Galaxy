@@ -25,14 +25,13 @@ const ChangePassword = () => {
         formData.email = localStorage.getItem("email");
         const { pwd, cpwd } = formData;
 
-        // Check if passwords match
+       
         if (pwd !== cpwd) {
             setError('Passwords do not match');
             return;
         }
 
         try {
-            // Send formData directly to the server
             const res = await axios.put(`${Url}/passchange`, formData);
 
             if (res.status === 200) {

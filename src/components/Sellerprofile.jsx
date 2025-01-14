@@ -90,9 +90,10 @@ const SellerProfile = () => {
           </div>
         ) : (
           <div>
-            <p><strong>Company Name:</strong> <div>{companyDetails.companyname}</div></p>
-            <p><strong>Location:</strong> {companyDetails.location}</p>
-          </div>
+          <p><strong>Company Name:</strong> <span>{companyDetails.companyname}</span></p>
+          <p><strong>Location:</strong> <span>{companyDetails.location}</span></p>
+        </div>
+        
         )}
         {companyDetails.companyname && companyDetails.location && (
           <Button variant="outlined" color="secondary" className="asd" onClick={() => setIsEditing(!isEditing)}>Edit Company</Button>

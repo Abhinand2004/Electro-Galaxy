@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Addproducts.scss';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, MenuItem } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Url from '../assets/root';
 
@@ -9,14 +9,40 @@ const AddProduct = () => {
     const navigate = useNavigate();
     const [productData, setProductData] = useState({
         productName: '',
-        category: 'Electronics',
+        category: '',
         price: '',
         thumbnail: null,
         description: '',
         quantity: '',
         images: [],
-        categories: ['Electronics', 'Mobile', 'TV', 'AC', 'Fan', 'Washing Machine', 'Fridge'],
+        categories: [],
     });
+    const [newCategory, setNewCategory] = useState('');
+    const [showAddCategoryInput, setShowAddCategoryInput] = useState(false);
+    const [addCategoryMessage, setAddCategoryMessage] = useState('');
+    const [loadingCategories, setLoadingCategories] = useState(true);
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const fetchCategories = async () => {
+        try {
+            const response = await axios.get(`${Url}/showcategory`);
+            if (response.status === 200) {
+                setProductData((prevData) => ({
+                    ...prevData,
+                    categories: response.data
+                }));
+            } else {
+                console.error('No categories found');
+            }
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        } finally {
+            setLoadingCategories(false);
+        }
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -44,7 +70,6 @@ const AddProduct = () => {
     const handleAddProduct = async () => {
         const { productName, category, price, thumbnail, description, quantity, images } = productData;
 
-        // Validate fields
         if (!productName || !category || !price || !thumbnail || !description || !quantity || images.length === 0) {
             alert('All fields are required. Please fill in all fields.');
             return;
@@ -60,6 +85,23 @@ const AddProduct = () => {
             navigate("/sprofile");
         } catch (error) {
             console.error('Error adding product:', error);
+        }
+    };
+
+    const handleAddCategory = async () => {
+        if (!newCategory) {
+            setAddCategoryMessage('Category name is required.');
+            return;
+        }
+
+        try {
+            const response = await axios.post(`${Url}/addcategory`, { category: newCategory });
+            setNewCategory('');
+            setShowAddCategoryInput(false);
+            fetchCategories(); 
+            setAddCategoryMessage(response.data.msg); 
+        } catch (error) {
+            setAddCategoryMessage('category already exist');
         }
     };
 
@@ -89,17 +131,10 @@ const AddProduct = () => {
                 </div>
 
                 <div className="form-group">
-                    <TextField
-                        label="Product Name"
-                        name="productName"
-                        value={productData.productName}
-                        onChange={handleInputChange}
-                        fullWidth
-                        required
-                    />
+                    <TextField  label="Product Name" name="productName" value={productData.productName} onChange={handleInputChange} fullWidth    required/>
                 </div>
 
-                <div className="form-group">
+                <div className="form-group category-group">
                     <TextField
                         label="Category"
                         name="category"
@@ -110,12 +145,38 @@ const AddProduct = () => {
                         required
                     >
                         {productData.categories.map((cat, index) => (
-                            <option key={index} value={cat}>
-                                {cat}
-                            </option>
+                            <MenuItem key={index} value={cat.category}>
+                                {cat.category}
+                            </MenuItem>
                         ))}
                     </TextField>
+
+                    <Button
+                        variant="outlined"
+                        onClick={() => setShowAddCategoryInput(!showAddCategoryInput)}
+                    >
+                        +
+                    </Button>
                 </div>
+
+                {showAddCategoryInput && (
+                    <div className="form-group">
+                        <TextField
+                            label="New Category"
+                            value={newCategory}
+                            onChange={(e) => setNewCategory(e.target.value)}
+                            fullWidth
+                        />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleAddCategory}
+                        >
+                            Save Category
+                        </Button>
+                        {addCategoryMessage && <p>{addCategoryMessage}</p>}
+                    </div>
+                )}
 
                 <div className="form-group">
                     <TextField
@@ -142,27 +203,12 @@ const AddProduct = () => {
                 </div>
 
                 <div className="form-group">
-                    <input
-                        type="file"
-                        name="thumbnail"
-                        accept="image/*"
-                        onChange={handleThumbnailChange}
-                        required
-                        className="file-input"
-                    />
+                    <input  type="file" name="thumbnail" accept="image/*" onChange={handleThumbnailChange} required    className="file-input"/>
                     <small>Upload a thumbnail image</small>
                 </div>
 
                 <div className="form-group">
-                    <input
-                        type="file"
-                        name="images"
-                        accept="image/*"
-                        multiple
-                        onChange={handleImageChange}
-                        required
-                        className="file-input"
-                    />
+                    <input type="file" name="images" accept="image/*" multiple onChange={handleImageChange} required className="file-input"/>
                     <small>Upload up to 5 product images</small>
                 </div>
 

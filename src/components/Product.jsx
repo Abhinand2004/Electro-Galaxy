@@ -79,6 +79,7 @@ const ProductPage = () => {
 
     addToCart();
     navigate("/cart");
+    window.location.reload();
   };
 
   useEffect(() => {

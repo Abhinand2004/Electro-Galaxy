@@ -13,6 +13,7 @@ import product from "./models/product.js";
 import orderSchema from "./models/orders.js"
 import orderplaced from "./models/orderdData.js"
 import address from "./models/address.js";
+import categorySchema from "./models/category.js";
 const { sign } = pkg
 
 
@@ -87,11 +88,11 @@ export async function verifyEmail(req, res) {
                 html: `
                     <div style="font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; padding: 40px;">
                         <div style="background-color: #fff; border-radius: 8px; padding: 30px; max-width: 500px; margin: auto; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
-                            <h1 style="color: #333;">Email Verification</h1>
+                            <h1 style="color: #1d55cd;">Electro-Galaxy Email Verification</h1>
                             <p style="font-size: 16px; color: #555;">Hello ${user.username},</p>
                             <p style="font-size: 16px; color: #555;">Please verify your email address by clicking the button below:</p>
                             <a href="http://localhost:5173/changepass" 
-                               style="display: inline-block; padding: 12px 25px; color: #fff; background-color: #4CAF50; text-decoration: none; font-size: 16px; border-radius: 5px; margin-top: 20px;">
+                               style="display: inline-block; padding: 12px 25px; color: #fff; background-color: #1d55cd; text-decoration: none; font-size: 16px; border-radius: 5px; margin-top: 20px;">
                                Verify Email
                             </a>
                             <p style="font-size: 14px; color: #888; margin-top: 20px;">If you did not request this, please ignore this email.</p>
@@ -109,7 +110,6 @@ export async function verifyEmail(req, res) {
         res.status(500).send({ msg: "Error sending email" });
     }
 }
-
 
 
 
@@ -185,6 +185,49 @@ export async function addproduct(req, res) {
         res.status(500).send({ msg: "Error creating product" });
     }
 }
+
+export async function addcategory(req, res) {
+    try {
+      const { category } = req.body;
+        if (!category) {
+        return res.status(400).send({ msg: 'Category name is required and cannot be empty' });
+      }
+  
+      const existingCategory = await categorySchema.findOne({ category });
+      if (existingCategory) {
+        return res.status(400).send({ msg: 'Category already exists' });
+      }
+  
+      const createdCategory = await categorySchema.create({ category });
+      if (createdCategory) {
+        return res.status(200).send({ msg: "Category added successfully" });
+      } else {
+        return res.status(500).send({ msg: 'Error adding category' });
+      }
+    } catch (error) {
+      return res.status(500).send({ msg: 'Error adding category' });
+    }
+  }
+  
+
+
+export async function showcategory(req, res) {
+  try {
+    const categories = await categorySchema.find();
+
+    if (categories) {
+    return res.status(200).send(categories);
+        
+    } else {
+        
+    }return res.status(500).send({msg:"no data found"})
+  } catch (error) {
+    res.status(500).send({ msg: 'Error retrieving categories',  });
+  }
+}
+
+
+
 
 export async function navdata(req, res) {
     try {
@@ -522,7 +565,7 @@ export async function addtocart(req, res) {
             return res.status(400).send({ msg: "Product is already in your cart" });
         }
         const productdata=await productSchema.findOne({_id:id})
-        const data = await cartSchema.create({ buyer_id: req.user.UserID, quantity:1 ,product:productdata});
+        const data = await cartSchema.create({ buyer_id: req.user.UserID, quantity:1 ,product:productdata,product_id:productdata._id});
 
         if (data) {
             return res.status(200).send({ msg: "Added to cart" });

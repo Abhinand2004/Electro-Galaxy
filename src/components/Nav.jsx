@@ -3,12 +3,13 @@ import axios from 'axios';
 import './Nav.scss';
 import profileImage from "../assets/profile.jpg";
 import logoImage from "../assets/logo.png";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Url from '../assets/root';
-import { FaHome, FaShoppingCart, FaHeart, FaBoxOpen ,FaEnvelope} from 'react-icons/fa'; // Importing the icons
+import { FaHome, FaShoppingCart, FaHeart, FaBoxOpen, FaEnvelope } from 'react-icons/fa'; 
 
 const Nav = ({ setName }) => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [showDropdown, setShowDropdown] = useState(false);
     const [showNavLinks, setShowNavLinks] = useState(false);
     const [token, setToken] = useState(localStorage.getItem('token'));
@@ -33,6 +34,13 @@ const Nav = ({ setName }) => {
         }
     }, [token]);
 
+    useEffect(() => {
+        if (location.pathname === '/') {
+            // Refresh or fetch data logic when navigating to homepage
+            fetchData(); // Or any other function to fetch/display data
+        }
+    }, [location]);
+
     const handleLogout = () => {
         localStorage.removeItem('token');
         setToken(null);
@@ -50,12 +58,13 @@ const Nav = ({ setName }) => {
         } else {
             navigate('/login');
         }
+        setShowNavLinks(false); // Close the nav links after navigation
     };
 
     return (
         <nav className="navbar">
             <div className="left-section">
-                <div className="logo">
+                <div className="logo" onClick={() => handleNavigation('/')}>
                     <span className="company-name">Electro-Galaxy</span>
                     <img src={logoImage} alt="Electro-Galaxy Logo" className="logo-img" />
                 </div>
@@ -70,14 +79,14 @@ const Nav = ({ setName }) => {
                 />
             </div>
 
-            <div className={`nav-links ${showNavLinks ? 'active' : ''}   navi`   }>
-                <a href="/" className="nav-item"><FaHome /></a>
+            <div className={`nav-links ${showNavLinks ? 'active' : ''} navi`}>
+                <a onClick={() => handleNavigation('/')} className="nav-item"><FaHome /></a>
                 <a onClick={() => handleNavigation('/cart')} className="nav-item"><FaShoppingCart /></a>
                 <a onClick={() => handleNavigation('/wishlist')} className="nav-item"><FaHeart /></a>
                 {user.acctype === "seller" && (
                     <>
-                        <a href="/sprofile" className="nav-item">Seller</a>
-                        <a href="/sellerorders" className="nav-item"><FaEnvelope /></a>
+                        <a onClick={() => handleNavigation('/sprofile')} className="nav-item">Seller</a>
+                        <a onClick={() => handleNavigation('/sellerorders')} className="nav-item"><FaEnvelope /></a>
                     </>
                 )}
             </div>

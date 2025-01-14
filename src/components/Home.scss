@@ -24,8 +24,8 @@ html, body {
         color: #333;
         text-align: center;
         
-        letter-spacing: 2px; /* Add letter spacing */
-        font-family: 'Montserrat', sans-serif; /* New font family */
+        letter-spacing: 2px; 
+        font-family: 'Montserrat', sans-serif;
     }
 
     &__product-cards {
@@ -71,23 +71,23 @@ html, body {
         color: #333;
         margin-bottom: 10px;
         line-height: 1.2;
-        font-family: 'Roboto', sans-serif; /* New font family */
-        text-transform: capitalize; /* Transform text to capitalize */
+        font-family: 'Roboto', sans-serif; 
+        text-transform: capitalize; 
     }
 
     &__product-category {
         font-size: 1rem;
         color: #777;
         margin-bottom: 15px;
-        font-family: 'Roboto', sans-serif; /* New font family */
-        font-style: italic; /* Italic style */
+        font-family: 'Roboto', sans-serif; 
+        font-style: italic; 
     }
 
     &__product-price {
         font-size: 1.2rem;
         font-weight: bold;
         color: #007bff;
-        font-family: 'Roboto', sans-serif; /* New font family */
+        font-family: 'Roboto', sans-serif;
     }
 }
 
