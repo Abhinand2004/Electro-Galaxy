@@ -1,26 +1,35 @@
 .register-container {
- 
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background: linear-gradient(135deg, #f7f7f7, #e0f7fa);
   padding: 0 20px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .register-form {
-  background-color: rgba(255, 255, 255, 0.9); 
+  background-color: #ffffff; 
   padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 450px; 
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  max-width: 450px;
   width: 100%; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
 }
 
 .register-title {
   margin-bottom: 20px;
   text-align: center;
-  font-size: 26px; 
+  font-size: 30px;
+  font-weight: 600;
   color: #333;
+  letter-spacing: 1px;
 }
 
 .register-username,
@@ -28,46 +37,83 @@
 .register-phone,
 .register-password,
 .register-confirm-password {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  padding: 12px;
+  transition: background-color 0.3s ease;
+
+  &:focus {
+    background-color: #e3f2fd;
+  }
+
+  &::placeholder {
+    font-style: italic;
+    color: #aaa;
+  }
 }
 
 .register-acctype {
-  margin-bottom: 15px; 
+  margin-bottom: 20px;
 }
 
 .form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
   text-align: center;
-  margin-top: 20px; 
+  margin-top: 20px;
+}
+
+.register-btn,
+.login-btn {
+  width: 48%;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 }
 
 .register-btn {
-  background-color: #28a745; 
-  color: #fff; 
+  background-color: #28a745;
+  color: #fff;
   border: none;
-  padding: 10px 20px; 
-  border-radius: 4px;
-  cursor: pointer;
-  width: 48%; 
-  margin: 5px; 
-  transition: background-color 0.3s; 
-}
 
-.register-btn:hover {
-  background-color: #218838; 
+  &:hover {
+    background-color: #218838;
+  }
 }
 
 .login-btn {
-  background-color: #17a2b8; 
+  background-color: #17a2b8;
   color: #fff;
-}
+  border: none;
 
-.login-btn:hover {
-  background-color: #138496; 
+  &:hover {
+    background-color: #138496;
+  }
 }
 
 @media (max-width: 600px) {
-  .register-btn, .login-btn {
-      width: 100%;
-      margin: 5px 0;
+  .register-form {
+    padding: 30px;
+    width: 100%;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .register-btn,
+  .login-btn {
+    width: 100%;
+    margin: 5px 0;
   }
 }
+
