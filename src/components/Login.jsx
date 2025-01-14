@@ -31,7 +31,7 @@ window.location.reload();
                 alert("Login failed");
             }
         } catch (error) {
-            alert("An error occurred during login. Please try again later.");
+            alert("incorrect Username or password");
         }
     };
 

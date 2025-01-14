@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './Register.scss'; 
 import { Link, useNavigate } from 'react-router-dom';
-import { TextField, Button, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+import { TextField, Button } from '@mui/material';
 import Url from '../assets/root';
+import logo from '../assets/logo.png';
+
 const Register = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -43,7 +45,10 @@ const Register = () => {
     return (
         <div className="register-container">
             <form className="register-form" onSubmit={handleSubmit}>
-                <h2 className="register-title">Register</h2>
+                <div className="register-header">
+                    <img src={logo} alt="Logo" className="register-logo" />
+                    <h2 className="register-title">Register</h2>
+                </div>
                 <TextField
                     className="register-username"
                     label="Username"
@@ -76,18 +81,23 @@ const Register = () => {
                     fullWidth
                     margin="normal"
                 />
-                <FormControl fullWidth margin="normal" className="register-acctype">
-                    <InputLabel>User Type</InputLabel>
-                    <Select
-                        name="acctype"
-                        value={formData.acctype}
-                        onChange={handleChange}
-                        required
-                    >
-                        <MenuItem value="buyer">Buyer</MenuItem>
-                        <MenuItem value="seller">Seller</MenuItem>
-                    </Select>
-                </FormControl>
+                <TextField
+                    className="register-acctype"
+                    label="User Type"
+                    name="acctype"
+                    value={formData.acctype}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                    margin="normal"
+                    select
+                    SelectProps={{
+                        native: true,
+                    }}
+                >
+                    <option value="buyer">Buyer</option>
+                    <option value="seller">Seller</option>
+                </TextField>
                 <TextField
                     className="register-password"
                     label="Password"

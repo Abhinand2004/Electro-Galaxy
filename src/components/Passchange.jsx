@@ -36,7 +36,7 @@ const ChangePassword = () => {
 
             if (res.status === 200) {
                 setSuccess('Password changed successfully');
-                localStorage.removeItem("email");
+                localStorage.removeItem('email')
                 navigate("/login");
             } else {
                 setError('Password change failed');

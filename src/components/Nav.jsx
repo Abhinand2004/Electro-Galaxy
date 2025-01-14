@@ -36,8 +36,7 @@ const Nav = ({ setName }) => {
 
     useEffect(() => {
         if (location.pathname === '/') {
-            // Refresh or fetch data logic when navigating to homepage
-            fetchData(); // Or any other function to fetch/display data
+            fetchData();
         }
     }, [location]);
 
@@ -58,7 +57,7 @@ const Nav = ({ setName }) => {
         } else {
             navigate('/login');
         }
-        setShowNavLinks(false); // Close the nav links after navigation
+        setShowNavLinks(false); 
     };
 
     return (
