@@ -8,6 +8,8 @@ router.route("/login").post(rh.login)
 router.route("/verifyemail").post(rh.verifyEmail)
 router.route("/passchange").put(rh.passchange)
 router.route("/home").get(rh.homepage)
+router.route("/homewithtoken").get(Auth,rh.homepagewithtoken)
+
 router.route("/addproduct").post(Auth,rh.addproduct)
 router.route("/navdata").get(Auth,rh.navdata)
 router.route("/companyadd").post(Auth,rh.sellerdata)
@@ -42,7 +44,6 @@ router.route("/confirmorder/:id").put(rh.updateconfirm)
 router.route("/rejectorder/:id").delete(rh.rejectorder)
 router.route("/sendconfirm/:id").post(rh.sendmessagetobuyer)
 router.route("/rejectmsg/:id").post(rh.sendrejuctedmessage)
-
 
 
 

@@ -23,6 +23,9 @@ html, body {
         margin-bottom: 40px;
         color: #333;
         text-align: center;
+        
+        letter-spacing: 2px; /* Add letter spacing */
+        font-family: 'Montserrat', sans-serif; /* New font family */
     }
 
     &__product-cards {
@@ -42,7 +45,7 @@ html, body {
         overflow: hidden;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         cursor: pointer;
-        
+
         &:hover {
             transform: translateY(-8px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -59,6 +62,7 @@ html, body {
     &__product-info {
         padding: 20px;
         text-align: left;
+        background-color: #fff;
     }
 
     &__product-name {
@@ -67,21 +71,25 @@ html, body {
         color: #333;
         margin-bottom: 10px;
         line-height: 1.2;
+        font-family: 'Roboto', sans-serif; /* New font family */
+        text-transform: capitalize; /* Transform text to capitalize */
     }
 
     &__product-category {
         font-size: 1rem;
         color: #777;
         margin-bottom: 15px;
+        font-family: 'Roboto', sans-serif; /* New font family */
+        font-style: italic; /* Italic style */
     }
 
     &__product-price {
         font-size: 1.2rem;
         font-weight: bold;
         color: #007bff;
+        font-family: 'Roboto', sans-serif; /* New font family */
     }
 }
-
 
 @media (max-width: 1024px) {
     .home-page {
@@ -129,4 +137,3 @@ html, body {
         grid-template-columns: 1fr; 
     }
 }
-        

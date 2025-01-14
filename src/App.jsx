@@ -16,17 +16,19 @@ import CartPage from "./components/Cart"
 import Orderspage from "./components/Orders"
 import Success from "./components/Success"
 import SellerOrders from "./components/Sellerorder"
+import { useState } from 'react'
 
 
 function App() {
+  const [name,setName]=useState("")
 
 
   return (
     <>
     <BrowserRouter>
-    <Nav></Nav>
+    <Nav setName={setName}></Nav>
     <Routes>
-    <Route path="/" element={<HomePage/>} />
+    <Route path="/" element={<HomePage  name={name}/>} />
       <Route path="/login" element={<Login />} />
       <Route path="/verify" element={<VerifyEmail />} />
       <Route path="/changepass" element={<ChangePassword />} />
@@ -42,6 +44,7 @@ function App() {
       <Route path="/orders" element={<Orderspage/>} />
       <Route path="/success" element={<Success/>} />
       <Route path="/sellerorders" element={<SellerOrders/>} />
+
 
 
 

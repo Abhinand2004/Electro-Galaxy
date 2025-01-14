@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './Product.scss';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Url from '../assets/root';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 const ProductPage = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [currentImage, setCurrentImage] = useState(null);
@@ -23,9 +26,16 @@ const ProductPage = () => {
   };
 
   const addToWishlist = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert("Please log in first!");
+      navigate('/login');
+      return;
+    }
+
     try {
       const res = await axios.post(`${Url}/addwishlist`, { id }, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        headers: { Authorization: `Bearer ${token}` }
       });
       if (res.status === 200) {
         alert("Product added to wishlist successfully");
@@ -38,9 +48,16 @@ const ProductPage = () => {
   };
 
   const addToCart = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert("Please log in first!");
+      navigate('/login');
+      return;
+    }
+
     try {
       const res = await axios.post(`${Url}/addtocart`, { id }, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        headers: { Authorization: `Bearer ${token}` }
       });
       if (res.status === 200) {
         alert("Product added to cart successfully");
@@ -50,6 +67,18 @@ const ProductPage = () => {
     } catch (error) {
       alert("Product is already in the cart");
     }
+  };
+
+  const buynow = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert("Please log in first!");
+      navigate('/login');
+      return;
+    }
+
+    addToCart();
+    navigate("/cart");
   };
 
   useEffect(() => {
@@ -67,7 +96,9 @@ const ProductPage = () => {
   return (
     <div className="product-page">
       <div className="wishlist-button">
-        <button onClick={addToWishlist}>Add to Wishlist</button>
+        <button onClick={addToWishlist} className="wishlist-heart-button">
+          <FontAwesomeIcon icon={faHeart} />
+        </button>
       </div>
 
       <div className="main-page">
@@ -90,7 +121,7 @@ const ProductPage = () => {
             <img src={currentImage} alt={product.productName} />
             <div className="action-buttons">
               <button className="add-to-cart" onClick={addToCart}>Add to Cart</button>
-              <button className="buy-now">Buy Now</button>
+              <button className="buy-now" onClick={buynow}>Buy Now</button>
             </div>
           </div>
 

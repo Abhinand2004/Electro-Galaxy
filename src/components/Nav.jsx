@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Nav.scss';
 import profileImage from "../assets/profile.jpg";
-import logoImage from "../assets/logo.png"; // Import your logo here
+import logoImage from "../assets/logo.png";
 import { useNavigate } from 'react-router-dom';
 import Url from '../assets/root';
+import { FaHome, FaShoppingCart, FaHeart, FaBoxOpen ,FaEnvelope} from 'react-icons/fa'; // Importing the icons
 
-const Nav = () => {
-    const navigate = useNavigate(); 
+const Nav = ({ setName }) => {
+    const navigate = useNavigate();
     const [showDropdown, setShowDropdown] = useState(false);
+    const [showNavLinks, setShowNavLinks] = useState(false);
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [user, setUser] = useState('');
-    const [searchQuery, setSearchQuery] = useState('');
 
-    const fetchData = async () => { 
+    const fetchData = async () => {
         try {
             const res = await axios.get(`${Url}/navdata`, {
                 headers: { Authorization: `Bearer ${token}` }
@@ -38,51 +39,50 @@ const Nav = () => {
         window.location.href = '/login';
     };
 
-    const handleProfileNavigation = () => { 
-     
-            navigate("/bprofile");
-       
-        setShowDropdown(false); 
+    const handleProfileNavigation = () => {
+        navigate("/bprofile");
+        setShowDropdown(false);
     };
 
-    const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value);
-    };
-
-    const handleSearchSubmit = (e) => {
-        e.preventDefault();
-        console.log("Search query:", searchQuery);
+    const handleNavigation = (path) => {
+        if (token) {
+            navigate(path);
+        } else {
+            navigate('/login');
+        }
     };
 
     return (
         <nav className="navbar">
             <div className="left-section">
                 <div className="logo">
+                    <span className="company-name">Electro-Galaxy</span>
                     <img src={logoImage} alt="Electro-Galaxy Logo" className="logo-img" />
                 </div>
+            </div>
 
-                
-            </div>
             <div className="search-bar">
-                    <input 
-                        type="text" 
-                        placeholder="Search..." 
-                        className="search-input" 
-                        value={searchQuery} 
-                        onChange={handleSearchChange} 
-                        onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit(e)} 
-                    />
-                </div>
-            <div className="nav-links">
-                <a href="/" className="nav-item">Home</a>
-                <a href="/cart" className="nav-item">Cart</a>
-                <a href="/wishlist" className="nav-item">Wishlist</a>
-                {user.acctype === "seller" && (
- <>
- <a href="/sprofile" className="nav-item">Seller Profile</a>
- <a href="/sellerorders" className="nav-item">Orders</a>
-</>                )}
+                <input
+                    type="text"
+                    placeholder="Search..."
+                    className="search-input"
+                    onChange={(e) => setName(e.target.value)}
+                />
             </div>
+
+            <div className={`nav-links ${showNavLinks ? 'active' : ''}   navi`   }>
+                <a href="/" className="nav-item"><FaHome /></a>
+                <a onClick={() => handleNavigation('/cart')} className="nav-item"><FaShoppingCart /></a>
+                <a onClick={() => handleNavigation('/wishlist')} className="nav-item"><FaHeart /></a>
+                {user.acctype === "seller" && (
+                    <>
+                        <a href="/sprofile" className="nav-item">Seller</a>
+                        <a href="/sellerorders" className="nav-item"><FaEnvelope /></a>
+                    </>
+                )}
+            </div>
+
+            <button className="menu-btn" onClick={() => setShowNavLinks(!showNavLinks)}></button>
 
             <div className="right-section">
                 {!token ? (
@@ -95,9 +95,7 @@ const Nav = () => {
                         </div>
                         {showDropdown && (
                             <div className="dropdown-menu">
-                                <button onClick={handleProfileNavigation}>
-                                   profile
-                                </button>
+                                <button onClick={handleProfileNavigation}>Profile</button>
                                 <button onClick={handleLogout}>Logout</button>
                             </div>
                         )}

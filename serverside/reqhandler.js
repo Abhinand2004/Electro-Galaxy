@@ -156,6 +156,20 @@ export async function homepage(req, res) {
     }
 }
 
+export async function homepagewithtoken(req, res) {
+    try {
+        const products = await productSchema.find({ user_id: { $ne: req.user.UserID } });
+
+        if (products) {
+            res.status(200).send(products);
+        } else {
+            res.status(404).send({ msg: "No data found" });
+        }
+    } catch (error) {
+        res.status(500).send({ msg: "Error retrieving data" });
+    }
+}
+
 
 export async function addproduct(req, res) {
     const { ...data } = req.body;
@@ -615,7 +629,7 @@ export async function displayorders(req, res) {
     try {
         const orders = await orderSchema.find({ buyer_id: req.user.UserID });
 
-        if (!orders || orders.length === 0) {
+        if (!orders ) {
             return res.status(404).send({ message: 'No orders found for this user.' });
         }
         return res.status(200).send({ orders});
@@ -623,18 +637,6 @@ export async function displayorders(req, res) {
         return res.status(500).send({ msg: 'An error occurred while fetching the orders.'});
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

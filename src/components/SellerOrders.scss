@@ -1,0 +1,127 @@
+$primary-color: #4CAF50;
+$confirm-color: #4CAF50;
+$reject-color: #f44336;
+$confirmed-color: #888;
+$text-color: #333;
+$background-color: #f4f4f4;
+$white-color: #ffffff;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: $background-color;
+}
+
+.seller-orders-page {
+    padding: 20px;
+    background-color: $white-color;
+    margin: 20px auto;
+    max-width: 1200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: $primary-color;
+    }
+
+    p {
+        text-align: center;
+        font-size: 1.2rem;
+        color: $text-color;
+    }
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: $primary-color;
+        color: $white-color;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #ddd;
+    }
+}
+
+button {
+    padding: 8px 15px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+
+    &.confirm-btn {
+        background-color: $confirm-color;
+        color: $white-color;
+
+        &:hover {
+            background-color: darken($confirm-color, 10%);
+        }
+    }
+
+    &.reject-btn {
+        background-color: $reject-color;
+        color: $white-color;
+
+        &:hover {
+            background-color: darken($reject-color, 10%);
+        }
+    }
+
+    &.confirmed-btn {
+        background-color: $confirmed-color;
+        color: $white-color;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .orders-table th, .orders-table td {
+        padding: 8px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+
+    .seller-orders-page {
+        padding: 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .orders-table th, .orders-table td {
+        font-size: 12px;
+    }
+
+    button {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+
+    .seller-orders-page {
+        padding: 10px;
+    }
+}

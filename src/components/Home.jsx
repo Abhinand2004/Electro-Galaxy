@@ -4,12 +4,24 @@ import './Home.scss';
 import Url from '../assets/root';
 import { Link } from 'react-router-dom';
 
-const HomePage = () => {
+const HomePage = ({name}) => {
+    console.log(name);
+    
     const [products, setProducts] = useState([]);
-
+    const token=localStorage.getItem("token")
     const fetchData = async () => {
         try {
-            const res = await axios.get(`${Url}/home`, {
+            const res = await axios.get(`${Url}/home`,);
+            if (res.status === 200) {
+                setProducts(res.data); 
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+    const fetchDatawithtoken = async () => {
+        try {
+            const res = await axios.get(`${Url}/homewithtoken`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
             });
             if (res.status === 200) {
@@ -21,19 +33,26 @@ const HomePage = () => {
     };
 
     useEffect(() => {
+        if (token) {
+            fetchDatawithtoken()
+        }else{
         fetchData();
+
+        }
     }, []);
 
     return (
         <div className="home-page">
             <h1 className="home-page__title">Featured Products</h1>
             <div className="home-page__product-cards">
-                {products.map((product) => (
+                {
+                 products.filter((product) =>
+                    product.category.toLowerCase().includes(name.toLowerCase())).map((product) => (
                     <Link to={`/product/${product._id}`} key={product._id} >
                     <div  className="home-page__product-card">
                         <img
                             src={product.thumbnail}
-                            alt={product.productname}
+                            alt={product.productName}
                             className="home-page__product-thumbnail"
                         />
                         <div className="home-page__product-info">

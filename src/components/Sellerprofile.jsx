@@ -95,7 +95,7 @@ const SellerProfile = () => {
           </div>
         )}
         {companyDetails.companyname && companyDetails.location && (
-          <Button variant="outlined" color="secondary" onClick={() => setIsEditing(!isEditing)}>Edit Company</Button>
+          <Button variant="outlined" color="secondary" className="asd" onClick={() => setIsEditing(!isEditing)}>Edit Company</Button>
         )}
         {isEditing && (
           <div className="form-group">

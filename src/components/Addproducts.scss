@@ -1,8 +1,8 @@
 .add-product-container {
     width: 100%;
     padding: 30px;
-    background-color: #f2f2f2;
-    border-radius: 8px;
+    background-color: #e3f2fd;
+    border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin-top: 30px;
 }
@@ -10,74 +10,85 @@
 h2 {
     text-align: center;
     margin-bottom: 30px;
-    color: #34495e;
-    font-size: 2rem;
+    color: #1976d2;
+    font-size: 2.5rem;
 }
 
 .product-form {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .form-group {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
+
+    .MuiTextField-root {
+        margin-top: 10px;
+    }
 }
 
 .image-previews {
     margin-bottom: 20px;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
 }
 
 .image-preview {
     display: inline-block;
-    margin-right: 10px;
-    margin-bottom: 10px;
     width: 120px;
     height: 120px;
     overflow: hidden;
     border-radius: 5px;
     background-color: #f2f2f2;
+    border: 2px solid #90caf9;
     position: relative;
-}
 
-.image-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 }
 
 .form-actions {
     display: flex;
     justify-content: center;
     margin-top: 30px;
+
+    .MuiButtonBase-root {
+        background-color: #1976d2;
+        color: #ffffff;
+        &:hover {
+            background-color: #1565c0;
+        }
+    }
 }
 
 input[type="file"] {
     padding: 10px;
     border-radius: 4px;
-    border: 1px solid #ccc;
+    border: 1px solid #90caf9;
     transition: border-color 0.3s ease;
-}
+    cursor: pointer;
 
-input[type="file"]:focus,
-textarea:focus,
-input:focus,
-select:focus {
-    border-color: #428bca;
+    &:focus {
+        border-color: #1976d2;
+    }
 }
 
 @media (max-width: 768px) {
     .product-form {
         width: 100%;
-        padding: 10px;
+        padding: 15px;
     }
 
     .form-group {
@@ -95,5 +106,3 @@ select:focus {
         width: 100%;
     }
 }
-
-

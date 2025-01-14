@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import './Cart.scss';
 import axios from 'axios';
 import Url from '../assets/root';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 const CartPage = () => {
-  const Navigate=useNavigate()
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [address, setAddress] = useState([]);
@@ -74,19 +75,20 @@ const CartPage = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
 
-      if (res.status === 200) {
+      if (res.status === 200 && res.data.length > 0) {
         setAddress(res.data);
       } else {
-        alert("Error fetching buyer address");
+        alert("Please add an address");
+        navigate("/bprofile");
       }
     } catch (error) {
-      alert("An error occurred while fetching the address");
+      alert("Please add an address");
     }
   };
 
   const createseller = async () => {
     try {
-      const res = await axios.post(`${Url}/seller`, { id: selectedAddress } , {
+      await axios.post(`${Url}/seller`, { id: selectedAddress }, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
     } catch (error) {
@@ -94,35 +96,40 @@ const CartPage = () => {
       alert("An error occurred");
     }
   };
+
   const decreesquantity = async () => {
     try {
-      const res = await axios.put(`${Url}/decreesquantity`, {} , {
+      await axios.put(`${Url}/decreesquantity`, {}, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
     } catch (error) {
-      console.error("Error decreesing product quantity:");
+      console.error("Error decreesing product quantity:", error);
       alert("Error decreesing product quantity");
     }
   };
 
   const buynow = async () => {
-    try {
-      const res = await axios.post(`${Url}/order`, {}, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+    if (!selectedAddress) {
+      alert("Please select an address");
+    } else {
+      try {
+        const res = await axios.post(`${Url}/order`, {}, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        });
 
-      if (res.status === 200) {
-        alert("Product added successfully");
-         createseller();
-         decreesquantity()
-         deletefullcart();
-        fetchcartdata()
-        Navigate("/success")
-      } else {
-        alert("Something went wrong");
+        if (res.status === 200) {
+          alert("Product added successfully");
+          createseller();
+          decreesquantity();
+          deletefullcart();
+          fetchcartdata();
+          navigate("/success");
+        } else {
+          alert("Something went wrong");
+        }
+      } catch (error) {
+        alert("An error occurred");
       }
-    } catch (error) {
-      alert("An error occurred");
     }
   };
 
@@ -149,7 +156,6 @@ const CartPage = () => {
     return <div>Loading...</div>;
   }
 
-  // Total calculation
   const totalAmount = cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0);
   const shippingMessage = totalAmount > 1000 ? (
     <p>You saved ₹50 on shipping!</p>
@@ -157,51 +163,54 @@ const CartPage = () => {
     <p>₹50 shipping charge applied</p>
   );
 
-  // console.log(selectedAddress);
-  
-
   return (
     <div className="cart-page">
       <div className="cart-left">
-        {cartItems.map((cartItem) => (
-          cartItem.product && (
-            <div className="cart-card" key={cartItem._id}>
-              <img src={cartItem.product.thumbnail} alt={cartItem.product.productName} />
-              <div className="cart-info">
-                <h2>{cartItem.product.productName}</h2>
-                <p>{cartItem.product.category}</p>
-                <p>Price: ${(cartItem.product.price) * (cartItem.quantity)}</p>
-                <div className="cart-controls">
-                  <button onClick={() => decrement(cartItem._id)}>-</button>
-                  <span>{cartItem.quantity}</span>
-                  <button onClick={() => increment(cartItem._id)}>+</button>
+        {cartItems.length === 0 ? (
+          <p>Your cart is empty</p>
+        ) : (
+          cartItems.map((cartItem) => (
+            cartItem.product && (
+              <div className="cart-card" key={cartItem._id}>
+                <img src={cartItem.product.thumbnail} alt={cartItem.product.productName} />
+                <div className="cart-info">
+                  <h2>{cartItem.product.productName}</h2>
+                  <p>{cartItem.product.category}</p>
+                  <p>Price: ${(cartItem.product.price) * (cartItem.quantity)}</p>
+                  <div className="cart-controls">
+                    <button onClick={() => decrement(cartItem._id)}>-</button>
+                    <span>{cartItem.quantity}</span>
+                    <button onClick={() => increment(cartItem._id)}>+</button>
+                  </div>
+                  <button className="remove-btn" onClick={() => onDelete(cartItem._id)}>Remove from Cart</button>
                 </div>
-                <button className="remove-btn" onClick={() => onDelete(cartItem._id)}>Remove from Cart</button>
               </div>
-            </div>
-          )
-        ))}
+            )
+          ))
+        )}
       </div>
 
-      <div className="cart-right">
-        <h2>Your Orders</h2>
-        <p>Total Amount: ${totalAmount}</p>
-        {shippingMessage}
-        <div className="address-check">
-          {address.map((addr) => (
-            <label key={addr._id}>
-              <input
-                type="radio"
-                name="address"
-                value={addr._id}
-                onChange={() => setSelectedAddress(addr._id)}
-              />
-              {`${addr.address}, ${addr.locality}, ${addr.city}, ${addr.state} - ${addr.pincode}. Landmark: ${addr.landmark}. Place: ${addr.place}`}
-            </label>
-          ))}
+      {cartItems.length > 0 && (
+        <div className="cart-right">
+          <h2>Your Orders</h2>
+          <p>Total Amount: ${totalAmount}</p>
+          {shippingMessage}
+          <div className="address-check">
+            {address.map((addr) => (
+              <label key={addr._id}>
+                <input
+                  type="radio"
+                  name="address"
+                  value={addr._id}
+                  onChange={() => setSelectedAddress(addr._id)}
+                />
+                {`${addr.address}, ${addr.locality}, ${addr.city}, ${addr.state} - ${addr.pincode}. Landmark: ${addr.landmark}. Place: ${addr.place}`}
+              </label>
+            ))}
+          </div>
+          <button className="buy-now" onClick={buynow}>Buy Now</button>
         </div>
-        <button className="buy-now" onClick={buynow}>Buy Now</button>
-      </div>
+      )}
     </div>
   );
 };

@@ -1,70 +1,100 @@
-// Variables for colors and styles
+/* Global variables */
 $primary-color: #007bff;
-$error-color: #f44336; // Red for error messages
-$success-color: #4caf50; // Green for success messages
-$form-background: #ffffff; // White background for the form
-$border-radius: 8px; // Border radius for rounded corners
-$padding: 2rem; // Padding for the form
-$max-width: 400px; // Max width for the form
- .change-password-container{
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
- }
+$success-color: #4caf50;
+$error-color: #f44336;
+$background-color: #f7f7f7;
+$form-background: #ffffff;
+$border-radius: 8px;
+$padding: 2rem;
+$max-width: 400px;
+
+.change-password-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $background-color;
+}
+
 .change-password-form {
-    background-color: $form-background; // White background for the form
-    padding: $padding;
-    border-radius: $border-radius;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%; // Full width for small screens
-    max-width: $max-width; // Max width for larger screens
-    margin: 0 auto; // Center the form horizontally
-    display: flex;
-    flex-direction: column; // Stack children vertically
+  background-color: $form-background;
+  padding: $padding;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: $max-width;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
+  h2 {
+    margin-bottom: 1.5rem;
+    color: $primary-color;
+    text-align: center;
+    font-size: 2rem;
+  }
+
+  .MuiAlert-root {
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+
+  .MuiTextField-root {
+    margin-bottom: 1.2rem;
+    width: 100%;
+  }
+
+  .change-password-btn {
+    margin-top: 1rem;
+    background-color: $primary-color;
+    color: white;
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  .links {
+    margin-top: 1rem;
+    text-align: center;
+
+    a {
+      color: $primary-color;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+
+  @media (max-width: 480px) {
     h2 {
-        margin-bottom: 1.5rem;
-        text-align: center;
-        font-size: 1.5rem; // Font size for the title
+      font-size: 1.5rem;
     }
 
-    .MuiAlert-root {
-        margin-bottom: 1rem; // Space between alerts and form fields
-    }
-
-    .links {
-        margin-top: 1rem;
-        text-align: center;
-
-        a {
-            color: $primary-color; // Link color
-            text-decoration: none;
-
-            &:hover {
-                text-decoration: underline; // Underline on hover
-            }
-        }
-    }
-
-    // Button styles
     .change-password-btn {
-        margin-top: 1rem; // Space above the button
+      padding: 10px 20px;
+      font-size: 1rem;
     }
+  }
 }
 
-// Responsive styles
-@media (max-width: 768px) {
-    .change-password-form {
-        padding: 1.5rem; // Reduce padding on smaller screens
-    }
+/* Alerts */
+.MuiAlert-root {
+  margin-bottom: 15px;
 }
 
-@media (max-width: 480px) {
-    .change-password-form {
-        h2 {
-            font-size: 1.25rem; // Smaller font size for the title
-        }
-    }
+.MuiAlert-filledError {
+  background-color: $error-color;
+  color: white;
+}
+
+.MuiAlert-filledSuccess {
+  background-color: $success-color;
+  color: white;
 }

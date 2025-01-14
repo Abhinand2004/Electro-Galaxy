@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Order.scss';
 import Url from '../assets/root';
-
+import { Link } from 'react-router-dom';
 const Orderspage = () => {
     const [orders, setOrders] = useState([]);
 
@@ -29,7 +29,8 @@ const Orderspage = () => {
             <div className="orders-grid">
                 {orders.map((order) => (
                     order.products.map((product) => (
-                        <div key={product.product._id} className="order-card">
+                        <Link to={`/product/${product.product._id}`} key={product.product._id}>
+                        <div  className="order-card">
                             <img src={product.product.thumbnail} alt={product.product.name} />
                             <div className="order-details">
                                 <h2>{product.product.name}</h2>
@@ -37,10 +38,10 @@ const Orderspage = () => {
                                 <p>Price: ${product.product.price}</p>
                                 <div className="order-actions">
                                     <button className="details-button">More Details</button>
-                                    <button className="cancel-button">Cancel Order</button>
                                 </div>
                             </div>
                         </div>
+                        </Link>
                     ))
                 ))}
             </div>
