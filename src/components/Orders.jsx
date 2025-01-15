@@ -3,6 +3,7 @@ import axios from 'axios';
 import './Order.scss';
 import Url from '../assets/root';
 import { Link } from 'react-router-dom';
+
 const Orderspage = () => {
     const [orders, setOrders] = useState([]);
 
@@ -26,11 +27,11 @@ const Orderspage = () => {
     return (
         <div className="orders-container">
             <h1>Your Orders</h1>
-            <div className="orders-grid">
+            <div className="orders-flex">
                 {orders.map((order) => (
                     order.products.map((product) => (
                         <Link to={`/product/${product.product._id}`} key={product.product._id}>
-                        <div  className="order-card">
+                        <div className="order-card">
                             <img src={product.product.thumbnail} alt={product.product.name} />
                             <div className="order-details">
                                 <h2>{product.product.name}</h2>
